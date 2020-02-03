@@ -3,22 +3,23 @@ const app = express()
 const path = require('path')
 
 const publicDirectoryPath = path.join(__dirname, '../public')
+const pythonDirectoryPath = path.join(publicDirectoryPath, 'python')
 app.use(express.static(publicDirectoryPath))
-console.log(publicDirectoryPath)
+console.log(pythonDirectoryPath)
 
-let runPy = new Promise(function(success, nosuccess) {
+let runPy = new Promise((resolve, reject) => {
 
     const { spawn } = require('child_process');
-    const pyprog = spawn('python', [publicDirectoryPath + '/python/test.py']);
+    const pyprog = spawn('python', [pythonDirectoryPath + '/test.py']);
 
-    pyprog.stdout.on('data', function(data) {
+    pyprog.stdout.on('data', (data) => {
 
-        success(data);
+        resolve(data);
     });
 
     pyprog.stderr.on('data', (data) => {
 
-        nosuccess(data);
+        reject(data);
     });
 });
 
