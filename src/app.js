@@ -1,37 +1,26 @@
 const express = require('express')
-const app = express()
+const bodyParser = require('body-parser');
 const path = require('path')
+const indexedRouter = require('./router/indexed')
+const featuresRouter = require('./router/features')
 
+const app = express()
 const publicDirectoryPath = path.join(__dirname, '../public')
-const pythonDirectoryPath = path.join(publicDirectoryPath, 'python')
-app.use(express.static(publicDirectoryPath))
-console.log(pythonDirectoryPath)
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-let runPy = new Promise((resolve, reject) => {
+app.use(express.json())
+app.use(indexedRouter)
+app.use(featuresRouter)
 
-    const { spawn } = require('child_process');
-    const pyprog = spawn('python', [pythonDirectoryPath + '/test.py']);
-
-    pyprog.stdout.on('data', (data) => {
-
-        resolve(data);
-    });
-
-    pyprog.stderr.on('data', (data) => {
-
-        reject(data);
-    });
-});
-
-app.get('/', (req, res) => {
-
-    res.write('welcome\n');
-
-    runPy.then(function(fromRunpy) {
-        console.log(fromRunpy) // Buffer
-        console.log(fromRunpy.toString());
-        res.end(fromRunpy);
-    });
+app.get('/test', (req, res) => {
+    console.log('yas')
+    res.send(
+            {
+                options: ['option 1', 'option 2', 'option 3']
+            }
+        
+    )
 })
 
-app.listen(4000, () => console.log('Application listening on port 4000!'))
+module.exports = app
