@@ -1,0 +1,23 @@
+.header {
+    background: $off-black;
+    color: white;
+    padding: $s-size 0;
+}
+
+.title {
+    grid-column: 1/6;
+}
+
+.title h1 {
+    margin: 0;
+    padding: $s-size 0;
+}
+
+.headerSettings {
+    grid-column: 6/7;
+}
+
+.settingImage {
+    float: right;
+    padding: $s-size 0;
+}

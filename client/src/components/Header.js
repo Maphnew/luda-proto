@@ -1,11 +1,15 @@
 import React from 'react'
+import HeaderSetting from './HeaderSetting'
 
 const Header = (props) => {
     return (
-        <div>
-            <h1>{props.title}</h1>
-            {props.subtitle && <h2>{props.subtitle}</h2>}
-            {props.options && <h2>{props.options}</h2>}
+        <div className="header">
+            <div className="container">
+                <div className="title">
+                    <h1>{props.title}</h1>
+                </div>
+                <HeaderSetting />
+            </div>
         </div>
     )
 }

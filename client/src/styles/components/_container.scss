@@ -1,0 +1,8 @@
+.container {
+    max-width: 100%;
+    margin: 0 2rem;
+    padding: 0 $m-size;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-auto-rows: 50px;
+}

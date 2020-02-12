@@ -1,0 +1,12 @@
+.navigator {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-auto-rows: 50px;
+}
+
+.naviMenu0 {
+    grid-column: 1/2;
+    color: white;
+    text-align: center;
+    padding: $m-size 0;
+}

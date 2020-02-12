@@ -1,5 +1,7 @@
 import React from 'react'
 import Header from './Header'
+import Body from './Body'
+import Navigator from './Navigator'
 
 export default class LudaApp extends React.Component {
     state = {
@@ -30,14 +32,21 @@ export default class LudaApp extends React.Component {
         console.log('componentWillUnmount')
     }
     render() {
-        const subtitle = 'This is subtitle'
+        const naviMenu = ['Raw', 'Indexed', 'Features']
         
         return (
             <div>
-                <Header 
-                    subtitle={subtitle}
-                    options={this.state.options} 
+                <Header />
+                <Navigator 
+                    naviMenu={naviMenu}
                 />
+                <div className="container">
+                    <Body 
+                        options={this.state.options} 
+                    />
+                </div>
+                
+
             </div>
         )
     }
