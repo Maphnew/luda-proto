@@ -5,10 +5,12 @@ import Navigator from './Navigator'
 
 export default class LudaApp extends React.Component {
     state = {
-        options: []
+        options: [],
+        featureInfo: []
     }
     componentDidMount() {
         try {
+            console.log('fetch: ', fetch('http://192.168.100.99:5000/features/info'))
             fetch('/test')
                 .then(res => {
                     console.log('res: ', res)
@@ -23,6 +25,20 @@ export default class LudaApp extends React.Component {
                 })
         } catch (e) {
             // Do nothing at all
+        }
+        try {
+            fetch('/features/info')
+                .then(res => {
+                    console.log('info', res)
+                    return res.json()
+                }).then(info => {
+                    console.log(info)
+                    if(info) {
+                        // this.setState(() => ({ featureInfo: info }))
+                    }
+                })
+        } catch (e) {
+
         }
     }
     componentDidUpdate(prevProps, prevState) {
@@ -43,10 +59,9 @@ export default class LudaApp extends React.Component {
                 <div className="container">
                     <Body 
                         options={this.state.options} 
+                        featureInfo={this.state.featureInfo}
                     />
                 </div>
-                
-
             </div>
         )
     }
