@@ -8,7 +8,11 @@ const Header = (props) => {
                 <div className="title">
                     <h1>{props.title}</h1>
                 </div>
-                <HeaderSetting />
+                <HeaderSetting 
+                    modalOpen={props.modalOpen}
+                    handleModalOpen={props.handleModalOpen}
+                    handleModalClose={props.handleModalClose}
+                />
             </div>
         </div>
     )

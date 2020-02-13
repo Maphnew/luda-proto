@@ -2,15 +2,22 @@ import React from 'react'
 import Header from './Header'
 import Body from './Body'
 import Navigator from './Navigator'
+import SettingModal from './SettingModal'
 
 export default class LudaApp extends React.Component {
     state = {
         options: [],
-        featureInfo: []
+        featureInfo: [],
+        modalOpen: false
+    }
+    handleModalOpen = () => {
+        this.setState(() => ({ modalOpen: true }))
+    }
+    handleModalClose = () => {
+        this.setState(() => ({ modalOpen: false}))
     }
     componentDidMount() {
         try {
-            console.log('fetch: ', fetch('http://192.168.100.99:5000/features/info'))
             fetch('/test')
                 .then(res => {
                     console.log('res: ', res)
@@ -52,7 +59,11 @@ export default class LudaApp extends React.Component {
         
         return (
             <div>
-                <Header />
+                <Header 
+                    modalOpen={this.state.modalOpen}
+                    handleModalOpen={this.handleModalOpen}
+                    handleModalClose={this.handleModalClose}
+                />
                 <Navigator 
                     naviMenu={naviMenu}
                 />
@@ -62,6 +73,11 @@ export default class LudaApp extends React.Component {
                         featureInfo={this.state.featureInfo}
                     />
                 </div>
+                <SettingModal 
+                    modalOpen={this.state.modalOpen}
+                    handleModalOpen={this.handleModalOpen}
+                    handleModalClose={this.handleModalClose}
+                />
             </div>
         )
     }
