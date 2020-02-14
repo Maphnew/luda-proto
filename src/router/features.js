@@ -85,7 +85,24 @@ router.get('/features/info', (req, res) => {
 
 router.post('/features/feature/statistics', (req, res) => {
     console.log(req.body)
-    res.send('statistics')
+    const tagNameSplit = req.body.TagName.split(".")
+    startTime = new Date(req.body.StartTime)
+    stopTime = new Date(req.body.StopTime)
+    const start = moment(startTime).format('YYYY-MM-DD HH:mm:ss.SSS')
+    const stop = moment(stopTime).format('YYYY-MM-DD HH:mm:ss.SSS')
+    const queryFeaturesStatistics = `
+        SELECT DISTINCT JSON_KEYS(basicFeatures) as 'keys'
+        FROM ${req.body.Table} 
+        WHERE defServer = '${tagNameSplit[0]}' AND
+            defTable = '${tagNameSplit[1]}' AND 
+            defColumn = '${tagNameSplit[2]}' AND 
+            startTime BETWEEN '${start}' AND '${stop}';
+    `
+    dbSelect(queryFeaturesStatistics).then((result) =>{
+        console.log(result[0].keys)
+        res.send(result[0].keys)
+    })
+    
 })
 
 router.post('/features/test', (req, res) => {
