@@ -36,29 +36,28 @@ const getSplitData = (indexResult, reqBody) => {
             FROM ${reqBody.Table}
             WHERE index_date = '${indexDate}' AND index_num = ${index_num};
             `
-        console.log(splitQuery)
+        // console.log(splitQuery)
         dbSelect(splitQuery).then((splitResult) => {
             if(splitResult.length == 0) {
                 reject('ZERO RESULT!')
             }
-            console.log('splitResult', splitResult)
+            // console.log('splitResult', splitResult)
             resolve(splitResult)
         })
     })
 }
 
 const resultdbSelect = async (query, reqBody) => {
-    console.log('query, reqBody:', query, reqBody)
+    // console.log('query, reqBody:', query, reqBody)
     const resultdbSelect = await dbSelect(query)
-    console.log('resultdbSelect: ', resultdbSelect)
-    // let splitResults = []
-    // await resultdbSelect.forEach(indexResult => {
-    //     const splitResult = getSplitData(indexResult, reqBody)
-    //     splitResults.push(splitResult)
-    // });
-
+    // console.log('resultdbSelect: ', resultdbSelect)
+    let splitResults = []
+    for (const indexResult of resultdbSelect) {
+        let data = await getSplitData(indexResult, reqBody)
+        splitResults.push(data[0])
+    }
     // console.log('splitResults: ', splitResults)
-    return resultdbSelect
+    return splitResults
 }
 
 
@@ -89,39 +88,13 @@ router.post('/features/feature/statistics', (req, res) => {
     res.send('statistics')
 })
 
-router.post('/features/feature', (req, res) => {
+router.post('/features/test', (req, res) => {
     console.log(req.body)
-    const tagNameSplit = req.body.TagName.split(".")
-    startTime = new Date(req.body.StartTime)
-    stopTime = new Date(req.body.StopTime)
-    const start = moment(startTime).format('YYYY-MM-DD HH:mm:ss.SSS')
-    const stop = moment(stopTime).format('YYYY-MM-DD HH:mm:ss.SSS')
-
-    const query  = `
-        SELECT startTime, stopTime, json_value(basicFeatures,'$.${req.body.Feature}') as 'values'
-        FROM ${req.body.Table} 
-        WHERE defServer = '${tagNameSplit[0]}' AND
-        defTable = '${tagNameSplit[1]}' AND 
-        defColumn = '${tagNameSplit[2]}' AND 
-        startTime BETWEEN '${start}' AND '${stop}';
-    `
-    console.log(query)
-    try {
-        dbSelect(query).then((resultdbSelect) => {
-            // console.log(resultdbSelect)
-            return resultdbSelect
-        }).then((result) => {
-            res.send(
-                result
-            )
-        })
-    } catch(e) {
-        res.status(400).send('Error!', error)
-    }
+    res.send('test')
 })
 
 
-router.post('/features/test', (req, res) => {
+router.post('/features/feature', (req, res) => {
     console.log(req.body)
     const tagNameSplit = req.body.TagName.split(".")
     startTime = new Date(req.body.StartTime)
@@ -159,11 +132,7 @@ router.post('/features/test', (req, res) => {
         resultdbSelect(query, req.body).then((result) => {
             res.send(result)
         })
-
-
     }
-
-
 })
 
 module.exports = router
