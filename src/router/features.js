@@ -37,7 +37,7 @@ const getSplitData = (indexResult, reqBody) => {
             FROM ${reqBody.Table}
             WHERE index_date = '${indexDate}' AND index_num = ${index_num};
         `
-        console.log(splitQuery)
+        // console.log(splitQuery)
         dbSelect(splitQuery).then((splitResult) => {
             if(splitResult.length == 0) {
                 reject('ZERO RESULT!')
@@ -47,22 +47,24 @@ const getSplitData = (indexResult, reqBody) => {
     })
 }
 
-const reArrangeFeatures = (splitResult) => {
-    console.log("splitResults:", splitResult)
+const reArrangeFeatures = (splitResult, length) => {
+    // console.log("splitResults:", splitResult, '\nlength:', length)
 
     let parts = {"parts":{"0":{}, "1":{}, "2":{}} }
 
     parts.parts["0"]["start"] = splitResult["0"]["start"]
     parts.parts["0"]["stop"] = splitResult["0"]["stop"]
-    parts.parts["0"]["max"] = splitResult["0"]["max"]
+    parts.parts["0"]["values"] = splitResult["0"]["values"]
+
     parts.parts["1"]["start"] = splitResult["1"]["start"]
     parts.parts["1"]["stop"] = splitResult["1"]["stop"]
-    parts.parts["1"]["max"] = splitResult["1"]["max"]
+    parts.parts["1"]["values"] = splitResult["1"]["values"]
+
     parts.parts["2"]["start"] = splitResult["2"]["start"]
     parts.parts["2"]["stop"] = splitResult["2"]["stop"]
-    parts.parts["2"]["max"] = splitResult["2"]["max"]
+    parts.parts["2"]["values"] = splitResult["2"]["values"]
   
-    console.log(parts)
+    // console.log(parts)
     return parts
 }
 
@@ -77,8 +79,8 @@ const resultdbSelect = async (query, reqBody) => {
     }
     for (let splitResult of splitResults) {
         parts = JSON.parse(splitResult.parts)
-        console.log('parts: ', parts,'length :', Object.keys(parts).length)
-        let eachParts = await reArrangeFeatures(parts)
+        // console.log('parts: ', parts,'length :', Object.keys(parts).length)
+        let eachParts = await reArrangeFeatures(parts, Object.keys(parts).length)
         newParts.push(eachParts)
     }
     return newParts
@@ -108,7 +110,7 @@ router.get('/features/info', (req, res) => {
 })
 
 router.post('/features/feature/statistics', (req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
     const tagNameSplit = req.body.TagName.split(".")
     startTime = new Date(req.body.StartTime)
     stopTime = new Date(req.body.StopTime)
@@ -136,7 +138,7 @@ router.post('/features/test', (req, res) => {
 
 
 router.post('/features/feature', (req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
     const tagNameSplit = req.body.TagName.split(".")
     startTime = new Date(req.body.StartTime)
     stopTime = new Date(req.body.StopTime)
@@ -153,7 +155,7 @@ router.post('/features/feature', (req, res) => {
             defColumn = '${tagNameSplit[2]}' AND 
             startTime BETWEEN '${start}' AND '${stop}';
         `
-        console.log(query)
+        // console.log(query)
         dbSelect(query).then((resultdbSelect) => {
             res.send(resultdbSelect)
         })
@@ -166,7 +168,7 @@ router.post('/features/feature', (req, res) => {
             defColumn = '${tagNameSplit[2]}' AND 
             startTime BETWEEN '${start}' AND '${stop}';
         `
-        console.log(query)
+        // console.log(query)
 
         resultdbSelect(query, req.body)
         .then((splitResults) => {
