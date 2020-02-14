@@ -16,13 +16,51 @@ const connection = mysql.createConnection({
 const dbSelect = (query) => {
     return new Promise((resolve, reject) =>  {
         connection.query(query, (error, result) => {
-            if(error) throw error
+            if(error) {
+                console.log('reject!')
+                reject(error)
+            }
             if(result) {
                 resolve(result)
             }
         })
     })
 }
+
+const getSplitData = (indexResult, reqBody) => {
+    return new Promise((resolve, reject) => {
+        const indexDate = moment(indexResult.index_date).format('YYYY-MM-DD')
+        const index_num = indexResult.index_num
+        const splitQuery = `
+            SELECT parts, features
+            FROM ${reqBody.Table}
+            WHERE index_date = '${indexDate}' AND index_num = ${index_num};
+            `
+        console.log(splitQuery)
+        dbSelect(splitQuery).then((splitResult) => {
+            if(splitResult.length == 0) {
+                reject('ZERO RESULT!')
+            }
+            console.log('splitResult', splitResult)
+            resolve(splitResult)
+        })
+    })
+}
+
+const resultdbSelect = async (query, reqBody) => {
+    console.log('query, reqBody:', query, reqBody)
+    const resultdbSelect = await dbSelect(query)
+    console.log('resultdbSelect: ', resultdbSelect)
+    // let splitResults = []
+    // await resultdbSelect.forEach(indexResult => {
+    //     const splitResult = getSplitData(indexResult, reqBody)
+    //     splitResults.push(splitResult)
+    // });
+
+    // console.log('splitResults: ', splitResults)
+    return resultdbSelect
+}
+
 
 router.get('/features', (req, res) => {
     console.log('features')
@@ -35,7 +73,6 @@ router.get('/features/info', (req, res) => {
     dbSelect(queryFeaturesInfo).then((resultdbSelect) => {
         for (let i = 0; i <resultdbSelect.length; i++){
             resultdbSelect[i].value = i
-            // console.log(resultdbSelect[i])
         }
         return resultdbSelect
     }).then((result) => {
@@ -43,16 +80,25 @@ router.get('/features/info', (req, res) => {
             result
         )
     })
+}, (error, req, res, next) => {
+    res.status(400).send('Error!', error)
+})
+
+router.post('/features/feature/statistics', (req, res) => {
+    console.log(req.body)
+    res.send('statistics')
 })
 
 router.post('/features/feature', (req, res) => {
     console.log(req.body)
     const tagNameSplit = req.body.TagName.split(".")
-    const start = moment(req.body.StartTime).format('YYYY-MM-DD HH:mm:SS.sss')
-    const stop = moment(req.body.StopTime).format('YYYY-MM-DD HH:mm:SS.sss')
+    startTime = new Date(req.body.StartTime)
+    stopTime = new Date(req.body.StopTime)
+    const start = moment(startTime).format('YYYY-MM-DD HH:mm:ss.SSS')
+    const stop = moment(stopTime).format('YYYY-MM-DD HH:mm:ss.SSS')
 
     const query  = `
-        SELECT defServer, defTable, defColumn, startTime, stopTime, json_value(basicFeatures,'$.${req.body.Feature}')
+        SELECT startTime, stopTime, json_value(basicFeatures,'$.${req.body.Feature}') as 'values'
         FROM ${req.body.Table} 
         WHERE defServer = '${tagNameSplit[0]}' AND
         defTable = '${tagNameSplit[1]}' AND 
@@ -60,26 +106,64 @@ router.post('/features/feature', (req, res) => {
         startTime BETWEEN '${start}' AND '${stop}';
     `
     console.log(query)
-
-    dbSelect(query).then((resultdbSelect) => {
-        console.log(resultdbSelect)
-        return resultdbSelect
-    }).then((result) => {
-        res.send(
-            result
-        )
-    })
-
+    try {
+        dbSelect(query).then((resultdbSelect) => {
+            // console.log(resultdbSelect)
+            return resultdbSelect
+        }).then((result) => {
+            res.send(
+                result
+            )
+        })
+    } catch(e) {
+        res.status(400).send('Error!', error)
+    }
 })
 
-router.get('/features/feature2', (req, res) => {
-    res.send('feature2')
-})
 
-router.post('/features/feature2', (req, res) => {
-    console.log(req)
+router.post('/features/test', (req, res) => {
+    console.log(req.body)
+    const tagNameSplit = req.body.TagName.split(".")
+    startTime = new Date(req.body.StartTime)
+    stopTime = new Date(req.body.StopTime)
+    const start = moment(startTime).format('YYYY-MM-DD HH:mm:ss.SSS')
+    const stop = moment(stopTime).format('YYYY-MM-DD HH:mm:ss.SSS')
 
-    res.send('feature2')
+    let query = ''
+    if (req.body.Table == 'WaveIndex') {
+        query  = `
+            SELECT startTime, stopTime, json_value(basicFeatures,'$.${req.body.Feature}') as 'values'
+            FROM ${req.body.Table} 
+            WHERE defServer = '${tagNameSplit[0]}' AND
+            defTable = '${tagNameSplit[1]}' AND 
+            defColumn = '${tagNameSplit[2]}' AND 
+            startTime BETWEEN '${start}' AND '${stop}';
+        `
+        console.log(query)
+        dbSelect(query).then((resultdbSelect) => {
+            return resultdbSelect
+        }).then((result) => {
+            res.send(result)
+        })
+    } else if (req.body.Table == 'WaveSplit') {
+        query  = `
+            SELECT index_date, index_num
+            FROM WaveIndex 
+            WHERE defServer = '${tagNameSplit[0]}' AND
+            defTable = '${tagNameSplit[1]}' AND 
+            defColumn = '${tagNameSplit[2]}' AND 
+            startTime BETWEEN '${start}' AND '${stop}';
+        `
+        console.log(query)
+
+        resultdbSelect(query, req.body).then((result) => {
+            res.send(result)
+        })
+
+
+    }
+
+
 })
 
 module.exports = router
