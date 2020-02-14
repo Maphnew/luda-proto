@@ -8,10 +8,10 @@ const connection = mysql.createConnection({
     port: '16033',
     user: 'root',
     password: 'its@1234',
-    database: 'UYeG_Cloud',
+    database: 'UYeG_Cloud'
 })
 
-// connection.connect()
+connection.connect()
 
 const dbSelect = (query) => {
     return new Promise((resolve, reject) =>  {
@@ -31,33 +31,57 @@ const getSplitData = (indexResult, reqBody) => {
     return new Promise((resolve, reject) => {
         const indexDate = moment(indexResult.index_date).format('YYYY-MM-DD')
         const index_num = indexResult.index_num
+
         const splitQuery = `
-            SELECT parts, features
+            SELECT JSON_MERGE(parts, features) as parts
             FROM ${reqBody.Table}
             WHERE index_date = '${indexDate}' AND index_num = ${index_num};
-            `
-        // console.log(splitQuery)
+        `
+        console.log(splitQuery)
         dbSelect(splitQuery).then((splitResult) => {
             if(splitResult.length == 0) {
                 reject('ZERO RESULT!')
             }
-            // console.log('splitResult', splitResult)
             resolve(splitResult)
         })
     })
 }
 
+const reArrangeFeatures = (splitResult) => {
+    console.log("splitResults:", splitResult)
+
+    let parts = {"parts":{"0":{}, "1":{}, "2":{}} }
+
+    parts.parts["0"]["start"] = splitResult["0"]["start"]
+    parts.parts["0"]["stop"] = splitResult["0"]["stop"]
+    parts.parts["0"]["max"] = splitResult["0"]["max"]
+    parts.parts["1"]["start"] = splitResult["1"]["start"]
+    parts.parts["1"]["stop"] = splitResult["1"]["stop"]
+    parts.parts["1"]["max"] = splitResult["1"]["max"]
+    parts.parts["2"]["start"] = splitResult["2"]["start"]
+    parts.parts["2"]["stop"] = splitResult["2"]["stop"]
+    parts.parts["2"]["max"] = splitResult["2"]["max"]
+  
+    console.log(parts)
+    return parts
+}
+
 const resultdbSelect = async (query, reqBody) => {
-    // console.log('query, reqBody:', query, reqBody)
+
     const resultdbSelect = await dbSelect(query)
-    // console.log('resultdbSelect: ', resultdbSelect)
     let splitResults = []
+    let newParts =[]
     for (const indexResult of resultdbSelect) {
         let data = await getSplitData(indexResult, reqBody)
         splitResults.push(data[0])
     }
-    // console.log('splitResults: ', splitResults)
-    return splitResults
+    for (let splitResult of splitResults) {
+        parts = JSON.parse(splitResult.parts)
+        console.log('parts: ', parts,'length :', Object.keys(parts).length)
+        let eachParts = await reArrangeFeatures(parts)
+        newParts.push(eachParts)
+    }
+    return newParts
 }
 
 
@@ -131,9 +155,7 @@ router.post('/features/feature', (req, res) => {
         `
         console.log(query)
         dbSelect(query).then((resultdbSelect) => {
-            return resultdbSelect
-        }).then((result) => {
-            res.send(result)
+            res.send(resultdbSelect)
         })
     } else if (req.body.Table == 'WaveSplit') {
         query  = `
@@ -146,8 +168,9 @@ router.post('/features/feature', (req, res) => {
         `
         console.log(query)
 
-        resultdbSelect(query, req.body).then((result) => {
-            res.send(result)
+        resultdbSelect(query, req.body)
+        .then((splitResults) => {
+            res.send(splitResults)
         })
     }
 })
