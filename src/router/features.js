@@ -49,22 +49,10 @@ const getSplitData = (indexResult, reqBody) => {
 
 const reArrangeFeatures = (splitResult, length, feature) => {
     // console.log("splitResults:", splitResult, '\nlength:', length)
-
-    let parts = {"parts":{"0":{}, "1":{}, "2":{}} }
-
-    parts.parts["0"]["start"] = splitResult["0"]["start"]
-    parts.parts["0"]["stop"] = splitResult["0"]["stop"]
-    parts.parts["0"]["values"] = splitResult["0"][feature]
-
-    parts.parts["1"]["start"] = splitResult["1"]["start"]
-    parts.parts["1"]["stop"] = splitResult["1"]["stop"]
-    parts.parts["1"]["values"] = splitResult["1"][feature]
-
-    parts.parts["2"]["start"] = splitResult["2"]["start"]
-    parts.parts["2"]["stop"] = splitResult["2"]["stop"]
-    parts.parts["2"]["values"] = splitResult["2"][feature]
-  
-    // console.log(parts)
+    let parts = {"parts":{'0':{}}}
+    for (let i = 0; i <length; i++) {
+      parts.parts[i] = {start: splitResult[i]["start"], stop: splitResult[i]["stop"], values: splitResult[i][feature]}
+    }
     return parts
 }
 
