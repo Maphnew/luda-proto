@@ -65,6 +65,7 @@ const resultdbSelect = async (query, reqBody) => {
         let data = await getSplitData(indexResult, reqBody)
         splitResults.push(data[0])
     }
+    // console.log('splitResults', splitResults)
     for (let splitResult of splitResults) {
         parts = JSON.parse(splitResult.parts)
         console.log('parts: ', parts,'length :', Object.keys(parts).length, reqBody.Feature)
@@ -74,7 +75,6 @@ const resultdbSelect = async (query, reqBody) => {
     return newParts
 }
 
-
 router.get('/features', (req, res) => {
     console.log('features')
     res.send('Hello features')
@@ -83,11 +83,11 @@ router.get('/features', (req, res) => {
 router.get('/features/info', (req, res) => {
     // console.log('features info')
     const queryFeaturesInfo = "SELECT * FROM WaveMaster;"
-    dbSelect(queryFeaturesInfo).then((resultdbSelect) => {
-        for (let i = 0; i <resultdbSelect.length; i++){
-            resultdbSelect[i].value = i
+    dbSelect(queryFeaturesInfo).then((resultSelect) => {
+        for (let i = 0; i <resultSelect.length; i++){
+            resultSelect[i].value = i
         }
-        return resultdbSelect
+        return resultSelect
     }).then((result) => {
         res.send(
             result
@@ -119,20 +119,12 @@ router.post('/features/feature/statistics', (req, res) => {
     
 })
 
-router.post('/features/test', (req, res) => {
-    console.log(req.body)
-    res.send('test')
-})
-
-
 router.post('/features/feature', (req, res) => {
-    // console.log(req.body)
     const tagNameSplit = req.body.TagName.split(".")
     startTime = new Date(req.body.StartTime)
     stopTime = new Date(req.body.StopTime)
     const start = moment(startTime).format('YYYY-MM-DD HH:mm:ss.SSS')
     const stop = moment(stopTime).format('YYYY-MM-DD HH:mm:ss.SSS')
-
     let query = ''
     if (req.body.Table == 'WaveIndex') {
         query  = `
@@ -163,6 +155,14 @@ router.post('/features/feature', (req, res) => {
             res.send(splitResults)
         })
     }
+})
+
+// []
+router.post('/features/test', (req, res) => {
+    console.log(req.body)
+    
+    res.send(req.body)
+
 })
 
 module.exports = router

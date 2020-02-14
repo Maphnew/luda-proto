@@ -1,44 +1,31 @@
 import React from 'react'
 import Modal from 'react-modal'
 
-const customStyles = {
-    content : {
-      top                   : '50%',
-      left                  : '50%',
-      right                 : 'auto',
-      bottom                : 'auto',
-      marginRight           : '-50%',
-      transform             : 'translate(-50%, -50%)'
-    }
-  };
-
 const SettingModal = (props) => (
     <Modal
         isOpen={props.modalOpen}
         onRequestClose={props.handleModalClose}
-        style={customStyles}
         contentLabel="Settings"
+        closeTimeoutMS={200}
+        className="modal"
     >
-        <h3>Settings</h3>
-        <div>
-            {props.database.host && <input readOnly="readonly" type="text" value={props.database.host}/>}
+        <h3 className="modal__title">Settings</h3>
+        <div className="modal__body">
+            {props.database.host && <input className="modal__input" readOnly="readonly" type="text" value={props.database.host}/>}
         </div>
-        <div>
-            {props.database.host && <input readOnly="readonly" type="text" value={props.database.port}/>}
+        <div className="modal__body">
+            {props.database.host && <input className="modal__input" readOnly="readonly" type="text" value={props.database.port}/>}
         </div>
-        <div>
-            {props.database.host && <input readOnly="readonly" type="text" value={props.database.port}/>}
+        <div className="modal__body">
+            {props.database.host && <input className="modal__input" readOnly="readonly" type="text" value={props.database.user}/>}
         </div>
-        <div>
-            {props.database.host && <input readOnly="readonly" type="text" value={props.database.user}/>}
+        <div className="modal__body">
+            {props.database.host && <input className="modal__input" readOnly="readonly" type="password" value={props.database.password}/>}
         </div>
-        <div>
-            {props.database.host && <input readOnly="readonly" type="password" value={props.database.password}/>}
+        <div className="modal__body">
+            {props.database.host && <input className="modal__input" readOnly="readonly" type="text" value={props.database.database}/>}
         </div>
-        <div>
-            {props.database.host && <input readOnly="readonly" type="text" value={props.database.database}/>}
-        </div>
-        <button onClick={props.handleModalClose}>Test & Save</button>
+        <button className="button" onClick={props.handleModalClose}>Test & Save</button>
 
     </Modal>
 )
