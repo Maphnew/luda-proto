@@ -23,6 +23,5 @@ const dbSelect = (query) => {
 }
 
 module.exports = {
-    connection,
     dbSelect
 }

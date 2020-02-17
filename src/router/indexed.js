@@ -8,4 +8,11 @@ router.get('/indexed', (req, res) => {
     res.send('Hello Indexed')
 })
 
+router.get('/indexed/wavelist', (req, res) => {
+    console.log('indexed')
+    console.log(req.body)
+    res.send('Hello Indexed')
+})
+
+
 module.exports = router

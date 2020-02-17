@@ -25,11 +25,16 @@ const getSplitData = (indexResult, reqBody) => {
 
 const reArrangeFeatures = (splitResult, length, feature) => {
     console.log("splitResults:", splitResult, '\nlength:', length)
-    let parts = {"parts":{'0':{}}}
-    for (let i = 0; i <length; i++) {
-      parts.parts[i] = {startTime: splitResult[i]["startTime"], stopTime: splitResult[i]["stopTime"], values: splitResult[i][feature]}
-    }
-    return parts
+    try {
+        let parts = {"parts":{'0':{}}}
+        for (let i = 0; i <length; i++) {
+            parts.parts[i] = {startTime: splitResult[i]["startTime"], stopTime: splitResult[i]["stopTime"], values: splitResult[i][feature]}
+        }
+        return parts
+    } catch(e) {
+        console.log(e)
+        return e
+    } 
 }
 
 const resultdbSelect = async (query, reqBody) => {
