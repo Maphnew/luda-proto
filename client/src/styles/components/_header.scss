@@ -1,16 +1,27 @@
+.container {
+    max-width: 100%;
+    margin: 0 2rem;
+    padding: 0 $m-size;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-auto-rows: 50px;
+}
 .header {
-    background: $off-black;
-    color: white;
+    background: $light-gray;
+    color: #ffffff;
     padding: $s-size 0;
+
 }
 
 .title {
-    grid-column: 1/6;
+    grid-column: 1/2;
 }
 
 .title h1 {
     margin: 0;
     padding: $s-size 0;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+
 }
 
 .headerSettings {
@@ -20,4 +31,17 @@
 .settingImage {
     float: right;
     padding: $s-size 0;
+    transition: all 1s ease 0s;
+    &:hover {
+        animation: App-logo-spin infinite 5s linear;
+    }
 }
+@keyframes App-logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
