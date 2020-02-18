@@ -2,9 +2,9 @@ import React from 'react'
 
 const Raw = (props) => (
     <div>
-        <div>
+        <h2>
             This is RAW page
-        </div>
+        </h2>
     </div>
 )
 

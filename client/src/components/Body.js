@@ -1,5 +1,6 @@
 import React from 'react'
 import Navigator from './Navigator'
+import Home from './Home'
 import Features from './features/Features'
 import Raw from './Raw'
 import Indexed from './Indexed'
@@ -15,6 +16,11 @@ const Body = (props) => {
                     naviMenu={naviMenu}
                 />
                 <Switch>
+                    <Route 
+                        path="/"
+                        component={Home}
+                        exact={true}
+                    />
                     <Route 
                         path="/raw"
                         component={Raw}
