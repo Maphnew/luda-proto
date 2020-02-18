@@ -3,28 +3,9 @@ const moment = require('moment')
 const {dbSelect} = require('../database/select')
 const router = new express.Router()
 
-const getSplitData = (indexResult, reqBody) => {
-    return new Promise((resolve, reject) => {
-        const indexDate = moment(indexResult.index_date).format('YYYY-MM-DD')
-        const index_num = indexResult.index_num
-
-        const splitQuery = `
-            SELECT JSON_MERGE(parts, features) as parts
-            FROM ${reqBody.Table}
-            WHERE index_date = '${indexDate}' AND index_num = ${index_num};
-        `
-        console.log(splitQuery)
-        dbSelect(splitQuery).then((splitResult) => {
-            if(splitResult.length == 0) {
-                reject('ZERO RESULT!')
-            }
-            resolve(splitResult)
-        })
-    })
-}
 
 const reArrangeFeatures = (splitResult, length, feature) => {
-    console.log("splitResults:", splitResult, '\nlength:', length)
+    // console.log("splitResults:", splitResult, '\nlength:', length)
     try {
         let parts = {"parts":{'0':{}}}
         for (let i = 0; i <length; i++) {
@@ -38,18 +19,14 @@ const reArrangeFeatures = (splitResult, length, feature) => {
 }
 
 const resultdbSelect = async (query, reqBody) => {
+    let newParts =[]
 
     const resultdbSelect = await dbSelect(query)
-    let splitResults = []
-    let newParts =[]
-    for (const indexResult of resultdbSelect) {
-        let data = await getSplitData(indexResult, reqBody)
-        splitResults.push(data[0])
-    }
-    // console.log('splitResults', splitResults)
-    for (let splitResult of splitResults) {
+    //console.log('resultdbSelect:', resultdbSelect)
+
+    for (let splitResult of resultdbSelect) {
         parts = JSON.parse(splitResult.parts)
-        console.log('parts: ', parts,'length :', Object.keys(parts).length, reqBody.Feature)
+        // console.log('parts: ', parts,'length :', Object.keys(parts).length, reqBody.Feature)
         let eachParts = await reArrangeFeatures(parts, Object.keys(parts).length, reqBody.Feature)
         newParts.push(eachParts)
     }
@@ -101,13 +78,17 @@ router.post('/features/feature', (req, res) => {
             res.send(resultdbSelect)
         })
     } else if (req.body.Table == 'WaveSplit') {
-        query  = `
-            SELECT index_date, index_num
-            FROM WaveIndex 
-            WHERE defServer = '${tagNameSplit[0]}' AND
-            defTable = '${tagNameSplit[1]}' AND 
-            defColumn = '${tagNameSplit[2]}' AND 
-            startTime BETWEEN '${start}' AND '${stop}';
+        query = `
+            SELECT JSON_MERGE(t1.parts, t1.features) as parts
+            FROM WaveSplit t1, (
+                SELECT index_date, index_num, startTime, stopTime
+                FROM WaveIndex
+                WHERE defServer = '${tagNameSplit[0]}' AND
+                defTable = '${tagNameSplit[1]}' AND 
+                defColumn = '${tagNameSplit[2]}' AND 
+                startTime BETWEEN '${start}' AND '${stop}'
+            ) t2
+            WHERE t1.index_date = t2.index_date AND t1.index_num = t2.index_num
         `
         console.log(query)
 

@@ -31,7 +31,6 @@ router.post('/indexed/wavelist', (req, res) => {
     dbSelect(queryWavelist).then((result) => {
         res.send(result)
     })
-
 })
 
 
