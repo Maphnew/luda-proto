@@ -108,7 +108,7 @@ router.post('/features/feature/statistics', (req, res) => {
     const stop = moment(stopTime).format('YYYY-MM-DD HH:mm:ss.SSS')
     const queryFeaturesStatistics = `
         SELECT DISTINCT JSON_KEYS(basicFeatures) as 'keys'
-        FROM ${req.body.Table} 
+        FROM WaveIndex 
         WHERE defServer = '${tagNameSplit[0]}' AND
             defTable = '${tagNameSplit[1]}' AND 
             defColumn = '${tagNameSplit[2]}' AND 
