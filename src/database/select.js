@@ -13,7 +13,7 @@ const dbSelect = (query) => {
     return new Promise((resolve, reject) =>  {
         connection.query(query, (error, result) => {
             if(error) {
-                console.log('reject!')
+                console.log('reject!', query)
                 reject(error)
             }
             if(result) {

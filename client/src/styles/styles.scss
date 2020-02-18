@@ -1,9 +1,8 @@
 @import './base/settings';
 @import './base/base';
 @import './components/header';
-@import './components/container';
-@import './components/navigator';
-@import './components/modal';
-@import './components/button';
 @import './components/contents';
-@import './components/settingModal';
+@import './components/navigator';
+@import './components/body';
+@import './components/_settingModal';
+@import './components/indexed';

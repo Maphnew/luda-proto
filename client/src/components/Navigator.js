@@ -1,18 +1,29 @@
 import React from 'react'
+import {NavLink} from 'react-router-dom'
 
 const Navigator = (props) => {
     return (
         <div className="navigator">
-            <div className="naviMenu0">
-                {props.naviMenu && props.naviMenu[0]}
-            </div>
-            <div className="naviMenu1">
-                {props.naviMenu && props.naviMenu[1]}
-            </div>
-            <div className="naviMenu2">
-                {props.naviMenu && props.naviMenu[2]}
-            </div>
+            <NavLink to="/raw" >
+                <div className="naviMenu0">
+                    {props.naviMenu && props.naviMenu[0]}
+                </div>
+            </NavLink>
+            
+            <NavLink to="/indexed" >
+                <div className="naviMenu1">
+                    {props.naviMenu && props.naviMenu[1]}
+                </div>
+            </NavLink>
+            
+            <NavLink to="/features">
+                <div className="naviMenu2">
+                    {props.naviMenu && props.naviMenu[2]}
+                </div>
+            </NavLink>
+            
         </div>
+        
     )
 }
 

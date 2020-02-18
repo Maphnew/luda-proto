@@ -1,0 +1,109 @@
+.ComboBox {
+    width : 120px;
+    float: left;
+    margin-right: 30px;
+  }
+  
+  .Total{
+    margin-left: 110px;
+    margin-top: 25px;
+    height: 80px;
+    width: 100%;
+    float: left;
+  }
+  
+  .dataLabel{
+  margin-bottom: 30px;
+  }
+  
+  .Search_btn{
+    height: 30px;
+    margin-left: 30px;
+  }
+  
+  .Reset_btn{
+    height: 30px;
+    margin-left: 610px;
+  }
+  
+  .Save_btn{
+    height: 30px;
+    margin-left: 10px;
+  }
+  
+  .datepicker{
+    height: 30px;
+    width: 150px;
+  }
+  
+  .DatePickLa{
+    margin-right: 160px;
+    float: left;
+    margin-top: -10px;
+  }
+  
+  .LabelLa1 {
+  
+    margin-top: 35px;
+    margin-right: 10px;
+  }
+  
+  .LabelLa2 {
+    float: left;
+    margin-top: -27px;
+    margin-left: -10px;
+    margin-right: 10px;;
+  
+  }
+  
+  .PeriodLa{
+    height: 100px;
+    margin-top: 15px;
+  }
+  
+  .WaveListTable{
+    border: 1px solid black;
+    width: 715px;
+    height: 600px;
+    margin-top: -10px;
+  }
+  
+  .WaveListGraph{
+    border: 1px solid black;
+    margin-top: 10px;
+    width: 715px;
+    height: 580px;
+  }
+  
+  .WaveListGraphTable{
+    border: 1px solid black;
+    margin-top: 23px;
+    width: 715px;
+    height: 200px;
+  }
+  .Layout1{
+    margin-top: 20px;
+    width: 50%;
+    float: left;
+  }
+  
+  .Layout2{
+    margin-top: 40px;
+    width: 50%;
+    float: left;
+  }
+  
+  .LevelLabel{
+    margin-top: -25px;
+    float: left;
+  }
+  
+  @keyframes App-logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  

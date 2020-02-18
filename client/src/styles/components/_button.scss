@@ -1,22 +1,3 @@
-// Big Button
-.big-button {
-    background:$purple;
-    border: none;
-    border-bottom: .6rem solid darken($purple, 10%);
-    color: white;
-    font-weight: bold;
-    font-size: $l-size;
-    margin-bottom: $xl-size;
-    padding: 2.4rem;
-    width: 100%;
-
-}
-// search google 'sass reference functions'
-
-.big-button:disabled {
-    opacity: .5;
-}
-
 // Button
 .button {
     background: $purple;

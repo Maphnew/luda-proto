@@ -1,15 +1,41 @@
 import React from 'react'
-import Features from './Features'
+import Navigator from './Navigator'
+import Features from './features/Features'
+import Raw from './Raw'
+import Indexed from './Indexed'
+import NotFoundPage from './NotFoundPage'
+import {Route, Switch, BrowserRouter as Router} from 'react-router-dom'
 
 const Body = (props) => {
+    const naviMenu = props.naviMenu
     return (
-        <div>
-            <h1>Welcome!</h1>
-            {props.options && <h2>{props.options}</h2>}
-            <Features 
-                featureInfo={props.featureInfo}
-            />
-        </div>
+        <Router>
+            <div>
+                <Navigator 
+                    naviMenu={naviMenu}
+                />
+                <Switch>
+                    <Route 
+                        path="/raw"
+                        component={Raw}
+                        exact={true}
+                    />
+                    <Route 
+                        path="/indexed"
+                        component={Indexed}
+                        exact={true}
+                    />
+                    <Route 
+                        path="/features"
+                        component={Features}
+                        exact={true}
+                    />
+                    <Route component={NotFoundPage} />
+                </Switch>
+                
+            </div>
+        </Router>
+
     )
 }
 
