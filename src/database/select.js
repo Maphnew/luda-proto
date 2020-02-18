@@ -5,7 +5,8 @@ const connection = mysql.createConnection({
     port: '16033',
     user: 'root',
     password: 'its@1234',
-    database: 'UYeG_Cloud'
+    database: 'UYeG_Cloud',
+    multipleStatements: true
 })
 
 const dbSelect = (query) => {
