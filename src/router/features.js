@@ -114,10 +114,15 @@ router.post('/features/feature/statistics', (req, res) => {
             defColumn = '${tagNameSplit[2]}' AND 
             startTime BETWEEN '${start}' AND '${stop}';
     `
-    dbSelect(queryFeaturesStatistics).then((result) =>{
-        console.log(result[0].keys)
-        res.send(result[0].keys)
-    })
+    try {
+        dbSelect(queryFeaturesStatistics).then((result) =>{
+            console.log('statistics keys', result[0].keys)
+            res.send(result[0].keys)
+        })
+    } catch(e) {
+        res.status(500).send(e)
+    }
+    
     
 })
 
