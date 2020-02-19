@@ -75,10 +75,9 @@ class DataSelector extends Component {
         const Level5 = [...new Map(tempLevel5.map(o => [o.Level5, o])).values()]        
 
         return (           
-            <div>
+            <div className="Info">
+                <div className="Data">
                 <h4 className = "Subheading"> Data</h4>                 
-                <div className="ComboBoxEnrty">              
-                    <div className="LevelLabel">Level1</div>            
                     <Select 
                         className="ComboBox" 
                         id = "Level1"
@@ -88,9 +87,6 @@ class DataSelector extends Component {
                         getOptionValue={(Level1)=>Level1.value}
                         onChange={this.handleChange}
                     />
-                </div>
-                <div className="ComboBoxEnrty">              
-                    <div className="LevelLabel">Level2</div>            
                     <Select 
                         className="ComboBox" 
                         id = "Level1"
@@ -100,9 +96,6 @@ class DataSelector extends Component {
                         getOptionValue={(Level2)=>Level2.value}
                         onChange={this.handleChange}
                     />
-                </div>
-                <div className="ComboBoxEnrty">              
-                    <div className="LevelLabel">Level3</div>            
                     <Select 
                         className="ComboBox" 
                         id = "Level3"
@@ -112,9 +105,6 @@ class DataSelector extends Component {
                         getOptionValue={(Level3)=>Level3.value}
                         onChange={this.handleChange}
                     />
-                </div>
-                <div className="ComboBoxEnrty">              
-                    <div className="LevelLabel">Level4</div>            
                     <Select 
                         className="ComboBox" 
                         id = "Level4"
@@ -124,9 +114,6 @@ class DataSelector extends Component {
                         getOptionValue={(Level4)=>Level4.value}
                         onChange={this.handleChange}
                     />
-                </div>
-                <div className="ComboBoxEnrty">              
-                    <div className="LevelLabel">Level5</div>            
                     <Select 
                         className="ComboBox" 
                         id = "Level5"
@@ -136,19 +123,19 @@ class DataSelector extends Component {
                         getOptionValue={(Level5)=>Level5.value}
                         onChange={this.handleChange}
                     />
-                </div>
-                <h4 className = "Subheading"> Search Period</h4> 
+                <p className = "Subheading"> Search Period</p> 
                 
                 <DateTimePicker className="StartDateTimePicker"
                     onChange={this.onStartDateChange}
                     value={this.state.startdate}
                 />
-                <h4 id="Swungdash"> ~ </h4>
+                <span className="Swungdash"> ~ </span>
                 <DateTimePicker className="EndDateTimePicker"
                     onChange={this.onStopDateChange}
                     value={this.state.stopdate}
                 />
                 <button id="btnPeriod" className="SearchButton" onClick={this.dataloadClick}>Search</button>
+            </div>
             </div>
         );
     }    
