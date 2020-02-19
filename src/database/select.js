@@ -14,7 +14,7 @@ const dbSelect = (query) => {
         connection.query(query, (error, result) => {
             if(error) {
                 console.log('reject!', query)
-                reject(error)
+                return reject(error)
             }
             if(result) {
                 resolve(result)
