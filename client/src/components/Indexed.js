@@ -191,79 +191,6 @@ class MuiVirtualizedTable extends React.PureComponent {
     return (
       <div>
         <div className="Layout1">
-          <div className="Total">
-            <h4 className="dataLabel">Data</h4>
-            <label className="LevelLabel">Level1</label>
-            <Select
-              className="ComboBox"
-              id="Level1"
-              value={selectedOption}
-              options={Level1}
-              getOptionLabel={(Level1) => Level1.Level1}
-              getOptionValue={(Level1) => Level1.value}
-              onChange={this.levelChange}
-            />
-            <label className="LevelLabel">Level2</label>
-            <Select
-              className="ComboBox"
-              id="Level2"
-              value={selectedOption}
-              options={Level2}
-              getOptionLabel={(Level2) => Level2.Level2}
-              getOptionValue={(Level2) => Level2.value}
-            />
-            <label className="LevelLabel">Level3</label>
-            <Select
-              className="ComboBox"
-              id="Level3"
-              value={selectedOption}
-              options={Level3}
-              getOptionLabel={(Level3) => Level3.Level3}
-              getOptionValue={(Level3) => Level3.value}
-              onChange={this.levelChange}
-            />
-            <label className="LevelLabel">Level4</label>
-            <Select
-              className="ComboBox"
-              id="Level4"
-              value={selectedOption}
-              options={Level4}
-              getOptionLabel={(Level4) => Level4.Level4}
-              getOptionValue={(Level4) => Level4.value}
-              onChange={this.levelChange}
-            />
-            <label className="LevelLabel">Level5</label>
-            <Select
-              className="ComboBox"
-              id="Level5"
-              value={selectedOption}
-              options={Level5}
-              getOptionLabel={(Level5) => Level5.Level5}
-              getOptionValue={(Level5) => Level5.value}
-              onChange={this.levelChange}
-            />
-          </div>
-
-          <div className="Total">
-            <div className="LabelLa1">
-              <h4>Search Period</h4>
-            </div>
-            <div className="PeriodLa">
-              <div className="DatePickLa">
-                <DateTimePicker onChange={this.onStartDateChange} format={"yyyy-MM-dd hh:mm:ss a"} value={this.state.startdate} className="datepicker" id="datepick1" />
-              </div>
-              <div className="LabelLa2">
-                <h4> ~ </h4>
-              </div>
-              <div className="DatePickLa">
-                <DateTimePicker onChange={this.onEndDateChange} format={"yyyy-MM-dd hh:mm:ss a"} value={this.state.stopdate} className="datepicker" id="datepick2" />
-              </div>
-              <div className="DatePickLa">
-                <button className="Search_btn" onClick={this.SearchClick}>Search</button>
-              </div>
-            </div>
-          </div>
-          <div className="Total">
             <h4>Wave List</h4>
             <div className="WaveListTable">
               <AutoSizer>
@@ -301,21 +228,16 @@ class MuiVirtualizedTable extends React.PureComponent {
                 )}
               </AutoSizer>
             </div>
-          </div>
-        </div>
-
+            </div>
         <div className="Layout2">
-          <div className="Total">
             <button className="Reset_btn">Reset</button>
             <button className="Save_btn">Save</button>
             <div className="WaveListGraph">그래프</div>
             <div className="WaveListGraphTable">
 
             </div>
-          </div>
         </div>
-      </div>
-
+        </div>
     );
   }
 }
