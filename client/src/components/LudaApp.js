@@ -2,7 +2,7 @@ import React from 'react'
 import Header from './Header'
 import Body from './Body'
 import SettingModal from './SettingModal'
-
+import {BrowserRouter as Router} from 'react-router-dom'
 
 export default class LudaApp extends React.Component {
     state = {
@@ -29,21 +29,25 @@ export default class LudaApp extends React.Component {
         const naviMenu = ['Raw', 'Indexed', 'Features']
         
         return (
-            <div>
-                <Header 
-                    modalOpen={this.state.modalOpen}
-                    handleModalOpen={this.handleModalOpen}
-                    handleModalClose={this.handleModalClose}
-                />
-                <Body 
-                    naviMenu={naviMenu}
-                />
-                <SettingModal 
-                    modalOpen={this.state.modalOpen}
-                    handleModalOpen={this.handleModalOpen}
-                    handleModalClose={this.handleModalClose}
-                />
-            </div>
+            <Router>
+                <div>
+                    <Header 
+                        modalOpen={this.state.modalOpen}
+                        handleModalOpen={this.handleModalOpen}
+                        handleModalClose={this.handleModalClose}
+                        naviMenu={naviMenu}
+                    />
+                    <Body 
+
+                    />
+                    <SettingModal 
+                        modalOpen={this.state.modalOpen}
+                        handleModalOpen={this.handleModalOpen}
+                        handleModalClose={this.handleModalClose}
+                    />
+                </div>
+            </Router>
+            
         )
     }
 }
