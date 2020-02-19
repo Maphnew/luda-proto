@@ -1,48 +1,46 @@
 import React, { Component } from 'react';
 import SearchField from "react-search-field";
-import CircularProgress from '@material-ui/core/CircularProgress'; // import material CircularProgress
-
+import Loading from 'react-loading-bar'
+import 'react-loading-bar/dist/index.css'
+import {featurePost,featureGet} from './Fetch'
 class PaletteFeature extends Component {
-    state = {         
+    state = {      
+        isLoading: false,
+        show: false,   
         sendData : this.props.value,
         statisticsItem : [],
         waveformItem : ["All","Split"],
         buttonSearch : [],
     };        
 
-    componentDidMount() {
+    componentDidMount = async() => {
         if (this.state.sendData.TagName===undefined){
             alert("Please enter data!")
             return
         }
 
-        fetch("http://192.168.100.99:5000/features/feature/statistics", {
-            method: 'POST', 
-            headers: { 
-                'Content-Type': 'application/json',
-                'Accept' : '*/*'
-            },
-            body : JSON.stringify({"TagName":this.state.sendData.TagName,"Table":this.state.sendData.Table,  
-            "StartTime" : this.state.sendData.StartTime, "StopTime" : this.state.sendData.StopTime})
-        })
-        //.then(response => console.log(response))
-        .then(response => response.json())
-        .then((json) => {            
-            this.setState({ statisticsItem:json })
-            //console.log("Data",this.state.statisticsItem)
-        })
-        .catch(err => {
-            console.log(err)
-        });        
+        this.setState({ isLoading: true, show: true });
+
+        const params = {
+            "TagName":this.state.sendData.TagName,"Table":this.state.sendData.Table,  
+            "StartTime" : this.state.sendData.StartTime, "StopTime" : this.state.sendData.StopTime
+        }
+        const json = await featureGet(params)
+        this.setState({ statisticsItem:json })
+
+        this.setState({ isLoading: false, show: false });
 
         
     }
 
-    tableKinds = (event) => {             
+    tableKinds = async (event) => {             
         if (this.state.sendData.TagName===undefined){
             alert("Please enter data!")
             return
         }
+        
+        this.setState({ isLoading: true, show: true });
+
         var tableName = ""
         if ((event.target.id).toLowerCase()==="all") {
             tableName = "WaveIndex"
@@ -50,96 +48,30 @@ class PaletteFeature extends Component {
         else {
             tableName = "WaveSplit"
         }
-        this.setState({sendData:{ ...this.state.sendData, Table: tableName}}, () => {            
-            this.props.onFormSubmit(this.state.sendData)
-            fetch("http://192.168.100.99:5000/features/feature", {
-                method: 'POST', 
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Accept' : '*/*'
-                },
-                body : JSON.stringify(this.state.sendData)
-            })
-            //.then(response => console.log(response))
-            .then(response => response.json())
-            .then((json) => {                 
-                const moment = require('moment') 
-                var requiredPattern = 'YYYY-MM-DD HH:mm:ss.SSS';                
-                if (tableName === "WaveIndex"){                    
-                    JSON.stringify(json.map(function (record)  {                      
-                        record.startTime = moment(record.startTime).format(requiredPattern);
-                        record.stopTime = moment(record.stopTime).format(requiredPattern);                          
-                        return record;
-                    }));
-                    this.props.onGraphDataSubmit(json)
-                }
-                else {                    
-                    var tempJson = {}
-                    JSON.stringify(json.map(function (record)  {    
-                        Object.entries(record.parts).map(([key,value])=>{                            
-                            if (tempJson[key]===undefined){
-                                tempJson[key] = []
-                            }
-                            tempJson[key].push(value)
-                            return record;                        
-                          }) 
-                          return tempJson;
-                    }));            
-                    this.props.onGraphDataSubmit(tempJson)
-                    //console.log(tempJson)        
-                }
-                
-            })
-            .catch(err => console.log(err));      
-        })
+
+        await this.setState({sendData:{ ...this.state.sendData, Table: tableName}})
+        
+        this.props.onFormSubmit(this.state.sendData)
+        const json = await featurePost(this.state.sendData)
+        this.props.onGraphDataSubmit(json)
+
+        this.setState({ isLoading: false, show: false });
     }
 
-    statistics = (event) => {     
-        //this.setState({ selectedOption }); // this will update the state of selected therefore updating value in react-select 
+    statistics = async (event) => {     
         if (this.state.sendData.TagName===undefined){
             alert("Please enter data!")
             return
         }        
-        this.setState({sendData:{ ...this.state.sendData, Feature: event.target.id}} , () => {
-            this.props.onFormSubmit(this.state.sendData)        
-            fetch("http://192.168.100.99:5000/features/feature", {
-                method: 'POST', 
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Accept' : '*/*'
-                },
-                body : JSON.stringify(this.state.sendData)
-            })        
-            .then(response => response.json())
-            .then((json) => {            
-                const moment = require('moment')
-                var requiredPattern = 'YYYY-MM-DD HH:mm:ss.SSS';
-                if (this.state.sendData.Table === "WaveIndex"){                    
-                    JSON.stringify(json.map(function (record)  {                      
-                        record.startTime = moment(record.startTime).format(requiredPattern);
-                        record.stopTime = moment(record.stopTime).format(requiredPattern);                          
-                        return record;
-                    }));
-                    this.props.onGraphDataSubmit(json)
-                }
-                else {                    
-                    var tempJson = {}
-                    JSON.stringify(json.map(function (record)  {    
-                        Object.entries(record.parts).map(([key,value])=>{                            
-                            if (tempJson[key]===undefined){
-                                tempJson[key] = []
-                            }
-                            tempJson[key].push(value)
-                            return record;                        
-                          }) 
-                          return tempJson;
-                    }));            
-                    this.props.onGraphDataSubmit(tempJson)
-                    //console.log(tempJson)        
-                }
-            })
-            .catch(err => console.log(err));  
-        })  
+
+        this.setState({ isLoading: true, show: true });
+
+        await this.setState({sendData:{ ...this.state.sendData, Feature: event.target.id}} )
+        this.props.onFormSubmit(this.state.sendData)
+        const json = await featurePost(this.state.sendData)
+        this.props.onGraphDataSubmit(json)
+
+        this.setState({ isLoading: false, show: false });
     }
 
     onSearchChange = (event) => {        
@@ -166,12 +98,12 @@ class PaletteFeature extends Component {
         }        
     }
 
-    waveformElement=()=>{
-        const waveform = this.state.waveformItem.map(
+    waveformElement=(data, func)=>{
+        const waveform = data.map(
             (id, idx) => {
                 if (this.state.buttonSearch.indexOf(id) !== -1 || this.state.buttonSearch.length === 0) {
                     return (
-                        <button id={id} key={idx} className="FeatureButton" onClick={this.tableKinds}>{ id }</button>
+                        <button id={id} key={idx} className="FeatureButton" onClick={func}>{ id }</button>
                     )
                 }
                 return id
@@ -179,39 +111,13 @@ class PaletteFeature extends Component {
         return waveform;
     }
 
-    element=()=>{
-        const waveform = this.state.statisticsItem.map(
-        (id, idx) => {                
-            if (this.state.buttonSearch.indexOf(id) !== -1 || this.state.buttonSearch.length === 0){     
-                return ( 
-                <button id={id} key={idx} className="FeatureButton" onClick={this.statistics}>{ id }</button>
-                )  
-            }
-            return id
-        });
-        return waveform;
-    }
-
     render() {   
-        const {customers, isLoading, completed} = this.state; // add compledted
-
-        const Hello = 
-            <div>                
-                <div>
-                    <h4 className = "Subheading"> Waveform</h4>                    
-                    {this.waveformElement()}
-                </div>
-
-                <div>
-                    <h4 className = "Subheading"> Statistics</h4>                
-                    {this.element()}			
-                </div> 
-
-            </div>
-
-
         return (            
             <div>
+                <Loading
+                    show={this.state.show}
+                    color="red"
+                />
                 <div className="SearchItem">
                     <SearchField
                         placeholder="Search Item"
@@ -222,8 +128,14 @@ class PaletteFeature extends Component {
                     />
                 </div>
                 <div>
-                    {Hello}
+                    <h4 className = "Subheading"> Waveform</h4>                    
+                    {this.waveformElement(this.state.waveformItem,this.tableKinds)}
                 </div>
+
+                <div>
+                    <h4 className = "Subheading"> Statistics</h4>                
+                    {this.waveformElement(this.state.statisticsItem,this.statistics)}			
+                </div> 
             </div>
         );
     }
