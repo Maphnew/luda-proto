@@ -1,18 +1,13 @@
 import React, { Component } from 'react';
 import Select from 'react-select'
 import DateTimePicker from 'react-datetime-picker';
-import Loading from 'react-loading-bar'
-import 'react-loading-bar/dist/index.css'
-import {featurePost} from './Fetch'
-class PaletteInfo extends Component {    
+class DataSelector extends Component { 
     state = { 
-        isLoading: false,
-        show: false,
-        selectedOption:this.props.value,
+        selectedOption:{},
         waveMaster : [], 
         startdate: new Date(),
         stopdate: new Date()
-    };       
+    };        
 
     componentDidMount() {
         if (this.state.selectedOption.Level1  === undefined){
@@ -40,16 +35,9 @@ class PaletteInfo extends Component {
             return
         }
 
-        this.setState({ isLoading: true, show: true });
-
         const tagName = this.state.selectedOption.DefServer+"."+this.state.selectedOption.DefTable+"."+this.state.selectedOption.DefColumn
         const params = {"TagName":tagName, "StartTime" : this.state.startdate, "StopTime" : this.state.stopdate,"Feature":"max","Table":"WaveIndex"}    
-        
-        this.props.onFormSubmit(params)
-        const json = await featurePost(params)
-        this.props.onGraphDataSubmit(json)
-
-        this.setState({ isLoading: false, show: false });
+        this.props.onDataSubmit(params)
 
     }
 
@@ -88,10 +76,6 @@ class PaletteInfo extends Component {
 
         return (           
             <div>
-                <Loading
-                    show={this.state.show}
-                    color="red"
-                />
                 <h4 className = "Subheading"> Data</h4>                 
                 <div className="ComboBoxEnrty">              
                     <div className="LevelLabel">Level1</div>            
@@ -167,7 +151,7 @@ class PaletteInfo extends Component {
                 <button id="btnPeriod" className="SearchButton" onClick={this.dataloadClick}>Search</button>
             </div>
         );
-    }
+    }    
 }
 
-export default PaletteInfo;
+export default DataSelector;

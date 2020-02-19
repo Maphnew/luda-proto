@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import {Link, Route, BrowserRouter as Router} from 'react-router-dom'
-import PaletteInfo from './PaletteInfo';
 import PaletteGraph from './PaletteGraph';
 import PaletteFeature from './PaletteFeature';
 
 class Palette extends Component {
     state = { 
         btnId : "btnInfo",
-        sendData: {},
         graphData : [],
         graphType : "",
     };
@@ -44,9 +42,6 @@ class Palette extends Component {
                 <div>
                     <h3 className = "PaletteTitle"> PALETTE</h3> 
                     <div className="ButtonEntry"> 
-                        <Link to="/features/" className="ButtonEach">
-                            <button id="btnInfo" className={this.state.btnId==="btnInfo" ? "ButtonClick": "ButtonDefault"} onClick={this.handleClick}>Info</button>
-                        </Link>
                         <Link to="/features/feature" className="ButtonEach">
                             <button id="btnFeature" className={this.state.btnId==="btnFeature" ? "ButtonClick": "ButtonDefault"} onClick={this.handleClick}>Feature</button>
                         </Link>
@@ -57,16 +52,13 @@ class Palette extends Component {
                 </div>
                 <div> 
                     <Route 
-                        exact path='/features/'
-                        render={() => <PaletteInfo onFormSubmit={this.onFormSubmit} value={this.state.sendData} onGraphDataSubmit={this.onGraphDataSubmit} /> }
-                    />
-                    <Route 
                         path='/features/feature' 
-                        render={() => <PaletteFeature onFormSubmit={this.onFormSubmit} value={this.state.sendData} onGraphDataSubmit={this.onGraphDataSubmit}/> }
+                        render={() => <PaletteFeature values={this.props.values} onFormSubmit={this.onFormSubmit}  onGraphDataSubmit={this.onGraphDataSubmit}/> }
                     />
 
-                    <Route path='/features/graph' 
-                    render={() => <PaletteGraph onGraphTypeSubmit={this.onGraphTypeSubmit}/> }
+                    <Route 
+                        path='/features/graph' 
+                        render={() => <PaletteGraph onGraphTypeSubmit={this.onGraphTypeSubmit}/> }
                     /> 
 
                 </div>

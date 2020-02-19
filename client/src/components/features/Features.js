@@ -24,7 +24,7 @@ class Features extends Component {
             <div className="FeaturesEntry">
                 <div className="PaletteEntry">
                     <Palette
-                        onGraphShow={this.onGraphShow} onGraphType={this.onGraphType}
+                        onGraphShow={this.onGraphShow} onGraphType={this.onGraphType} values={this.props.values}
                     />      
                 </div>
                 <div className="GraphEntry" >
