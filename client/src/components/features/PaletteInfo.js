@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import Select from 'react-select'
 import DateTimePicker from 'react-datetime-picker';
-
+import Loading from 'react-loading-bar'
+import 'react-loading-bar/dist/index.css'
+import {featurePost} from './Fetch'
 class PaletteInfo extends Component {    
     state = { 
+        isLoading: false,
+        show: false,
         selectedOption:this.props.value,
         waveMaster : [], 
         startdate: new Date(),
@@ -30,37 +34,23 @@ class PaletteInfo extends Component {
     onStartDateChange = startdate => this.setState({ startdate })
     onStopDateChange = stopdate => this.setState({ stopdate })
 
-    dataloadClick = () => {
+    dataloadClick = async () => {
         if (this.state.selectedOption.hasOwnProperty("DefColumn")===false) {
             alert("Please enter data!");
             return
         }
+
+        this.setState({ isLoading: true, show: true });
+
         const tagName = this.state.selectedOption.DefServer+"."+this.state.selectedOption.DefTable+"."+this.state.selectedOption.DefColumn
         const params = {"TagName":tagName, "StartTime" : this.state.startdate, "StopTime" : this.state.stopdate,"Feature":"max","Table":"WaveIndex"}    
+        
         this.props.onFormSubmit(params)
+        const json = await featurePost(params)
+        this.props.onGraphDataSubmit(json)
 
-        fetch("http://192.168.100.99:5000/features/feature", {
-            method: 'POST', 
-            headers: { 
-                'Content-Type': 'application/json',
-                'Accept' : '*/*'
-            },
-            body : JSON.stringify(params)
-        })
-        //.then(response => console.log(response))
-        .then(response => response.json())
-        .then((json) => {    
-            const moment = require('moment')
-            JSON.stringify(json.map(function (record)  {
-                var requiredPattern = 'YYYY-MM-DD HH:mm:ss.SSS';
-                record.startTime = moment(record.startTime).format(requiredPattern);
-                record.stopTime = moment(record.stopTime).format(requiredPattern);                
-                return record;
-            }));            
-            //console.log(formatted);     
-            this.props.onGraphDataSubmit(json)
-        })
-        .catch(err => console.log(err));       
+        this.setState({ isLoading: false, show: false });
+
     }
 
     render() {  
@@ -96,8 +86,12 @@ class PaletteInfo extends Component {
         const Level4 = [...new Map(tempLevel4.map(o => [o.Level4, o])).values()]  
         const Level5 = [...new Map(tempLevel5.map(o => [o.Level5, o])).values()]        
 
-        return (            
+        return (           
             <div>
+                <Loading
+                    show={this.state.show}
+                    color="red"
+                />
                 <h4 className = "Subheading"> Data</h4>                 
                 <div className="ComboBoxEnrty">              
                     <div className="LevelLabel">Level1</div>            
