@@ -9,7 +9,7 @@ const SettingModal = (props) => (
         closeTimeoutMS={200}
         className="modal"
     >
-        <h3 className="modal__title">Settings</h3>
+        <h2 className="modal__title">Settings</h2>
         <div className="modal__body">
             {props.database.host && <input className="modal__input" readOnly="readonly" type="text" value={props.database.host}/>}
         </div>
