@@ -3,34 +3,43 @@ import SearchField from "react-search-field";
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
 import {featurePost,featureGet} from './Fetch'
+import equal from 'fast-deep-equal'
+
 class PaletteFeature extends Component {
     state = {      
         isLoading: false,
         show: false,   
-        sendData : this.props.value,
+        sendData : {},
         statisticsItem : [],
         waveformItem : ["All","Split"],
         buttonSearch : [],
     };        
 
-    componentDidMount = async() => {
-        if (this.state.sendData.TagName===undefined){
-            alert("Please enter data!")
-            return
-        }
+    componentWillReceiveProps = (nextProps) => {
+        console.log("prevProps",nextProps.values,"nextProps",this.props.values)
+        if(!equal(this.props.values, nextProps.values)) // Check if it's a new user, you can also use some unique property, like the ID  (this.props.user.id !== prevProps.user.id)
+        {
+          this.updateValues(nextProps.values);
+        }      
+    }
 
-        this.setState({ isLoading: true, show: true });
-
-        const params = {
-            "TagName":this.state.sendData.TagName,"Table":this.state.sendData.Table,  
-            "StartTime" : this.state.sendData.StartTime, "StopTime" : this.state.sendData.StopTime
-        }
-        const json = await featureGet(params)
-        this.setState({ statisticsItem:json })
-
-        this.setState({ isLoading: false, show: false });
-
-        
+    updateValues=async(values)=>{
+        this.setState({ sendData:values},async()=>{
+            if (this.state.sendData.TagName===undefined){
+                alert("Please enter data!")
+                return
+            }
+            this.setState({ isLoading: true, show: true });
+            const params = {
+                "TagName":this.state.sendData.TagName,"Table": this.state.sendData.Table,  
+                "StartTime" : this.state.sendData.StartTime, "StopTime" : this.state.sendData.StopTime
+            }
+            const jsonGet = await featureGet(params)
+            this.setState({ statisticsItem:jsonGet })
+            const jsonPost = await featurePost(this.state.sendData)
+            this.props.onGraphDataSubmit(jsonPost)
+            this.setState({ isLoading: false, show: false });   
+        })
     }
 
     tableKinds = async (event) => {             
