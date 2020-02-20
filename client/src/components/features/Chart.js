@@ -2,7 +2,7 @@ import React from 'react';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import CanvasJSReact from './assets/canvasjs.react';
 
-const table = (data) =>{ 
+const table = (data,feature) =>{ 
     return (
     <div>                
         <BootstrapTable data={data}>
@@ -13,14 +13,14 @@ const table = (data) =>{
                 StopTime
             </TableHeaderColumn>
             <TableHeaderColumn dataField='values'>
-                Value
+                {feature}
             </TableHeaderColumn>
         </BootstrapTable>         
     </div>
     )
 }
 
-const scatter = (data) =>{            
+const scatter = (data,feature) =>{            
     var CanvasJSChart = CanvasJSReact.CanvasJSChart;
     const options = {
         theme: "light2",
@@ -35,7 +35,7 @@ const scatter = (data) =>{
             }                    
         },
         axisY:{
-            title: "Data",
+            title: feature,
             includeZero: false,
             crosshair: {
                 enabled: true,
@@ -59,14 +59,14 @@ const scatter = (data) =>{
     )
 }
 
-const area = (data) =>{            
+const area = (data,feature) =>{            
     var CanvasJSChart = CanvasJSReact.CanvasJSChart;
     const options = {
         theme: "light2",
         animationEnabled: true,
         exportEnabled: true,
         axisY: {
-            title: "Data",
+            title: feature,
             includeZero: false,
         },
         data: [
@@ -88,14 +88,14 @@ const area = (data) =>{
     );
 }
 
-const stackedarea = (data) =>{            
+const stackedarea = (data,feature) =>{            
     var CanvasJSChart = CanvasJSReact.CanvasJSChart;
     const options = {
         theme: "light2",
         animationEnabled: true,
         exportEnabled: true,
         axisY: {
-            title: "Data",
+            title:  feature,
             includeZero: false,
         },
         data: [
@@ -117,7 +117,7 @@ const stackedarea = (data) =>{
     );
 }
 
-const bar = (data) => {
+const bar = (data,feature) => {
     var CanvasJSChart = CanvasJSReact.CanvasJSChart;
     const options = {
         animationEnabled: true,
@@ -126,7 +126,7 @@ const bar = (data) => {
             reversed: true,
         },
         axisY: {
-            title: "Data",
+            title: feature,
             //labelFormatter: this.addSymbols
         },
         data: [{
@@ -144,7 +144,7 @@ const bar = (data) => {
     );
 }
 
-const bubblechart = (data) => {
+const bubblechart = (data,feature) => {
     var CanvasJSChart = CanvasJSReact.CanvasJSChart;
     const options = {
         animationEnabled: true,
@@ -154,7 +154,7 @@ const bubblechart = (data) => {
             logarithmic: true
         },
         axisY: {
-            title: "Data"   
+            title: feature   
         },
         data: [{
             type: "bubble",

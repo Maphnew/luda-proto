@@ -100,7 +100,7 @@ class PaletteFeature extends Component {
         localStorage.setItem('featureReq', JSON.stringify(this.state.featureReq))    
         const json = await featurePost(this.state.sendData,this.state.featureReq)
         this.props.onGraphDataSubmit(json)
-
+        this.props.onGraphTypeSubmit(undefined,this.state.featureReq.Feature)       
         this.setState({ isLoading: false, show: false });
     }
 

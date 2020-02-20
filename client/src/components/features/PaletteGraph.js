@@ -36,7 +36,7 @@ class PaletteGraph extends Component {
     }
 
     handleClick=(event)=>{
-        this.props.onGraphTypeSubmit(event.target.id)
+        this.props.onGraphTypeSubmit((event.target.id).toLowerCase(),undefined)     
     }
 
     render() {        

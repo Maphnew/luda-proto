@@ -5,18 +5,17 @@ import './Features.css';
 
 class Features extends Component {
     state = {
+        graph : {},
         graphData : [],
-        graphType : "",
+        
     }
 
     onGraphShow=(getData)=> {
         this.setState({ graphData: getData});
-    	//console.log('test',this.state.graphData);
     }
 
     onGraphType=(getData)=> {
-        this.setState({ graphType: getData});
-    	//console.log('test',this.state.graphData);
+        this.setState({graph: getData});
     }
 
     render() {
@@ -29,7 +28,7 @@ class Features extends Component {
                 </div>
                 <div className="GraphEntry" >
                     <Graph
-                        graphData={this.state.graphData} graphType={this.state.graphType}
+                        graphData={this.state.graphData} graph={this.state.graph}
                     />
                 </div>
             </div>
