@@ -141,7 +141,7 @@ class DataSelector extends Component {
                     onApply={this.onChange}
                     onEvent={this.onChange}
                 >
-                <button className="SearchButton" > Search Period</button>
+                <button className="SearchPeriod" > Search Period</button>
                 </DateRangePicker>
                 <button id="btnPeriod" className="SearchButton" onClick={this.dataloadClick}>Search</button>
 

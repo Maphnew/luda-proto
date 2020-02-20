@@ -41,25 +41,25 @@
     margin-top: 0.2%;
   }
 
-  #btnPeriod {
-    padding : 0.5%;
-    color: #0091EA;
-    background: #ffffff;
-    border-radius: 3px;
-    border: 1px solid #0091EA;
-    transition: all 0.3s ease 0s;
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.73);
-    margin-left: 1%;
-    margin-top: 0.3%;
-    &:hover {
-    color: #ffffff;
-    background: rgb(116, 202, 255);
-    border-radius: 2px;
-    border: 1px solid rgb(75, 181, 247);
-    transition: all 0.3s ease 0s;
-    }
-  }
 .SearchButton {
+  padding : 0.5%;
+  color: #0091EA;
+  background: #ffffff;
+  border-radius: 3px;
+  border: 1px solid #0091EA;
+  transition: all 0.3s ease 0s;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.73);
+  margin-left: 1%;
+  margin-top: 0.3%;
+  &:hover {
+  color: #ffffff;
+  background: rgb(116, 202, 255);
+  border-radius: 2px;
+  border: 1px solid rgb(75, 181, 247);
+  transition: all 0.3s ease 0s;
+  }
+}
+.SearchPeriod {
   padding : 8.5%;
   color: rgb(59, 230, 130);
   background: #ffffff;
