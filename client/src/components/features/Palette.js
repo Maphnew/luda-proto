@@ -52,7 +52,7 @@ class Palette extends Component {
 
                     <Route 
                         path='/features/graph' 
-                        render={() => <PaletteGraph values={this.props.values}  onGraphTypeSubmit={this.onGraphTypeSubmit}/> }
+                        render={() => <PaletteGraph values={this.props.values}  onGraphDataSubmit={this.onGraphDataSubmit} onGraphTypeSubmit={this.onGraphTypeSubmit}/> }
                     /> 
 
                 </div>
