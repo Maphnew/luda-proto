@@ -21,7 +21,7 @@ class PaletteGraph extends Component {
 
             this.setState({ isLoading: true, show: true }); 
             let featureReq = JSON.parse( localStorage.getItem('featureReq'))
-            if(featureReq.Table===undefined){
+            if(featureReq===null ){
                 await this.setState({ featureReq:{"Table":"WaveIndex","Feature":"max"}})   
             }
             else {
