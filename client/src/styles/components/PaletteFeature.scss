@@ -1,29 +1,46 @@
-.Subhead{
-    margin: 5%;
+.Subheading {
+    margin: 5% 3% 2% 3%;
     color: $blue;
-    border-bottom: 1px solid;
+    border-bottom: 2px solid $blue;
+    font-family: "agGridBalham";
+    font-weight: bold;
+    font-size: 1.2em;
   }
 
-    table {
-      margin: 0.5% 1% 0% 1%;
-      width:98%;
-      text-align: center;
+  .FeatureButton {
+    padding: 10px;
+    margin: 0% 2% 2% 2%;
+    color: $blue;
+    width: 45%;
+    border-radius: 5px;
+    transition: all 0.4s ease 0s;
+      background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
+      background-color:#ffffff;
+    display:inline-block;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.73);
+    &:hover {
+      background-image: -webkit-linear-gradient(#6795fd 0%, #67ceff 100%);
+      background-image: linear-gradient(#6795fd 0%, #67ceff 100%);
+      box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.29);
+      color: #ffffff;
+    }
+  }
+
+table {
       table-layout: fixed;
-      background: url(https://jackrugile.com/images/misc/noise-diagonal.png), linear-gradient(rgb(98, 102, 156), rgb(54, 70, 124));
       border-collapse: collapse;
-      border-radius: 5px 5px 0px 0px;
       border-right: 1px solid #e8e8e8;
       border-left: 1px solid #e8e8e8;
-      
   }   
   
-  th {
+th {
+      background: url(https://jackrugile.com/images/misc/noise-diagonal.png), linear-gradient(#486199, #425c96);
       color: #fff;
       padding: 1%;
       font-size: 0.9em;
   }
 
-  td {
+td {
       text-align: center;
       border-top: 1px solid #fff;
       border-bottom: 1px solid #e8e8e8;
@@ -33,13 +50,14 @@
       font-size: 0.8em;
   }
   
-  tbody:hover td {
+tbody:hover td {
       color: transparent;
       text-shadow: 0 0 1px #aaa;
   }
   
-  tbody:hover tr:hover td {
+tbody:hover tr:hover td {
       color: #444;
       text-shadow: 0 1px 0 #fff;
       font-weight: bold;
   }
+
