@@ -21,7 +21,7 @@ class DataSelector extends Component {
             this.setState({ selectedOption :  {Level1: "Level1", Level2: "Level2", Level3:"Level3", Level4: "Level4", Level5: "Level5"} });       
         }
 
-        fetch("http://192.168.100.99:5000/features/info", {method: 'GET'})
+        fetch("http://192.168.100.175:5000/features/info", {method: 'GET'})
         .then(response => response.json())
         .then((json) => {            
             this.setState({ waveMaster:json }); 

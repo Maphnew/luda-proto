@@ -1,6 +1,6 @@
 const featurePost =  async (data,feature) => {
     const params =  Object.assign(data,feature)
-    const postJson = await fetch("http://192.168.100.99:5000/features/feature", {
+    const postJson = await fetch("http://192.168.100.175:5000/features/feature", {
         method: 'POST', 
         headers: { 
             'Content-Type': 'application/json',
@@ -48,7 +48,7 @@ const featurePost =  async (data,feature) => {
 }
 
 const featureGet =  async (data) => {
-    const GetJson = await fetch("http://192.168.100.99:5000/features/feature/statistics", {
+    const GetJson = await fetch("http://192.168.100.175:5000/features/feature/statistics", {
         method: 'POST', 
         headers: { 
             'Content-Type': 'application/json',
