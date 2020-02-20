@@ -38,10 +38,10 @@ router.get('/features', (req, res) => {
     res.send('Hello features')
 })
 
-router.get('/features/info', (req, res) => {
+router.get('/features/info', async (req, res) => {
     // console.log('features info')
     const queryFeaturesInfo = "SELECT * FROM WaveMaster;"
-    dbSelect(queryFeaturesInfo).then((resultSelect) => {
+    await dbSelect(queryFeaturesInfo).then((resultSelect) => {
         for (let i = 0; i <resultSelect.length; i++){
             resultSelect[i].value = i
         }
@@ -57,7 +57,7 @@ router.get('/features/info', (req, res) => {
 
 
 
-router.post('/features/feature', (req, res) => {
+router.post('/features/feature', async (req, res) => {
     const tagNameSplit = req.body.TagName.split(".")
     startTime = new Date(req.body.StartTime)
     stopTime = new Date(req.body.StopTime)
@@ -74,7 +74,7 @@ router.post('/features/feature', (req, res) => {
             startTime BETWEEN '${start}' AND '${stop}';
         `
         // console.log(query)
-        dbSelect(query).then((resultdbSelect) => {
+        await dbSelect(query).then((resultdbSelect) => {
             res.send(resultdbSelect)
         })
     } else if (req.body.Table == 'WaveSplit') {
@@ -99,7 +99,7 @@ router.post('/features/feature', (req, res) => {
     }
 })
 
-router.post('/features/feature/statistics', (req, res) => {
+router.post('/features/feature/statistics', async (req, res) => {
     // console.log(req.body)
     const tagNameSplit = req.body.TagName.split(".")
     startTime = new Date(req.body.StartTime)
@@ -115,7 +115,7 @@ router.post('/features/feature/statistics', (req, res) => {
             startTime BETWEEN '${start}' AND '${stop}';
     `
     try {
-        dbSelect(queryFeaturesStatistics).then((result) =>{
+        await dbSelect(queryFeaturesStatistics).then((result) =>{
             console.log('statistics keys', result[0].keys)
             res.send(result[0].keys)
         })
