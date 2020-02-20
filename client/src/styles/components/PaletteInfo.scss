@@ -1,30 +1,15 @@
-.SearchButton {
-    padding : 0.5%;
-    color: #0091EA;
-    background: #ffffff;
-    border-radius: 2px;
-    border: 1px solid #0091EA;
-    transition: all 0.3s ease 0s;
-    &:hover {
-    color: #ffffff;
-    background: rgb(116, 202, 255);
-    border-radius: 2px;
-    border: 1px solid rgb(75, 181, 247);
-    transition: all 0.3s ease 0s;
-    }
-  }
-
   .Info {
     color: #ffffff;
     font-size: 12px;
     border: 1px solid;
     width: 100%;
-    background-image: linear-gradient(to right,#2b5876, #4e4376);
+    background: $blue;
     height: 45px;
   }
 
   .Subheading{
     float: left;
+    color: #ffffff;
     margin-right: 1%;
   }
 
@@ -50,4 +35,21 @@
   .Data {
     margin-left: 20%;
     margin-top: 0.2%;
+  }
+
+  .SearchButton {
+    padding : 0.5%;
+    color: #0091EA;
+    background: #ffffff;
+    border-radius: 2px;
+    border: 1px solid #0091EA;
+    transition: all 0.3s ease 0s;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.73);
+    &:hover {
+    color: #ffffff;
+    background: rgb(116, 202, 255);
+    border-radius: 2px;
+    border: 1px solid rgb(75, 181, 247);
+    transition: all 0.3s ease 0s;
+    }
   }
