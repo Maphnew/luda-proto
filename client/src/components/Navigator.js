@@ -16,7 +16,7 @@ const Navigator = (props) => {
                 </div>
             </NavLink>
             
-            <NavLink to="/features" activeClassName="is-active">
+            <NavLink to="/features/feature" activeClassName="is-active">
                 <div className="naviMenu2">
                     {props.naviMenu && props.naviMenu[2]}
                 </div>
