@@ -7,14 +7,8 @@ class Palette extends Component {
     state = { 
         btnId : "btnInfo",
         graphData : [],
-        graphType : "",
+        graphType : "",        
     };
-
-    onFormSubmit=(getData)=>{
-        this.setState({ sendData: getData});
-        //console.log("Get : ",getData,this.state.sendData)
-        //this.props.onGraphShow(getData)
-    }
 
     onGraphDataSubmit=(getData)=>{
         this.setState({ graphData: getData});
@@ -53,12 +47,12 @@ class Palette extends Component {
                 <div> 
                     <Route 
                         path='/features/feature' 
-                        render={() => <PaletteFeature values={this.props.values} onFormSubmit={this.onFormSubmit}  onGraphDataSubmit={this.onGraphDataSubmit}/> }
+                        render={() => <PaletteFeature values={this.props.values}  onGraphDataSubmit={this.onGraphDataSubmit}/> }
                     />
 
                     <Route 
                         path='/features/graph' 
-                        render={() => <PaletteGraph onGraphTypeSubmit={this.onGraphTypeSubmit}/> }
+                        render={() => <PaletteGraph values={this.props.values}  onGraphDataSubmit={this.onGraphDataSubmit} onGraphTypeSubmit={this.onGraphTypeSubmit}/> }
                     /> 
 
                 </div>

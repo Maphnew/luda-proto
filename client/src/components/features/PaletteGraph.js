@@ -1,6 +1,40 @@
 import React, { Component } from 'react';
+import Loading from 'react-loading-bar'
+import 'react-loading-bar/dist/index.css'
+import equal from 'fast-deep-equal'
+import {featurePost} from './Fetch'
 
 class PaletteGraph extends Component {
+    state = {      
+        isLoading: false,
+        show: false,   
+        featureReq:localStorage.getItem( 'featureReq' ),
+    };    
+
+    componentWillReceiveProps=async(nextProps)=>{
+        if(!equal(this.props.values, nextProps.values)) // Check if it's a new user, you can also use some unique property, like the ID  (this.props.user.id !== prevProps.user.id)
+        {
+            if (nextProps.values.TagName===undefined){
+                alert("Please enter data!")
+                return
+            }
+
+            this.setState({ isLoading: true, show: true }); 
+            let featureReq = JSON.parse( localStorage.getItem('featureReq'))
+            if(featureReq===null ){
+                await this.setState({ featureReq:{"Table":"WaveIndex","Feature":"max"}})   
+            }
+            else {
+                await this.setState({ featureReq})
+            }    
+
+            const jsonPost = await featurePost(nextProps.values,this.state.featureReq)
+            this.props.onGraphDataSubmit(jsonPost)
+
+            this.setState({ isLoading: false, show: false });   
+        }        
+    }
+
     handleClick=(event)=>{
         this.props.onGraphTypeSubmit(event.target.id)
     }
@@ -8,6 +42,10 @@ class PaletteGraph extends Component {
     render() {        
         return (            
             <div className="Recommended">
+                <Loading
+                    show={this.state.show}
+                    color="red"
+                />
                 <button id="Table" className="Table" onClick={this.handleClick}>Table</button>            
                 <button id="Scatterplot" className="Scatterplot" onClick={this.handleClick}>Scatter plot</button>
                 <br></br>

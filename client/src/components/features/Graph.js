@@ -52,57 +52,59 @@ class Graph extends Component {
           return tempValue;
       }
 
-    graphChoose = (graph) =>{            
-    if (graph==="" || graph==="table"){
-        return(
-            <div>
-                {table(this.state.graph)}
-            </div>                    
-        )
+    graphChoose = (graph) =>{      
+        if(graph==="" ){
+            return 
+        }      
+        if (graph==="table"){
+            return(
+                <div>
+                    {table(this.state.graph)}
+                </div>                    
+            )
+        }
+
+        var tempValue = this.rawToxyData();
+        //console.log(tempValue)
+        switch(graph) {
+            case 'scatterplot':
+                return(
+                    <div>
+                        {scatter(tempValue)}
+                    </div>
+                    
+                )      
+            case 'area':
+                return(
+                    <div>
+                        {area(tempValue)}
+                    </div>                    
+                ) 
+            case 'stackedarea':
+                return(
+                    <div>
+                        {stackedarea(tempValue)}
+                    </div>                    
+                ) 
+            case 'bar':
+                return(
+                    <div>
+                        {bar(tempValue)}
+                    </div>                    
+                ) 
+            case 'bubblechart':
+                return(
+                    <div>
+                        {bubblechart(tempValue)}
+                    </div>                    
+                ) 
+            default:
+                return null;
+        }
     }
 
-    var tempValue = this.rawToxyData();
-    //console.log(tempValue)
-    switch(graph) {
-        case 'scatterplot':
-            return(
-                <div>
-                    {scatter(tempValue)}
-                </div>
-                
-            )      
-        case 'area':
-            return(
-                <div>
-                    {area(tempValue)}
-                </div>                    
-            ) 
-        case 'stackedarea':
-            return(
-                <div>
-                    {stackedarea(tempValue)}
-                </div>                    
-            ) 
-        case 'bar':
-            return(
-                <div>
-                    {bar(tempValue)}
-                </div>                    
-            ) 
-        case 'bubblechart':
-            return(
-                <div>
-                    {bubblechart(tempValue)}
-                </div>                    
-            ) 
-        default:
-            return null;
-    }
-}
-
-    render() {            
-        
-        console.log("data_length : ",this.props.graphData.length,"type : ",this.state.graphType)
+    render() {                    
+        //console.log("data_length : ",this.props.graphData.length,"type : ",this.state.graphType)
         if (this.props.graphData.length ===undefined) {  
             return(
                 <div>
