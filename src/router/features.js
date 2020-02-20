@@ -120,7 +120,7 @@ router.post('/features/feature/statistics', async (req, res) => {
             res.send(result[0].keys)
         })
     } catch(e) {
-        res.status(500).send(e)
+        res.status(200).send(e)
     }
     
     
