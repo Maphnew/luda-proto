@@ -33,7 +33,7 @@ class Body extends Component{
                         path="/indexed" component={Indexed} exact={true}
                     />
                     <Route 
-                        path="/features"
+                        path="/features/feature"
                         render={() => <Features values={this.state.selectedOption}/> }
                         exact={true}
                     />
