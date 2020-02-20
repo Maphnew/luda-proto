@@ -5,40 +5,62 @@ import 'react-loading-bar/dist/index.css'
 import {featurePost,featureGet} from './Fetch'
 import equal from 'fast-deep-equal'
 
-class PaletteFeature extends Component {
+class PaletteFeature extends Component {      
     state = {      
         isLoading: false,
         show: false,   
-        sendData : {},
+        sendData : this.props.values,
+        featureReq:localStorage.getItem( 'featureReq' ),
         statisticsItem : [],
         waveformItem : ["All","Split"],
         buttonSearch : [],
-    };        
+    };    
 
-    componentWillReceiveProps = (nextProps) => {
-        console.log("prevProps",nextProps.values,"nextProps",this.props.values)
+    componentDidMount=async()=>{
+        this.setState({ isLoading: true, show: true });
+        
+        let featureReq = JSON.parse( localStorage.getItem('featureReq'))
+        if(featureReq.Table===undefined){
+            await this.setState({ featureReq:{"Table":"WaveIndex","Feature":"max"}})   
+        }
+        else {
+            await this.setState({ featureReq})
+        }            
+        await this.updateValues(this.state.sendData);
+
+        this.setState({ isLoading: false, show: false });   
+
+    }
+
+    componentWillReceiveProps = async(nextProps) => {
         if(!equal(this.props.values, nextProps.values)) // Check if it's a new user, you can also use some unique property, like the ID  (this.props.user.id !== prevProps.user.id)
         {
-          this.updateValues(nextProps.values);
+            this.setState({ isLoading: true, show: true });            
+            await this.updateValues(nextProps.values);
+            this.setState({ isLoading: false, show: false });   
         }      
     }
 
     updateValues=async(values)=>{
+        if (values.TagName===undefined){
+            alert("Please enter data!")
+            return
+        }
         this.setState({ sendData:values},async()=>{
-            if (this.state.sendData.TagName===undefined){
-                alert("Please enter data!")
-                return
-            }
-            this.setState({ isLoading: true, show: true });
             const params = {
                 "TagName":this.state.sendData.TagName,"Table": this.state.sendData.Table,  
                 "StartTime" : this.state.sendData.StartTime, "StopTime" : this.state.sendData.StopTime
             }
+
             const jsonGet = await featureGet(params)
-            this.setState({ statisticsItem:jsonGet })
-            const jsonPost = await featurePost(this.state.sendData)
+            if (jsonGet.length===undefined || jsonGet.length===0){
+                alert("The feature does not exist.\n Please check data!")
+                return
+            }
+
+            await this.setState({ statisticsItem:jsonGet })            
+            const jsonPost = await featurePost(this.state.sendData,this.state.featureReq)
             this.props.onGraphDataSubmit(jsonPost)
-            this.setState({ isLoading: false, show: false });   
         })
     }
 
@@ -58,10 +80,9 @@ class PaletteFeature extends Component {
             tableName = "WaveSplit"
         }
 
-        await this.setState({sendData:{ ...this.state.sendData, Table: tableName}})
-        
-        this.props.onFormSubmit(this.state.sendData)
-        const json = await featurePost(this.state.sendData)
+        await this.setState({featureReq:{ ...this.state.featureReq, Table: tableName}}) 
+        localStorage.setItem('featureReq', JSON.stringify(this.state.featureReq))    
+        const json = await featurePost(this.state.sendData,this.state.featureReq)
         this.props.onGraphDataSubmit(json)
 
         this.setState({ isLoading: false, show: false });
@@ -75,9 +96,9 @@ class PaletteFeature extends Component {
 
         this.setState({ isLoading: true, show: true });
 
-        await this.setState({sendData:{ ...this.state.sendData, Feature: event.target.id}} )
-        this.props.onFormSubmit(this.state.sendData)
-        const json = await featurePost(this.state.sendData)
+        await this.setState({featureReq:{ ...this.state.featureReq, Feature: event.target.id}} )
+        localStorage.setItem('featureReq', JSON.stringify(this.state.featureReq))    
+        const json = await featurePost(this.state.sendData,this.state.featureReq)
         this.props.onGraphDataSubmit(json)
 
         this.setState({ isLoading: false, show: false });
