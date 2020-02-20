@@ -13,15 +13,17 @@
     font-size: 0.5em;
     margin: 1%;
     padding-top: 12%;
+    &:hover {
+      transition: all 0.3s ease 0s;
+      border: 2px solid rgb(0, 31, 133);
+    }
   }
   
-  .Recommended button:hover {
-    transition: all 0.3s ease 0s;
-    background-color: rgb(191, 199, 241);
-  }
+  
   .SearchItem {
-    margin: 5% 0% 0% 17%;
+    margin: 3% 0% 0% 25%;
   }
+
   .StackedColumn100 {
     background-image: url("./images/Stackedcolum100.png");
     background-color: #ffffff;

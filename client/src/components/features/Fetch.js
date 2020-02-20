@@ -1,11 +1,12 @@
-const featurePost =  async (data) => {
-    const postJson = await fetch("http://192.168.100.99:5000/features/feature", {
+const featurePost =  async (data,feature) => {
+    const params =  Object.assign(data,feature)
+    const postJson = await fetch("http://192.168.100.175:5000/features/feature", {
         method: 'POST', 
         headers: { 
             'Content-Type': 'application/json',
             'Accept' : '*/*'
         },
-        body : JSON.stringify(data)
+        body : JSON.stringify(params)
     })
     //.then(response => console.log(response))
     .then(response => response.json())
@@ -13,7 +14,7 @@ const featurePost =  async (data) => {
         const moment = require('moment') 
         const requiredPattern = 'YYYY-MM-DD HH:mm:ss.SSS';        
 
-        if (data.Table === "WaveIndex"){                    
+        if (feature.Table === "WaveIndex"){                    
             JSON.stringify(json.map(function (record)  {                      
                 record.startTime = moment(record.startTime).format(requiredPattern);
                 record.stopTime = moment(record.stopTime).format(requiredPattern);                          
@@ -47,7 +48,7 @@ const featurePost =  async (data) => {
 }
 
 const featureGet =  async (data) => {
-    const GetJson = await fetch("http://192.168.100.99:5000/features/feature/statistics", {
+    const GetJson = await fetch("http://192.168.100.175:5000/features/feature/statistics", {
         method: 'POST', 
         headers: { 
             'Content-Type': 'application/json',
@@ -57,12 +58,12 @@ const featureGet =  async (data) => {
     })
     //.then(response => console.log(response))
     .then(response => response.json())
-    .then((json) => {            
+    .then((json) => {      
         return json
     })
     .catch(err => {
         console.log(err)
-    });  
+    });      
     return GetJson
 }
 

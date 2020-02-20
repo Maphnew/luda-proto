@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import Select from 'react-select'
-import DateTimePicker from 'react-datetime-picker';
+import DateRangePicker from 'react-bootstrap-daterangepicker';
+// you will need the css that comes with bootstrap@3. if you are using
+// a tool like webpack, you can do the following:
+import 'bootstrap/dist/css/bootstrap.css';
+// you will also need the css that comes with bootstrap-daterangepicker
+import 'bootstrap-daterangepicker/daterangepicker.css';
+
 class DataSelector extends Component { 
     state = { 
         selectedOption:{},
         waveMaster : [], 
         startdate: new Date(),
-        stopdate: new Date()
+        stopdate: new Date(),
+        showPopup: false,  
     };        
 
     componentDidMount() {
@@ -14,7 +21,7 @@ class DataSelector extends Component {
             this.setState({ selectedOption :  {Level1: "Level1", Level2: "Level2", Level3:"Level3", Level4: "Level4", Level5: "Level5"} });       
         }
 
-        fetch("http://192.168.100.99:5000/features/info", {method: 'GET'})
+        fetch("http://192.168.100.175:5000/features/info", {method: 'GET'})
         .then(response => response.json())
         .then((json) => {            
             this.setState({ waveMaster:json }); 
@@ -26,8 +33,12 @@ class DataSelector extends Component {
         this.setState({ selectedOption }); // this will update the state of selected therefore updating value in react-select
     }
 
-    onStartDateChange = startdate => this.setState({ startdate })
-    onStopDateChange = stopdate => this.setState({ stopdate })
+    onChange = async (event, picker) => {
+        await this.setState({ startdate:picker.startDate._d })
+        await this.setState({ stopdate: picker.endDate._d})
+        this.dataloadClick()
+        //console.log(picker.startDate._d,picker.endDate._d);
+    }
 
     dataloadClick = async () => {
         if (this.state.selectedOption.hasOwnProperty("DefColumn")===false) {
@@ -36,7 +47,7 @@ class DataSelector extends Component {
         }
 
         const tagName = this.state.selectedOption.DefServer+"."+this.state.selectedOption.DefTable+"."+this.state.selectedOption.DefColumn
-        const params = {"TagName":tagName, "StartTime" : this.state.startdate, "StopTime" : this.state.stopdate,"Feature":"max","Table":"WaveIndex"}    
+        const params = {"TagName":tagName, "StartTime" : this.state.startdate, "StopTime" : this.state.stopdate}    
         this.props.onDataSubmit(params)
 
     }
@@ -78,64 +89,63 @@ class DataSelector extends Component {
             <div className="Info">
                 <div className="Data">
                 <h4 className = "Subheading"> Data</h4>                 
-                    <Select 
-                        className="ComboBox" 
-                        id = "Level1"
-                        value={selectedOption}
-                        options={Level1}                        
-                        getOptionLabel={(Level1)=>Level1.Level1}
-                        getOptionValue={(Level1)=>Level1.value}
-                        onChange={this.handleChange}
-                    />
-                    <Select 
-                        className="ComboBox" 
-                        id = "Level1"
-                        value={selectedOption}
-                        options={Level2}                        
-                        getOptionLabel={(Level2)=>Level2.Level2}
-                        getOptionValue={(Level2)=>Level2.value}
-                        onChange={this.handleChange}
-                    />
-                    <Select 
-                        className="ComboBox" 
-                        id = "Level3"
-                        value={selectedOption}
-                        options={Level3}                        
-                        getOptionLabel={(Level3)=>Level3.Level3}
-                        getOptionValue={(Level3)=>Level3.value}
-                        onChange={this.handleChange}
-                    />
-                    <Select 
-                        className="ComboBox" 
-                        id = "Level4"
-                        value={selectedOption}
-                        options={Level4}                        
-                        getOptionLabel={(Level4)=>Level4.Level4}
-                        getOptionValue={(Level4)=>Level4.value}
-                        onChange={this.handleChange}
-                    />
-                    <Select 
-                        className="ComboBox" 
-                        id = "Level5"
-                        value={selectedOption}
-                        options={Level5}                        
-                        getOptionLabel={(Level5)=>Level5.Level5}
-                        getOptionValue={(Level5)=>Level5.value}
-                        onChange={this.handleChange}
-                    />
-                <p className = "Subheading"> Search Period</p> 
-                
-                <DateTimePicker className="StartDateTimePicker"
-                    onChange={this.onStartDateChange}
-                    value={this.state.startdate}
+                <Select 
+                    className="ComboBox" 
+                    id = "Level1"
+                    value={selectedOption}
+                    options={Level1}                        
+                    getOptionLabel={(Level1)=>Level1.Level1}
+                    getOptionValue={(Level1)=>Level1.value}
+                    onChange={this.handleChange}
                 />
-                <span className="Swungdash"> ~ </span>
-                <DateTimePicker className="EndDateTimePicker"
-                    onChange={this.onStopDateChange}
-                    value={this.state.stopdate}
+                <Select 
+                    className="ComboBox" 
+                    id = "Level1"
+                    value={selectedOption}
+                    options={Level2}                        
+                    getOptionLabel={(Level2)=>Level2.Level2}
+                    getOptionValue={(Level2)=>Level2.value}
+                    onChange={this.handleChange}
                 />
+                <Select 
+                    className="ComboBox" 
+                    id = "Level3"
+                    value={selectedOption}
+                    options={Level3}                        
+                    getOptionLabel={(Level3)=>Level3.Level3}
+                    getOptionValue={(Level3)=>Level3.value}
+                    onChange={this.handleChange}
+                />
+                <Select 
+                    className="ComboBox" 
+                    id = "Level4"
+                    value={selectedOption}
+                    options={Level4}                        
+                    getOptionLabel={(Level4)=>Level4.Level4}
+                    getOptionValue={(Level4)=>Level4.value}
+                    onChange={this.handleChange}
+                />
+                <Select 
+                    className="ComboBox" 
+                    id = "Level5"
+                    value={selectedOption}
+                    options={Level5}                        
+                    getOptionLabel={(Level5)=>Level5.Level5}
+                    getOptionValue={(Level5)=>Level5.value}
+                    onChange={this.handleChange}
+                />
+
+                <DateRangePicker 
+                    showDropdowns
+                    timePicker
+                    onApply={this.onChange}
+                    onEvent={this.onChange}
+                >
+                <button className="SearchButton" > Search Period</button>
+                </DateRangePicker>
                 <button id="btnPeriod" className="SearchButton" onClick={this.dataloadClick}>Search</button>
-            </div>
+
+                </div>
             </div>
         );
     }    
