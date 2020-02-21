@@ -136,7 +136,6 @@ class PaletteFeature extends Component {
                         <button id={id} key={idx} className="FeatureButton" onClick={func}>{ id }</button>
                     )
                 }
-                return id
             });
         return waveform;
     }
