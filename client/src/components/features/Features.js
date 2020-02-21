@@ -10,6 +10,11 @@ class Features extends Component {
         
     }
 
+    // componentWillUnmount=()=> {
+    //     console.log("fetch : componentWillUnmount")
+    //     localStorage.setItem('featureReq',null)          
+    // }
+
     onGraphShow=(getData)=> {
         this.setState({ graphData: getData});
     }

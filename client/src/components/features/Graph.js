@@ -11,14 +11,15 @@ class Graph extends Component {
     componentWillReceiveProps=async(nextProps)=>{
         if(!equal(this.props, nextProps)){
             if (nextProps.graphData.length!==undefined){
-                this.setState({graphData: nextProps.graphData})
+                await this.setState({graphData: nextProps.graphData})
             }
             else {
-                this.setState({graphData: nextProps.graphData["0"]})
+                await this.setState({graphData: nextProps.graphData["0"]})
             }
-
+                      
             if (nextProps.graph.graphType===undefined &&nextProps.graph.featureType===undefined ){
-                await this.setState({graph:{graphType:"table",featureType:"max"}})             
+                let featureReq = JSON.parse( localStorage.getItem('featureReq'))  
+                await this.setState({graph:{graphType:"table",featureType:featureReq.Feature}})             
             }
             else {
                 await this.setState({graph: nextProps.graph})   
@@ -57,8 +58,7 @@ class Graph extends Component {
           return tempValue;
       }
 
-    graphChoose = (graph) =>{
-        // console.log("graph",graph)            
+    graphChoose = (graph) =>{          
         if (graph==="table"){            
             if(this.state.graphData.length>0){
                 return(
@@ -73,8 +73,7 @@ class Graph extends Component {
 
         }
 
-        var tempValue = this.rawToxyData();
-        //console.log(tempValue)
+        var tempValue = this.rawToxyData();        
         switch(graph) {
             case 'scatterplot':
                 return(
@@ -114,6 +113,7 @@ class Graph extends Component {
 
     render() {                   
         //console.log("data_length : ",this.props.graphData.length,"type : ",this.state.graph)
+        // console.log(this.state.graph)
         if (this.props.graphData.length ===undefined) {  
             return(
                 <div>
