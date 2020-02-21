@@ -31,6 +31,8 @@ router.post('/indexed/wavelist', async (req, res) => {
 
     await dbSelect(queryWavelist).then((result) => {
         res.send(result)
+    }).catch((e) => {
+        res.status(500).send(e)
     })
 })
 
