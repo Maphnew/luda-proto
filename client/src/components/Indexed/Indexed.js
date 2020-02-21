@@ -30,7 +30,7 @@ class Index extends Component {
     {
       const params = { "TagName": nextProps.values.TagName, "StartTime": nextProps.values.StartTime, "StopTime": nextProps.values.StopTime }
       console.log(params)
-      fetch("http://192.168.100.99:5050/indexed/wavelist", {
+      fetch("http://192.168.100.175:5000/indexed/wavelist", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
