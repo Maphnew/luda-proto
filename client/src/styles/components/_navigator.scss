@@ -61,7 +61,6 @@
         border-radius:12px;
         width: 60%;
         height: 35px;
-
     }
 }
 
@@ -74,4 +73,75 @@
     border-radius:12px;
     height: 35px;
     width: 60%;
+}
+
+@media screen and (max-width: 1024px) {
+    .naviMenu2 {
+        width: 70%;
+        &:hover {
+            width: 70%;
+        }
+    }
+    .naviMenu0 {
+        width: 70%;
+        &:hover {
+            width: 70%;
+        }
+    }
+    .naviMenu1 {
+        width: 70%;
+        &:hover {
+            width: 70%;
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .naviMenu2 {
+        width: 70%;
+        &:hover {
+            width: 70%;
+        }
+    }
+    .naviMenu0 {
+        width: 70%;
+        &:hover {
+            width: 70%;
+        }
+    }
+    .naviMenu1 {
+        width: 70%;
+        &:hover {
+            width: 70%;
+        }
+    }
+}
+
+@media screen and (max-width: 420px) {
+    .navigator {
+    }
+    .naviMenu2 {
+        width: 100%;
+        margin-right: 15%;
+        margin-left: 15%;
+        &:hover {
+            width: 100%;
+        }
+    }
+    .naviMenu0 {
+        width: 100%;
+        margin-right: 15%;
+        margin-left: 15%;
+        &:hover {
+            width: 100%;
+        }
+    }
+    .naviMenu1 {
+        width: 100%;
+        margin-right: 15%;
+        margin-left: 15%;
+        &:hover {
+            width: 100%;
+        }
+    }
 }

@@ -187,3 +187,15 @@
     border-radius: 15px;
     background-position: center center;
   }
+
+
+  @media screen and (max-width: 768px) {
+    .Recommended button{
+      width: 22%;
+      height: 90px;
+      padding: 1%;
+      font-size: 0.5em;
+      margin: 1%;
+      padding-top: 12%;
+    }
+  }
