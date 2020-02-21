@@ -54,7 +54,6 @@
     font-weight: bold;
     transition: 0.5s ease 0s;
     &:hover {
-        padding: 2%;
         text-align: center;
         color: #224183;
         font-weight:bold;
@@ -64,4 +63,16 @@
         margin-right: auto;
         width: 80%;
     }
+}
+
+.is-active {
+    padding: 2%;
+    text-align: center;
+    color: #224183;
+    font-weight:bold;
+    border:2px solid #224183;
+    border-radius:12px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
 }
