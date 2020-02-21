@@ -3,7 +3,7 @@ import Home from './Home'
 import Features from './features/Features'
 import DataSelector from './dataSelector/DataSelector'
 import Raw from './Raw'
-import Indexed from './Indexed'
+import Indexed from './Indexed/Indexed'
 import NotFoundPage from './NotFoundPage'
 import {Route, Switch} from 'react-router-dom'
 
@@ -30,7 +30,9 @@ class Body extends Component{
                         path="/raw" component={Raw} exact={true}
                     />
                     <Route 
-                        path="/indexed" component={Indexed} exact={true}
+                        path="/indexed" 
+                        render={() => <Indexed values={this.state.selectedOption}/> }
+                        exact={true}
                     />
                     <Route 
                         path="/features/feature"
