@@ -8,7 +8,7 @@ router.get('/indexed', (req, res) => {
     res.send('Hello Indexed')
 })
 
-router.post('/indexed/wavelist', (req, res) => {
+router.post('/indexed/wavelist', async (req, res) => {
     console.log(req.body)
     const tagNameSplit = req.body.TagName.split(".")
     startTime = new Date(req.body.StartTime)
@@ -27,8 +27,9 @@ router.post('/indexed/wavelist', (req, res) => {
         ) t2
         WHERE t1.index_date = t2.index_date AND t1.index_num = t2.index_num
     `
+    console.log(queryWavelist)
 
-    dbSelect(queryWavelist).then((result) => {
+    await dbSelect(queryWavelist).then((result) => {
         res.send(result)
     })
 })
