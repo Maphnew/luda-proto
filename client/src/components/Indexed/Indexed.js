@@ -51,6 +51,7 @@ class Index extends Component {
             record.startTime = moment(record.startTime).format(requiredPattern);
             record.stopTime = moment(record.stopTime).format(requiredPattern);
             return record;
+            console.record();
           }));
         })
         .catch(err => console.log(err));
