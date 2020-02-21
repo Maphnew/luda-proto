@@ -25,50 +25,46 @@ class Index extends Component {
     // console.log("componentDidMount",this.props.values.StopTime)
   }
 
-  componentWillReceiveProps = async(nextProps) => {
-    if(!equal(this.props.values, nextProps.values)) // Check if it's a new user, you can also use some unique property, like the ID  (this.props.user.id !== prevProps.user.id)
+  componentWillReceiveProps = async (nextProps) => {
+    if (!equal(this.props.values, nextProps.values)) // Check if it's a new user, you can also use some unique property, like the ID  (this.props.user.id !== prevProps.user.id)
     {
-        // console.log("componentWillReceiveProps",this.props.values.TagName)
-        // console.log("componentWillReceiveProps",this.props.values.StartTime)
-        // console.log("componentWillReceiveProps",this.props.values.StopTime)
-        // console.log("componentWillReceiveProps",nextProps.values.TagName)
-        // console.log("componentWillReceiveProps",nextProps.values.StartTime)
-        // console.log("componentWillReceiveProps",nextProps.values.StopTime)
-    
-      }      
-}
-
-  /*Search버튼 클릭*/
-  SearchClick = async(nextProps) => {
-    const params = { "TagName": nextProps.values.TagName, "StartTime": nextProps.values.StartTime, "StopTime": nextProps.values.stopTime }
-    console.log(params)
-    fetch("http://192.168.100.175:5000/indexed/wavelist", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': '*/*'
-      },
-      body: JSON.stringify(params)
-      //body: '"Tagname":"S1.HisI"'
-    })
-      .then(response => {
-        console.log(response)
-        response.json()
-        console.log(response.json())
+      const params = { "TagName": nextProps.values.TagName, "StartTime": nextProps.values.StartTime, "StopTime": nextProps.values.StopTime }
+      console.log(params)
+      fetch("http://192.168.100.99:5050/indexed/wavelist", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': '*/*'
+        },
+        body: JSON.stringify(params)
+        //body: '"Tagname":"S1.HisI"'
       })
-      .then((json) => {
-        const moment = require('moment')
-        JSON.stringify(json.map(function (record) {
-          var requiredPattern = 'YYYY-MM-DD HH:mm:ss.SSS';
-          record.startTime = moment(record.startTime).format(requiredPattern);
-          record.stopTime = moment(record.stopTime).format(requiredPattern);
-          return record;
-        }));
-      })
-      .catch(err => console.log(err));
+        .then(response => {
+          console.log(response)
+          const json = response.json()
+          console.log(json)
+        })
+        .then((json) => {
+          const moment = require('moment')
+          JSON.stringify(json.map(function (record) {
+            var requiredPattern = 'YYYY-MM-DD HH:mm:ss.SSS';
+            record.startTime = moment(record.startTime).format(requiredPattern);
+            record.stopTime = moment(record.stopTime).format(requiredPattern);
+            return record;
+          }));
+        })
+        .catch(err => console.log(err));
+    }
   }
 
   render() {
+    const wavelist = []
+    this.state.waveMaster.map(function(item){
+      wavelist.push(item);
+      console.log(wavelist)
+      return wavelist;
+    })
+
     return (
       <div>
         <div className="Layout1">
@@ -81,7 +77,7 @@ class Index extends Component {
         </div>
         <div className="Layout2">
           <div className="Total">
-              <Graph></Graph>
+            <Graph></Graph>
             <div className="WaveListGraphTable">
               <GraphTable></GraphTable>
             </div>
