@@ -9,9 +9,9 @@
 }
 
 .naviMenu0 {
+    width: 60%;
     grid-column: 1/2;
     color: $blue;
-    text-align: center;
     font-weight: bold;
     transition: 0.5s ease 0s;
     text-decoration: none;
@@ -21,17 +21,35 @@
         color: #224183;
         font-weight:bold;
         border:2px solid #224183;
+        width: 60%;
         border-radius:12px;
-        margin-left: auto;
-        margin-right: auto;
-        width: 80%;
+        height: 35px;
+
     }
 
 }
 .naviMenu1 {
+    width: 60%;
     grid-column: 2/3;
     color: $blue;
-    text-align: center;
+    font-weight: bold;
+    transition: 0.5s ease 0s;
+    &:hover {
+        padding: 2%;
+        color: #224183;
+        font-weight:bold;
+        text-align: center;
+        border:2px solid #224183;
+        border-radius:12px;
+        width: 60%;
+        height: 35px;
+    }
+}
+
+.naviMenu2 {
+    width: 60%;
+    grid-column: 3/4;
+    color: $blue;
     font-weight: bold;
     transition: 0.5s ease 0s;
     &:hover {
@@ -41,38 +59,19 @@
         font-weight:bold;
         border:2px solid #224183;
         border-radius:12px;
-        margin-left: auto;
-        margin-right: auto;
-        width: 80%;
-    }
-}
+        width: 60%;
+        height: 35px;
 
-.naviMenu2 {
-    grid-column: 3/4;
-    color: $blue;
-    text-align: center;
-    font-weight: bold;
-    transition: 0.5s ease 0s;
-    &:hover {
-        text-align: center;
-        color: #224183;
-        font-weight:bold;
-        border:2px solid #224183;
-        border-radius:12px;
-        margin-left: auto;
-        margin-right: auto;
-        width: 80%;
     }
 }
 
 .is-active {
     padding: 2%;
-    text-align: center;
     color: #224183;
+    text-align: center;
     font-weight:bold;
     border:2px solid #224183;
     border-radius:12px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 80%;
+    height: 35px;
+    width: 60%;
 }
