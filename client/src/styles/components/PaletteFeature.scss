@@ -26,22 +26,25 @@
     }
   }
 
-table {
+.GraphEntry table {
       table-layout: fixed;
+      text-align: center;
       border-collapse: collapse;
       border-right: 1px solid #e8e8e8;
       border-left: 1px solid #e8e8e8;
+      
   }   
   
-th {
+.GraphEntry th {
       background: url(https://jackrugile.com/images/misc/noise-diagonal.png), linear-gradient(#486199, #425c96);
       color: #fff;
       padding: 1%;
+      text-align: center;
+      border-radius: 10px 10px 0px 0px;
       font-size: 0.9em;
   }
 
-td {
-      text-align: center;
+  .GraphEntry td {
       border-top: 1px solid #fff;
       border-bottom: 1px solid #e8e8e8;
       padding: 0.5% 1%;
@@ -50,12 +53,12 @@ td {
       font-size: 0.8em;
   }
   
-tbody:hover td {
+  .GraphEntry tbody:hover td {
       color: transparent;
       text-shadow: 0 0 1px #aaa;
   }
   
-tbody:hover tr:hover td {
+  .GraphEntry tbody:hover tr:hover td {
       color: #444;
       text-shadow: 0 1px 0 #fff;
       font-weight: bold;
