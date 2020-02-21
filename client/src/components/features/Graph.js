@@ -58,7 +58,7 @@ class Graph extends Component {
       }
 
     graphChoose = (graph) =>{
-        console.log("graph",graph)            
+        // console.log("graph",graph)            
         if (graph==="table"){            
             if(this.state.graphData.length>0){
                 return(
