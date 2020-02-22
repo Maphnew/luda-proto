@@ -187,7 +187,16 @@
     border-radius: 15px;
     background-position: center center;
   }
-
+  @media screen and (max-width: 1024px) {
+    .Recommended button{
+      width: 22%;
+      height: 65px;
+      font-size: 0.5em;
+      margin: 1%;
+      padding-top: 10%;
+      background-position: center 22%;
+    }
+  }
 
   @media screen and (max-width: 768px) {
     .Recommended button{
@@ -196,6 +205,17 @@
       padding: 1%;
       font-size: 0.5em;
       margin: 1%;
-      padding-top: 12%;
+      padding-top: 10%;
+    }
+  }
+
+  @media screen and (max-width: 420px) {
+    .Recommended button{
+      width: 22%;
+      height: 70px;
+      font-size: 0.5em;
+      margin: 1%;
+      padding-top: 10%;
+      background-position: center 22%;
     }
   }
