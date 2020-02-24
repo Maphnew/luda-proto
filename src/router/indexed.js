@@ -8,6 +8,27 @@ router.get('/indexed', (req, res) => {
     res.send('Hello Indexed')
 })
 
+router.post('/indexed/waveform', async (req,res) => {
+    console.log(req.body)
+    const tagNameSplit = req.body.TagName.split(".")
+    const [ , table = 'HisItemCurr', column = 'Item005' ] = tagNameSplit
+    startTime = new Date(req.body.StartTime)
+    stopTime = new Date(req.body.StopTime)
+    const start = moment(startTime).format('YYYY-MM-DD HH:mm:ss.SSS')
+    const stop = moment(stopTime).format('YYYY-MM-DD HH:mm:ss.SSS')
+    const queryWaveForm = `
+        SELECT DataSavedTime, ${column}
+        FROM ${table}
+        WHERE DataSavedTime BETWEEN '${start}' AND '${stop}'
+    `
+    console.log(queryWaveForm)
+    await dbSelect(queryWaveForm).then((result) => {
+        res.send(result)
+    }).catch((e) => {
+        res.status(500).send(e)
+    })
+})
+
 router.post('/indexed/wavelist', async (req, res) => {
     console.log(req.body)
     const tagNameSplit = req.body.TagName.split(".")
