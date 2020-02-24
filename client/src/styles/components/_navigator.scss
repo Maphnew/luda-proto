@@ -95,7 +95,31 @@
         }
     }
 }
+@media screen and (max-width: 850px) {
+    .naviMenu2 {
+        width: 70%;
+        &:hover {
+            width: 80%;
+        }
+    }
+    .naviMenu0 {
+        width: 70%;
+        &:hover {
+            width: 80%;
+        }
+    }
+    .naviMenu1 {
+        width: 70%;
+        &:hover {
+            width: 80%;
+        }
+    }
+    .is-active {
+        padding: 2%;
+        width: 80%;
+    }
 
+}
 @media screen and (max-width: 768px) {
     .naviMenu2 {
         width: 70%;
@@ -115,33 +139,43 @@
             width: 70%;
         }
     }
+        .is-active {
+        padding: 2%;
+        width: 80%;
+    }
 }
 
 @media screen and (max-width: 420px) {
     .navigator {
+        margin-top: 6%;
+        margin-left: 5%;
     }
     .naviMenu2 {
-        width: 100%;
+        width: 80%;
         margin-right: 15%;
         margin-left: 15%;
         &:hover {
-            width: 100%;
+            width: 80%;
         }
     }
     .naviMenu0 {
-        width: 100%;
+        width: 80%;
         margin-right: 15%;
-        margin-left: 15%;
+        margin-left: 20%;
         &:hover {
-            width: 100%;
+            width: 80%;
         }
     }
     .naviMenu1 {
-        width: 100%;
+        width: 80%;
         margin-right: 15%;
         margin-left: 15%;
         &:hover {
-            width: 100%;
+            width: 80%;
         }
+    }
+    .is-active {
+        padding: 2%;
+        width: 80%;
     }
 }
