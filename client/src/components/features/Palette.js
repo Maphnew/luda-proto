@@ -38,14 +38,14 @@ class Palette extends Component {
                 <div>
                     <h3 className = "PaletteTitle"> PALETTE</h3> 
                     <div className="ButtonEntry"> 
-                        <NavLink  to="/features/feature" activeClassName="ButtonClick">
-                            <div className="ButtonDefault">
+                        <NavLink  to="/features/feature" activeClassName="ButtonClick"  className="ButtonDefault>
+                            <div">
                                 Feature
                             </div>
                             {/* <button id="btnFeature" className={this.state.btnId==="btnFeature" ? "ButtonClick": "ButtonDefault"} onClick={this.handleClick}>Feature</button> */}
                         </NavLink >
-                        <NavLink  to="/features/graph" activeClassName="ButtonClick">
-                            <div className="ButtonDefault">
+                        <NavLink  to="/features/graph" activeClassName="ButtonClick"  className="ButtonDefault">
+                            <div>
                                 Graph
                             </div>
                             {/* <button id="btnGraph" className={this.state.btnId==="btnGraph"  ? "ButtonClick": "ButtonDefault"} onClick={this.handleClick}>Graph</button> */}
