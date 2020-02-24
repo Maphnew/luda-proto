@@ -211,6 +211,7 @@
 
   @media screen and (max-width: 420px) {
     .Recommended button{
+      word-break: keep-all;
       width: 22%;
       height: 70px;
       font-size: 0.5em;
