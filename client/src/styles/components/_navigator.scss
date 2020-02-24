@@ -13,18 +13,16 @@
     grid-column: 1/2;
     color: $blue;
     font-weight: bold;
-    transition: 0.5s ease 0s;
-    text-decoration: none;
     &:hover {
         padding: 2%;
-        text-align: center;
         color: #224183;
         font-weight:bold;
+        text-align: center;
         border:2px solid #224183;
-        width: 60%;
         border-radius:12px;
+        width: 60%;
         height: 35px;
-
+        margin-top: -2.8%;
     }
 
 }
@@ -33,7 +31,6 @@
     grid-column: 2/3;
     color: $blue;
     font-weight: bold;
-    transition: 0.5s ease 0s;
     &:hover {
         padding: 2%;
         color: #224183;
@@ -43,6 +40,7 @@
         border-radius:12px;
         width: 60%;
         height: 35px;
+        margin-top: -2.8%;
     }
 }
 
@@ -51,16 +49,16 @@
     grid-column: 3/4;
     color: $blue;
     font-weight: bold;
-    transition: 0.5s ease 0s;
     &:hover {
         padding: 2%;
-        text-align: center;
         color: #224183;
         font-weight:bold;
+        text-align: center;
         border:2px solid #224183;
         border-radius:12px;
         width: 60%;
         height: 35px;
+        margin-top: -2.8%;
     }
 }
 
@@ -73,6 +71,7 @@
     border-radius:12px;
     height: 35px;
     width: 60%;
+    margin-top: -2.8%;
 }
 
 @media screen and (max-width: 1024px) {
