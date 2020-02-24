@@ -11,18 +11,19 @@ router.get('/indexed', (req, res) => {
 router.post('/indexed/wavelist', async (req, res) => {
     console.log(req.body)
     const tagNameSplit = req.body.TagName.split(".")
+    const [ server = 'S1', table = 'HisItemCurr', column = 'Item005' ] = tagNameSplit
     startTime = new Date(req.body.StartTime)
     stopTime = new Date(req.body.StopTime)
     const start = moment(startTime).format('YYYY-MM-DD HH:mm:ss.SSS')
     const stop = moment(stopTime).format('YYYY-MM-DD HH:mm:ss.SSS')
     const queryWavelist = `
-        SELECT t2.startTime, t2.stopTime, JSON_LENGTH(JSON_KEYS(t1.parts)) AS split
+        SELECT t2.index_date, t2.index_num, t2.startTime, t2.stopTime, JSON_LENGTH(JSON_KEYS(t1.parts)) AS split, JSON_MERGE(t1.parts, t1.features) AS parts 
         FROM WaveSplit t1, (
             SELECT index_date, index_num, startTime, stopTime
             FROM WaveIndex
-            WHERE defServer = '${tagNameSplit[0]}' AND
-            defTable = '${tagNameSplit[1]}' AND
-            defColumn = '${tagNameSplit[2]}' AND
+            WHERE defServer = '${server}' AND
+            defTable = '${table}' AND
+            defColumn = '${column}' AND
             startTime BETWEEN '${start}' AND '${stop}'
         ) t2
         WHERE t1.index_date = t2.index_date AND t1.index_num = t2.index_num
