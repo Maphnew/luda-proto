@@ -1,6 +1,6 @@
 const express = require('express')
 const moment = require('moment')
-const {dbSelect} = require('../database/select')
+const {dbSelect} = require('../database/db')
 const router = new express.Router()
 
 

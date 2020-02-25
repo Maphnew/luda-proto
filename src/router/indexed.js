@@ -1,5 +1,5 @@
 const express = require('express')
-const {dbSelect} = require('../database/select')
+const { dbSelect, dbUpdate } = require('../database/db')
 const moment = require('moment')
 const router = new express.Router()
 
@@ -26,6 +26,35 @@ router.post('/indexed/waveform', async (req,res) => {
         res.send(result)
     }).catch((e) => {
         res.status(500).send(e)
+    })
+})
+
+router.patch('/indexed/wavelist', async (req, res) => {
+    console.log(req.body)
+    const indexDate = moment(req.body.index_date).format('YYYY-MM-DD')
+    const indexNum = req.body.index_num
+    const json = JSON.parse(req.body.parts)
+    const count = Object.keys(json).length
+
+    let queryUpdateWaveList = `
+        UPDATE WaveSplit SET parts = JSON_REPLACE(parts,
+    `
+    for (i=0; i<count-1; i++) {
+        let stopTimeTemp = json[`${i}`]['stopTime']
+        let startTimeTemp = json[`${i+1}`]['startTime']
+        let queryTemp = `'$.${i}.stopTime', '${stopTimeTemp}', '$.${i+1}.startTime', '${startTimeTemp}',`
+        queryUpdateWaveList += queryTemp
+    }
+    queryUpdateWaveList = await queryUpdateWaveList.slice(0, -1)
+    queryUpdateWaveList += `
+        )  
+        WHERE index_date = '${indexDate}' AND index_num = ${indexNum};
+    `
+    console.log(queryUpdateWaveList)
+    await dbUpdate(queryUpdateWaveList).then((result) => {
+        res.status(400).send('ok')
+    }).catch((e) => {
+        res.status(400).send(e)
     })
 })
 
