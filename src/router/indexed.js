@@ -33,15 +33,15 @@ router.patch('/indexed/wavelist', async (req, res) => {
     console.log(req.body)
     const indexDate = moment(req.body.index_date).format('YYYY-MM-DD')
     const indexNum = req.body.index_num
-    const json = JSON.parse(req.body.parts)
-    const count = Object.keys(json).length
+    const parts = req.body.parts
+    const count = Object.keys(parts).length
 
     let queryUpdateWaveList = `
         UPDATE WaveSplit SET parts = JSON_REPLACE(parts,
     `
     for (i=0; i<count-1; i++) {
-        let stopTimeTemp = json[`${i}`]['stopTime']
-        let startTimeTemp = json[`${i+1}`]['startTime']
+        let stopTimeTemp = parts[`${i}`]['stopTime']
+        let startTimeTemp = parts[`${i+1}`]['startTime']
         let queryTemp = `'$.${i}.stopTime', '${stopTimeTemp}', '$.${i+1}.startTime', '${startTimeTemp}',`
         queryUpdateWaveList += queryTemp
     }
