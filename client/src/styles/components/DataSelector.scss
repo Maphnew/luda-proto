@@ -22,6 +22,7 @@
     font-size: 0.9em;
     float: left;
     margin-right: 1%;
+
   }
 
 .StartDateTimePicker, .EndDateTimePicker {
@@ -84,6 +85,16 @@
   }
   .ComboBox {
     width: 10%;
+  }
+}
+
+@media screen and (max-width: 1290px) {
+  .ComboBox {
+    margin-top: 0.25%;
+  }
+  .SearchButton {
+    margin-top: 0.6%;
+    padding: 0.8%;
   }
 }
 @media screen and (max-width: 1246px) {

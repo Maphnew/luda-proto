@@ -63,7 +63,7 @@
   border-radius: 5px;
 }
   .Layout1{
-    margin: 2% 3% 1% 3%;
+    margin: 1% 3% 1% 1%;
     width: 35%;
     float: left;
     background: #ffffff;
@@ -71,18 +71,20 @@
     margin-left: -40%;
     padding-top: 1%;
     padding-bottom: 1%;
-    height: auto;
+    height: 75vh;
   }
   
   .Layout2{
     margin: 1% 3% 1% 1%;
     width: 55%;
-    background: #ffffff;
-    padding: 1%;
     float: right;
+    background: #ffffff;
     border-radius: 5px;
+    margin-left: -40%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    height: 75vh;
   }
-  
   .WaveListGraphTable table {
     font-family: 'Jeju Gothic', sans-serif;
     table-layout: fixed;
@@ -96,7 +98,6 @@
   font-family: 'Jeju Gothic', sans-serif;
     background: url(https://jackrugile.com/images/misc/noise-diagonal.png), linear-gradient(#486199, #425c96);
     color: #fff;
-    font-weight: #ffffff;
     padding: 1%;
     font-size: 0.9em;
     text-align: center;
