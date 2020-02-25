@@ -61,8 +61,6 @@ class Graph extends Component {
 				
 		return (
 			<div>
-			<button className="Reset_btn">Reset</button>
-            <button className="Save_btn">Save</button>
             <div className="WaveListGraph">
 		
 			<CanvasJSChart options = {options} 
