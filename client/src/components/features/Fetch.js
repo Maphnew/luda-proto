@@ -10,7 +10,7 @@ const featurePost =  async (data,feature) => {
     })
     //.then(response => console.log(response))
     .then(response => response.json())
-    .then((json) => {                 
+    .then((json) => {          
         const moment = require('moment') 
         const requiredPattern = 'YYYY-MM-DD HH:mm:ss.SSS';        
 

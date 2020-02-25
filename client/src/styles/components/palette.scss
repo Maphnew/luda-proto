@@ -33,27 +33,25 @@
     display:inline-block;
     color: #ffffff;
     border: 1px solid;
+    padding: 1% 4% 1% 4%;
     border-radius: 5px;
-    width: 100%;
-    height: 100%;
   }
   
  
   
   .ButtonDefault {
     box-shadow:inset 0px -3px 7px 0px #29bbff;
-    background:linear-gradient(to bottom, #2dabf9 5%, #0688fa 100%);
     background-color:#2dabf9;
     display:inline-block;
     border: 1px solid;
     border-radius: 5px;
     color: #ffffff;
-    width: 100%;
-    height: 100%;
+    padding: 1% 4% 1% 4%;
     -webkit-transition: all 0.2s ease-out;
     transition: all 0.2s ease-out;
     &:hover {
       background: rgb(99, 189, 245);
+      color: #ffffff;
     }
   }
 

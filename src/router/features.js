@@ -1,6 +1,6 @@
 const express = require('express')
 const moment = require('moment')
-const {dbSelect} = require('../database/select')
+const {dbSelect} = require('../database/db')
 const router = new express.Router()
 
 
@@ -65,18 +65,42 @@ router.post('/features/feature', async (req, res) => {
     const stop = moment(stopTime).format('YYYY-MM-DD HH:mm:ss.SSS')
     let query = ''
     if (req.body.Table == 'WaveIndex') {
-        query  = `
-            SELECT startTime, stopTime, json_value(basicFeatures,'$.${req.body.Feature}') as 'values'
-            FROM ${req.body.Table} 
-            WHERE defServer = '${tagNameSplit[0]}' AND
-            defTable = '${tagNameSplit[1]}' AND 
-            defColumn = '${tagNameSplit[2]}' AND 
-            startTime BETWEEN '${start}' AND '${stop}';
-        `
-        // console.log(query)
-        await dbSelect(query).then((resultdbSelect) => {
-            res.send(resultdbSelect)
-        })
+        if (req.body.Feature == 'length') {
+            query = `
+                SELECT startTime, stopTime, ROUND(TIMESTAMPDIFF(MICROSECOND, startTime, stopTime)/1000,0) as 'values'
+                FROM ${req.body.Table} 
+                WHERE defServer = '${tagNameSplit[0]}' AND
+                defTable = '${tagNameSplit[1]}' AND 
+                defColumn = '${tagNameSplit[2]}' AND 
+                startTime BETWEEN '${start}' AND '${stop}';
+            `
+            console.log(query)
+            try {
+                await dbSelect(query).then((resultdbSelect) => {
+                    res.send(resultdbSelect)
+                })
+            } catch(e) {
+                res.status(500).send(e)
+            }
+        } else {
+            query  = `
+                SELECT startTime, stopTime, json_value(basicFeatures,'$.${req.body.Feature}') as 'values'
+                FROM ${req.body.Table} 
+                WHERE defServer = '${tagNameSplit[0]}' AND
+                defTable = '${tagNameSplit[1]}' AND 
+                defColumn = '${tagNameSplit[2]}' AND 
+                startTime BETWEEN '${start}' AND '${stop}';
+            `
+            console.log(query)
+            try {
+                await dbSelect(query).then((resultdbSelect) => {
+                    res.send(resultdbSelect)
+                })
+            } catch(e) {
+                res.status(500).send(e)
+            }
+        }
+        
     } else if (req.body.Table == 'WaveSplit') {
         query = `
             SELECT JSON_MERGE(t1.parts, t1.features) as parts
@@ -92,7 +116,7 @@ router.post('/features/feature', async (req, res) => {
         `
         console.log(query)
 
-        resultdbSelect(query, req.body)
+        await resultdbSelect(query, req.body)
         .then((splitResults) => {
             res.send(splitResults)
         })
@@ -114,13 +138,17 @@ router.post('/features/feature/statistics', async (req, res) => {
             defColumn = '${tagNameSplit[2]}' AND 
             startTime BETWEEN '${start}' AND '${stop}';
     `
+    console.log(queryFeaturesStatistics)
     try {
         await dbSelect(queryFeaturesStatistics).then((result) =>{
-            console.log('statistics keys', result[0].keys)
-            res.send(result[0].keys)
+            // console.log('statistics keys',result[0].keys)
+            const json = JSON.parse(result[0].keys)
+            json.push('length')
+            // console.log(json, typeof(json))
+            res.send(json)
         })
     } catch(e) {
-        res.status(500).send(e)
+        res.status(200).send(e)
     }
     
     

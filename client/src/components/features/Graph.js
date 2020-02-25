@@ -1,26 +1,32 @@
 import React, { Component } from 'react';
 import {bubblechart,bar,stackedarea,area,scatter,table} from './Chart';
-
+import equal from 'fast-deep-equal'
 class Graph extends Component { 
     state = {
-        graph : [], 
+        graphData : [], 
         graphSplit : {},       
-        conversionValue:[],
-        graphType : "",
+        graph : "",
     }
 
-    componentWillReceiveProps(nextProps){
-        if (nextProps.graphData.length!==undefined){
-            this.setState({graph: nextProps.graphData})
-        }
-        else {
-            this.setState({graph: nextProps.graphData["0"]})
-        }
-        this.setState({graphType: nextProps.graphType.toLowerCase()},() => {
-            if (this.state.graphType===""){
-                this.setState({graphType: "table"})
+    componentWillReceiveProps=async(nextProps)=>{
+        if(!equal(this.props, nextProps)){
+            if (nextProps.graphData.length!==undefined){
+                await this.setState({graphData: nextProps.graphData})
             }
-        })        
+            else {
+                await this.setState({graphData: nextProps.graphData["0"]})
+            }
+                      
+            if (nextProps.graph.graphType===undefined &&nextProps.graph.featureType===undefined ){
+                let featureReq = JSON.parse( localStorage.getItem('featureReq'))  
+                await this.setState({graph:{graphType:"table",featureType:featureReq.Feature}})             
+            }
+            else {
+                await this.setState({graph: nextProps.graph})   
+            }
+            
+        }
+      
     }
 
     btn_SplitWaveform=()=>{
@@ -34,11 +40,11 @@ class Graph extends Component {
     }
 
     handleClick = (e, value) =>{      
-        this.setState({graph:value})
+        this.setState({graphData:value})
     }    
     rawToxyData = ()=> {
         var tempValue = []
-        this.state.graph.map(item => {
+        this.state.graphData.map(item => {
             const moment = require('moment') 
             var requiredPattern = 'YYYY-MM-DD HH:mm:ss.SSS';
             var tempJson = {
@@ -52,50 +58,52 @@ class Graph extends Component {
           return tempValue;
       }
 
-    graphChoose = (graph) =>{      
-        if(graph==="" ){
-            return 
-        }      
-        if (graph==="table"){
-            return(
-                <div>
-                    {table(this.state.graph)}
-                </div>                    
-            )
+    graphChoose = (graph) =>{          
+        if (graph==="table"){            
+            if(this.state.graphData.length>0){
+                return(
+                    <div>
+                        {table(this.state.graphData,this.state.graph.featureType)}
+                    </div>                    
+                )
+            }
+            else {
+                alert("No data")
+            }
+
         }
 
-        var tempValue = this.rawToxyData();
-        //console.log(tempValue)
+        var tempValue = this.rawToxyData();        
         switch(graph) {
             case 'scatterplot':
                 return(
                     <div>
-                        {scatter(tempValue)}
+                        {scatter(tempValue,this.state.graph.featureType)}
                     </div>
                     
                 )      
             case 'area':
                 return(
                     <div>
-                        {area(tempValue)}
+                        {area(tempValue,this.state.graph.featureType)}
                     </div>                    
                 ) 
             case 'stackedarea':
                 return(
                     <div>
-                        {stackedarea(tempValue)}
+                        {stackedarea(tempValue,this.state.graph.featureType)}
                     </div>                    
                 ) 
             case 'bar':
                 return(
                     <div>
-                        {bar(tempValue)}
+                        {bar(tempValue,this.state.graph.featureType)}
                     </div>                    
                 ) 
             case 'bubblechart':
                 return(
                     <div>
-                        {bubblechart(tempValue)}
+                        {bubblechart(tempValue,this.state.graph.featureType)}
                     </div>                    
                 ) 
             default:
@@ -103,8 +111,9 @@ class Graph extends Component {
         }
     }
 
-    render() {                    
-        //console.log("data_length : ",this.props.graphData.length,"type : ",this.state.graphType)
+    render() {                   
+        //console.log("data_length : ",this.props.graphData.length,"type : ",this.state.graph)
+        // console.log(this.state.graph)
         if (this.props.graphData.length ===undefined) {  
             return(
                 <div>
@@ -113,7 +122,7 @@ class Graph extends Component {
                         <p className="buttontext">button</p>
                     </div>    
                     <div>                                   
-                        {this.graphChoose(this.state.graphType)}        
+                        {this.graphChoose(this.state.graph.graphType)}        
                     </div>          
                 </div>                
             )
@@ -121,7 +130,7 @@ class Graph extends Component {
         else {
             return(
                 <div>                   
-                    {this.graphChoose(this.state.graphType)}
+                    {this.graphChoose(this.state.graph.graphType)}
                 </div>                
             )
         }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Link, Route, BrowserRouter as Router} from 'react-router-dom'
+import {NavLink , Route, BrowserRouter as Router} from 'react-router-dom'
 import PaletteGraph from './PaletteGraph';
 import PaletteFeature from './PaletteFeature';
 
@@ -7,26 +7,28 @@ class Palette extends Component {
     state = { 
         btnId : "btnInfo",
         graphData : [],
-        graphType : "",        
+        graph : {},        
     };
 
     onGraphDataSubmit=(getData)=>{
-        this.setState({ graphData: getData});
-        // console.log("Get : ",getData,this.state.graphData)
+        this.setState({ graphData: getData});        
         this.props.onGraphShow(getData)
     }
 
-    onGraphTypeSubmit=(getData)=>{
-        this.setState({ graphType: getData});
-        // console.log("Get : ",getData,this.state.graphData)
-        this.props.onGraphType(getData)
-    }
+    onGraphTypeSubmit=async(graphType,featureType)=>{
+        if (this.state.graph.graphType===undefined &&this.state.graph.featureType===undefined ){
+            await this.setState({graph:{graphType:"table",featureType:"max"}})             
+        }
 
-    handleClick=(event)=>{               
-        const id = event.target.id;
-        this.setState({
-            btnId: id,
-        });        
+        if (graphType!==undefined){
+            await this.setState({graph:{ ...this.state.graph, graphType: graphType}}) 
+        }
+
+        else if (featureType!==undefined){
+            await this.setState({graph:{ ...this.state.graph, featureType: featureType}}) 
+        }        
+
+        this.props.onGraphType(this.state.graph)
     }
 
     render() {
@@ -36,18 +38,24 @@ class Palette extends Component {
                 <div>
                     <h3 className = "PaletteTitle"> PALETTE</h3> 
                     <div className="ButtonEntry"> 
-                        <Link to="/features/feature" className="ButtonEach">
-                            <button id="btnFeature" className={this.state.btnId==="btnFeature" ? "ButtonClick": "ButtonDefault"} onClick={this.handleClick}>Feature</button>
-                        </Link>
-                        <Link to="/features/graph" className="ButtonEach">
-                            <button id="btnGraph" className={this.state.btnId==="btnGraph"  ? "ButtonClick": "ButtonDefault"} onClick={this.handleClick}>Graph</button>
-                        </Link>    
+                        <NavLink  to="/features/feature" activeClassName="ButtonClick"  className="ButtonDefault>
+                            <div">
+                                Feature
+                            </div>
+                            {/* <button id="btnFeature" className={this.state.btnId==="btnFeature" ? "ButtonClick": "ButtonDefault"} onClick={this.handleClick}>Feature</button> */}
+                        </NavLink >
+                        <NavLink  to="/features/graph" activeClassName="ButtonClick"  className="ButtonDefault">
+                            <div>
+                                Graph
+                            </div>
+                            {/* <button id="btnGraph" className={this.state.btnId==="btnGraph"  ? "ButtonClick": "ButtonDefault"} onClick={this.handleClick}>Graph</button> */}
+                        </NavLink >    
                     </div> 
                 </div>
                 <div> 
                     <Route 
                         path='/features/feature' 
-                        render={() => <PaletteFeature values={this.props.values}  onGraphDataSubmit={this.onGraphDataSubmit}/> }
+                        render={() => <PaletteFeature values={this.props.values}  onGraphDataSubmit={this.onGraphDataSubmit}  onGraphTypeSubmit={this.onGraphTypeSubmit}/> }
                     />
 
                     <Route 
