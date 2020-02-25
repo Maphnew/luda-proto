@@ -23,6 +23,21 @@ const dbSelect = (query) => {
     })
 }
 
+const dbUpdate = (queryUpdate) => {
+    return new Promise((resolve, reject) => {
+        connection.query(queryUpdate, (error, result) => {
+            if(error) {
+                console.log('reject!', query)
+                return reject(error)
+            }
+            if(result) {
+                resolve(result)
+            }
+        })
+    })
+}
+
 module.exports = {
-    dbSelect
+    dbSelect,
+    dbUpdate
 }
