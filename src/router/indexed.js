@@ -52,7 +52,7 @@ router.patch('/indexed/wavelist', async (req, res) => {
     `
     console.log(queryUpdateWaveList)
     await dbUpdate(queryUpdateWaveList).then((result) => {
-        res.status(400).send('ok')
+        res.status(200).send('ok')
     }).catch((e) => {
         res.status(400).send(e)
     })
