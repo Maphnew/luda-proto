@@ -1,7 +1,24 @@
 const express = require('express')
+const path = require('path')
 const { dbSelect, dbUpdate } = require('../database/db')
 const moment = require('moment')
 const router = new express.Router()
+const pythonDirectoryPath = path.join(__dirname, '../../public/python')
+const getStatisticsPath = path.join(pythonDirectoryPath, 'getStatistics.py')
+
+const getStatistics = async (indexDate, indexNum, parts) => {
+    let times = []
+    const partsIndex = Object.keys(parts)
+    console.log(partsIndex)
+    for (let k of partsIndex) {
+        tempStart = parts[k]['startTime']
+        tempStop = parts[k]['stopTime']
+        console.log( tempStart, tempStop)
+    }
+
+
+    return partsIndex
+}
 
 router.get('/indexed', (req, res) => {
     console.log('indexed')
@@ -29,7 +46,22 @@ router.post('/indexed/waveform', async (req,res) => {
     })
 })
 
-router.patch('/indexed/wavelist', async (req, res) => {
+router.patch('/indexed/test', async (req, res) => {
+    // console.log(req.body)
+    const indexDate = moment(req.body.index_date).format('YYYY-MM-DD')
+    const indexNum = req.body.index_num
+    const parts = req.body.parts
+    const partsKeys = Object.keys(req.body.parts)
+    console.log(parts)
+    const tempJSON = await getStatistics(indexDate,indexNum,parts)
+    console.log(tempJSON)
+    // const updates = Object.keys(req.body.features)
+    // console.log(updates)
+    res.send('yaaaaaaaaaaaaas')
+})
+
+
+router.patch('/indexed/splitlist', async (req, res) => {
     console.log(req.body)
     const indexDate = moment(req.body.index_date).format('YYYY-MM-DD')
     const indexNum = req.body.index_num
@@ -40,9 +72,9 @@ router.patch('/indexed/wavelist', async (req, res) => {
         UPDATE WaveSplit SET parts = JSON_REPLACE(parts,
     `
     for (i=0; i<count-1; i++) {
-        let stopTimeTemp = await parts[`${i}`]['stopTime']
-        let startTimeTemp = await parts[`${i+1}`]['startTime']
-        let queryTemp = await `'$.${i}.stopTime', '${stopTimeTemp}', '$.${i+1}.startTime', '${startTimeTemp}',`
+        let stopTime = await parts[`${i}`]['stopTime']
+        let startTime = await parts[`${i+1}`]['startTime']
+        let queryTemp = await `'$.${i}.stopTime', '${stopTime}', '$.${i+1}.startTime', '${startTime}',`
         queryUpdateWaveList += queryTemp
     }
     queryUpdateWaveList = await queryUpdateWaveList.slice(0, -1)

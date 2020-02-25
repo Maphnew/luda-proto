@@ -2,20 +2,10 @@
 
 # 라이브러리 사용
 import pymysql
-import math
 import os
 import pandas as pd
-import csv
-import numpy as np
 from numpy import array
-from matplotlib import pyplot as plt
-# df to db
-from sqlalchemy import create_engine
-from sqlalchemy import event
-from sqlalchemy.dialects.mysql import DATETIME
-from sqlalchemy.dialects.mysql import TIME
-pymysql.install_as_MySQLdb()
-import MySQLdb
+from string import Template
 
 def rawSelect(
        host,   
@@ -38,7 +28,7 @@ def rawSelect(
     FROM """+table_name+"""
     WHERE DataSavedTime between '"""+start_date+' '+start_t+"""' and '"""+end_date+' '+end_t+"""'
     ORDER BY DataSavedTime ASC """
-    print(sql_query)
+    # print(sql_query)
     conn = pymysql.connect(host=host, 
                            user=user,
                            password=password, 
@@ -49,10 +39,13 @@ def rawSelect(
     curs.execute(sql_query)
     rows = curs.fetchall()
     list_for_data = list(rows)
+    # print(type(list_for_data), 'list_for_data: ',list_for_data, 'length:',list_for_data)
+    if len(list_for_data) == 0:
+        return pd.DataFrame([])
     df = pd.DataFrame(list_for_data)
 #     df = pd.DataFrame(list_for_data).fillna(0)
     df.columns=['DataSavedTime', col_name]
-    print(df.head())    
+    # print(df.head())    
     conn.close()
     return df
 
@@ -121,3 +114,40 @@ def df2db_save(
         index=False
     )
     conn.close()
+
+
+
+def getDefThings(index_date, index_num):
+    data_db_info = {
+       'host' : '192.168.101.50',   
+       'port' : 16033,   
+       'user' : 'root',   
+       'password' : 'its@1234' ,   
+       'database' : 'UYeG_Cloud',  
+    }
+
+    query = """
+        SELECT defServer, defTable, defColumn
+        FROM WaveIndex
+        WHERE index_date = '{index_date}' AND index_num = {index_num};
+    """.format(index_date=index_date, index_num=index_num)
+    # print(query)
+
+    conn = pymysql.connect(
+                                host = data_db_info['host'],   
+                                port = data_db_info['port'],   
+                                user = data_db_info['user'],   
+                                password = data_db_info['password'] ,   
+                                database = data_db_info['database'],  
+                                charset='utf8',
+
+    )
+    curs = conn.cursor()
+    curs.execute(query)
+    rows = curs.fetchall()
+    tuple_for_data = list(rows)[0]
+    list_for_data = list(tuple_for_data)
+
+    conn.close()
+    
+    return list_for_data
