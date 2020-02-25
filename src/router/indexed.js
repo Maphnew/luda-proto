@@ -40,9 +40,9 @@ router.patch('/indexed/wavelist', async (req, res) => {
         UPDATE WaveSplit SET parts = JSON_REPLACE(parts,
     `
     for (i=0; i<count-1; i++) {
-        let stopTimeTemp = parts[`${i}`]['stopTime']
-        let startTimeTemp = parts[`${i+1}`]['startTime']
-        let queryTemp = `'$.${i}.stopTime', '${stopTimeTemp}', '$.${i+1}.startTime', '${startTimeTemp}',`
+        let stopTimeTemp = await parts[`${i}`]['stopTime']
+        let startTimeTemp = await parts[`${i+1}`]['startTime']
+        let queryTemp = await `'$.${i}.stopTime', '${stopTimeTemp}', '$.${i+1}.startTime', '${startTimeTemp}',`
         queryUpdateWaveList += queryTemp
     }
     queryUpdateWaveList = await queryUpdateWaveList.slice(0, -1)
