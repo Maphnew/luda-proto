@@ -140,9 +140,7 @@ function GraphTable(props) {
     }
     // console.log("saveClick",params)
 
-    var millisecondsToWait = 1000;
-    setTimeout(function() {
-      fetch("http://192.168.100.175:5000/indexed/wavelist", {
+    fetch("http://192.168.100.175:5000/indexed/splitlist", {
         method: 'PATCH', 
         headers: { 
             'Content-Type': 'application/json',
@@ -161,7 +159,6 @@ function GraphTable(props) {
       setSave("network error")
       return { name: "network error", description: "" };
     });
-    }, millisecondsToWait);   
   }
 
   const tableCellElement =(data)=> {
