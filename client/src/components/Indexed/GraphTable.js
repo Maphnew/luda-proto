@@ -162,15 +162,13 @@ function GraphTable(props) {
   }
 
   const tableCellElement =(data)=> {
-    console.log(data)
-    if (data !== 0){
-      const tableCell =  Object.entries(data[0]).map(([key,value],idx)=>{ 
-        if (key !== "isEditMode"){
-          return(<TableCell align="left" key={idx} >{key}</TableCell>)  
-        }             
-      }) 
-      return tableCell;
-    }    
+
+    const tableCell =  Object.entries(data[0]).map(([key,value],idx)=>{ 
+      if (key !== "isEditMode"){
+        return(<TableCell align="left" key={idx} >{key}</TableCell>)  
+      }             
+    }) 
+    return tableCell;
   }
 
   return (
