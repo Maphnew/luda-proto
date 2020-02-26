@@ -1,0 +1,110 @@
+.FeaturesEntry {
+    background-color: #f4f4f4;
+  margin-left: 5%;
+    min-height: 100vh;
+    margin-top: 1%;
+    margin-left: 3%;
+    margin-right: 3%;
+    /* min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin); */
+  }
+  .PaletteEntry {
+    background-color: white;
+    color: #3b3b3b;
+    width: 27%;
+    height: auto;
+    min-height: 80vh;
+    border-radius: 5px;
+    float: left;
+    padding: 1.5px;
+    /* min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin); */
+  }
+  .GraphEntry {
+    background-color: white;
+    padding: 1%;
+    color: #535353;
+    width: 70%;
+    height: auto;
+    height: 80vh;
+    border-radius: 5px;
+    float: right;
+    overflow-y: scroll;
+    /* min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin); */
+  }
+
+  @media screen and (max-width: 1024px) {
+    .PaletteEntry {
+      width: 35%;
+      margin: 0%;
+    }
+    .GraphEntry {
+      width: 65%;
+      margin: 0%;
+      padding: 0px;
+    }
+    .FeaturesEntry {
+      margin : 2%;
+      padding: 0px;
+    }
+  }
+
+  @media screen and (max-width: 850px) {
+    .PaletteEntry {
+      width: 35%;
+      margin: 0%;
+      height: 130vh;
+    }
+    .GraphEntry {
+      width: 65%;
+      margin: 0%;
+      padding: 0px;
+      height: 130vh;
+    }
+    .FeaturesEntry {
+      margin : 2%;
+      padding: 0px;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .PaletteEntry {
+      width: 95%;
+      padding: 2%;
+      margin: 2.5%;
+      height: auto;
+    }
+    .GraphEntry {
+      width: 95%;
+      padding: 2%;
+      margin: 2.5%;
+      height: auto;
+    }
+  }
+  @media screen and (max-width: 420px) {
+    .PaletteEntry {
+      width: 95%;
+      padding: 2%;
+      margin: 2.5%;
+      height: auto;
+    }
+    .GraphEntry {
+      width: 95%;
+      padding: 2%;
+      margin: 2.5%;
+      height: auto;
+      }
+    }

@@ -1,0 +1,27 @@
+.graphbutton {
+  margin-top: 1%;
+    float: right;
+    background: #ffffff;
+    margin-right: 2%;
+    margin-bottom: 1%;
+    padding: 0% 0.5% 0% 0.5%;
+    color: $light-gray;
+    border: 1px solid;
+    transition: 0.2s ease 0s;
+  }
+  .graphbt {
+    margin-right: 1%;
+    
+  }
+  .graphbutton:hover {
+    background: #929292;
+    color: #ffffff;
+  }
+  
+  .buttontext {
+    visibility: hidden;
+  }
+
+  .graphbutton:active {
+    background: rgb(75, 181, 247);
+  }

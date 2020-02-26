@@ -1,0 +1,46 @@
+.modal{
+    visibility: visible;
+    width: 10%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 12%;
+    background: #ffffff;
+    padding: 2%;
+    border: 1px solid darkgrey;
+    border-radius: 5px;
+}
+
+.modal__title {
+    color: $blue;
+    margin-top: -10%;
+}
+
+.modal__body{
+    text-align: center;
+    border: 1px solid rgb(241, 241, 241);
+    margin-bottom: 5%;
+}
+.modal__input{
+    text-align: center;
+    width: 100%;
+    &:hover {
+        background: rgb(241, 241, 241);
+    }
+}
+.button {
+    float: right;
+    padding : 1.5%;
+    color: #0091EA;
+    background: #ffffff;
+    border-radius: 2px;
+    border: 1px solid #0091EA;
+    transition: all 0.3s ease 0s;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.73);
+    &:hover {
+    color: #ffffff;
+    background: rgb(116, 202, 255);
+    border-radius: 2px;
+    border: 1px solid rgb(75, 181, 247);
+    transition: all 0.3s ease 0s;
+    }
+  }

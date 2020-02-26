@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css?family=Poor+Story|Sunflower:300&display=swap');
+@import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
+.indexedbutton {
+  margin-left: 80%;
+}
+  .Reset_btn{
+    height: 1%;
+    padding: 3%;
+    margin-right: 5%;
+  }
+  
+  .Save_btn{
+    height: 1%;
+    padding: 3%;
+  }
+  
+  .WaveListTable{    
+    margin-right: auto;
+    margin-left: auto;
+    /* border: 1px solid black; */
+    width: 100%;
+  }
+  
+  .WaveListGraphTable {
+    margin-top:2%;
+  }
+
+.Reset_btn {
+  padding: 5px;
+  color: #FF7474;
+  background: #ffffff;
+  border-radius: 5px;
+  border: 1px solid #FF7474;
+  margin-right: 3%;
+  transition: all 0.3s ease 0s;
+  margin-bottom: 1%;
+  &:hover {
+    color: #ffffff;
+    background: #FF7474;
+    border: 1px solid #FF7474;
+  }
+}
+
+.Save_btn {
+  padding: 5px;
+  color: #70dd82;
+  background: #ffffff;
+  border-radius: 5px;
+  margin-right: 1%;
+  border: 1px solid #70dd82;
+  transition: all 0.3s ease 0s;
+  &:hover {
+    color: #ffffff;
+    background: #70dd82;
+    border: 1px solid #70dd82;
+  }
+}
+.Total {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1%;
+  border-radius: 5px;
+}
+  .Layout1{
+    margin: 1% 3% 1% 1%;
+    width: 35%;
+    float: left;
+    background: #ffffff;
+    border-radius: 5px;
+    margin-left: -40%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    height: 75vh;
+  }
+  
+  .Layout2{
+    margin: 1% 3% 1% 1%;
+    width: 55%;
+    float: right;
+    background: #ffffff;
+    border-radius: 5px;
+    margin-left: -40%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    height: 75vh;
+  }
+  .WaveListGraphTable table {
+    font-family: 'Jeju Gothic', sans-serif;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border-right: 1px solid #e8e8e8;
+    border-left: 1px solid #e8e8e8;
+    color: #fff;
+}   
+
+.WaveListGraphTable th {
+  font-family: 'Jeju Gothic', sans-serif;
+    background: url(https://jackrugile.com/images/misc/noise-diagonal.png), linear-gradient(#486199, #425c96);
+    color: #fff;
+    padding: 1%;
+    font-size: 0.9em;
+    text-align: center;
+}
+
+.WaveListGraphTable td {
+  font-family: 'Jeju Gothic', sans-serif;
+  text-align: center;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #e8e8e8;
+  padding: 0.5% 1%;
+  background: #fff;
+  transition: all 300ms;
+  font-size: 0.8em;
+}
+
+.WaveListGraphTable tbody:hover td {
+  color: transparent;
+  text-shadow: 0 0 1px #aaa;
+}
+
+.WaveListGraphTable tbody:hover tr:hover td {
+  color: #444;
+  text-shadow: 0 1px 0 #fff;
+  font-weight: bold;
+}
+
+.Layout1 .Total {
+  width: 100%;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+   
+  @media screen and (max-width: 1426px) {
+    .Layout1{
+      margin-left: -40%;
+    }
+  }
+  
+  @media screen and (max-width: 1316px) {
+    .Layout1{
+      margin-left: 2%;
+    }
+  }
+  
+  @media screen and (max-width: 1024px) {
+    .Layout1{
+      width: 95%;
+      height: 90vh;
+    }
+    .Layout2{
+      width: 95%;
+      height: 100vh;
+    }
+    .WaveListGraphTable {
+      height: auto;
+    }
+  }
+

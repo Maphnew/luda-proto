@@ -1,0 +1,182 @@
+  .Info {
+    color: #000000;
+    font-size: 12px;
+    border: 1px solid;
+    width: 100%;
+    background: $blue;
+    height: 48px;
+  }
+
+  .Data > .Subheading{
+    float: left;
+    color: #ffffff;
+    margin-right: 1%;
+    margin-left: 28%;
+    font-size: 1em;
+    font-weight: bold;
+    margin-top: 0.7%;
+  }
+
+  .ComboBox {
+    width: 10%;
+    font-size: 0.9em;
+    float: left;
+    margin-right: 1%;
+
+  }
+
+.StartDateTimePicker, .EndDateTimePicker {
+    margin-right: 1%;
+    margin-top: 0.35%;
+    background: #ffffff;
+    color: #000000;
+  }
+
+  .Swungdash {
+    margin-right: 1%;
+    color: #ffffff;
+  }
+
+  .Data {
+    margin-left: 20%;
+    margin-top: 0.2%;
+  }
+
+.SearchButton {
+  padding : 0.5%;
+  color: #0091EA;
+  background: #ffffff;
+  border-radius: 3px;
+  border: 1px solid #0091EA;
+  transition: all 0.3s ease 0s;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.73);
+  margin-left: 1%;
+  margin-top: 0.3%;
+  &:hover {
+  color: #ffffff;
+  background: rgb(116, 202, 255);
+  border-radius: 2px;
+  border: 1px solid rgb(75, 181, 247);
+  transition: all 0.3s ease 0s;
+  }
+}
+.SearchPeriod {
+  display: inline-block;
+  white-space: nowrap;
+  padding : 8.5%;
+  color: #0091EA;
+  background: #ffffff;
+  border-radius: 3px;
+  border: 1px solid #0091EA;
+  transition: all 0.3s ease 0s;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.73);
+  &:hover {
+    color: #ffffff;
+    background: rgb(116, 202, 255);
+    border-radius: 2px;
+    border: 1px solid rgb(75, 181, 247);
+    transition: all 0.3s ease 0s;
+    }
+}
+
+@media screen and (max-width: 1425px) {
+  .Data > .Subheading{
+    margin-left: 23%;
+  }
+  .ComboBox {
+    width: 10%;
+  }
+}
+
+@media screen and (max-width: 1290px) {
+  .ComboBox {
+    margin-top: 0.25%;
+  }
+  .SearchButton {
+    margin-top: 0.6%;
+    padding: 0.8%;
+  }
+}
+@media screen and (max-width: 1246px) {
+  .Data > .Subheading{
+    margin-left: 0%;
+  }
+    .ComboBox {
+    width: 14%;
+  }
+}
+@media screen and (max-width: 1050px) {
+  .Data > .Subheading{
+    margin-left: 0%;
+  }
+    .ComboBox {
+    width: 13%;
+  }
+  .SearchItem {
+    transform: scale(0.8);
+    margin-left: 15%;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .Data > .Subheading{
+    margin-left: 0%;
+  }
+  .Data {
+    margin-left: 20%;
+    margin-top: 0.4%;
+  }
+  .ComboBox {
+    width: 13%;
+  }
+  .SearchButton{
+    margin-top: 0.5%;
+    padding: 1%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .Data > .Subheading{
+    margin-left: 0%;
+  }
+
+  .Data {
+    margin-left: 0%;
+    margin-top: 0.4%;
+  }
+  .ComboBox {
+    width: 13.5%;
+  }
+  .SearchButton{
+    margin-top: 0.7%;
+    padding: 1%;
+  }
+  .SearchItem {
+    transform: scale(1);
+    text-align: center;
+    margin-right: 15%;
+  }
+}
+@media screen and (max-width: 679px) {
+  .ComboBox {
+    width: 12.5%;
+  }
+}
+@media screen and (max-width: 420px) {
+  .Data {
+    width: 100%;
+  }
+  .Data > .Subheading{
+    width: 100%;
+  }
+  .Info {
+    height: 110px;
+  }
+  .ComboBox {
+    width: 25%;
+  }
+  .SearchButton{
+    margin-top: 2%;
+    padding: 2%;
+  }
+}

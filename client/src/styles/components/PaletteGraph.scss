@@ -1,0 +1,222 @@
+
+.Recommended {
+    border: 1px solid darkgrey;
+    border-radius: 5px;
+    margin : 5% 2% 0% 2%;
+    padding-left: 3%;
+  }
+  
+  .Recommended button{
+    width: 22%;
+    height: 80px;
+    padding: 1%;
+    font-size: 0.5em;
+    margin: 1%;
+    padding-top: 12%;
+    &:hover {
+      transition: all 0.3s ease 0s;
+      border: 2px solid rgb(0, 31, 133);
+    }
+  }
+  
+  
+  .SearchItem {
+    margin: 3% 0% 0% 25%;
+  }
+
+  .StackedColumn100 {
+    background-image: url("./images/Stackedcolum100.png");
+    background-color: #ffffff;
+    border-radius: 15px;
+    background-repeat: no-repeat;
+    background-size: 30%;
+    background-position: center center;
+    vertical-align: 50%;
+    
+  }
+  .Table {
+    background-image: url("./images/table1.png");
+    background-repeat: no-repeat;
+    background-color: #ffffff;
+    border-radius: 15px;
+    background-size: 30%;
+    background-position: center center;
+    vertical-align: bottom;
+  }
+  
+  .Scatterplot {
+    background-image: url("./images/scatter1.png");
+    background-repeat: no-repeat;
+    background-size: 30%;
+    background-color: #ffffff;
+    border-radius: 15px;
+    background-position: center center;
+  }
+  
+  .Area {
+    background-image: url("./images/Area1.png");
+    background-repeat: no-repeat;
+    background-size: 30%;
+    background-color: #ffffff;
+    border-radius: 15px;
+    background-position: center center;
+  }
+  
+  .StackedArea {
+    background-image: url("./images/StackedArea1.png");
+    background-repeat: no-repeat;
+    background-size: 30%;
+    background-color: #ffffff;
+    border-radius: 15px;
+    background-position: center center;
+  }
+  
+  .Bar {
+    background-image: url("./images/bar1.png");
+    background-repeat: no-repeat;
+    background-size: 30%;
+    background-color: #ffffff;
+    border-radius: 15px;
+    background-position: center center;
+  }
+  
+  .StackedBar {
+    background-image: url("./images/Stackedbar1.png");
+    background-repeat: no-repeat;
+    background-size: 30%;
+    background-color: #ffffff;
+    border-radius: 15px;
+    background-position: center center;
+  }
+  
+  .StackedBar100 {
+    background-image: url("./images/100Stackedbar1.png");
+    background-repeat: no-repeat;
+    background-size: 30%;
+    background-color: #ffffff;
+    border-radius: 15px;
+    background-position: center center;
+  }
+  
+  .Biplot {
+    background-image: url("./images/biplot1.png");
+    background-repeat: no-repeat;
+    background-size: 30%;
+    background-color: #ffffff;
+    border-radius: 15px;
+    background-position: center center;
+  }
+  
+  .Boxplot {
+    background-image: url("./images/boxplot1.png");
+    background-repeat: no-repeat;
+    background-size: 30%;
+    background-color: #ffffff;
+    border-radius: 15px;
+    background-position: center center;
+  }
+  
+  .BubbleChart {
+    background-image: url("./images/BubbleChart1.png");
+    background-repeat: no-repeat;
+    background-size: 30%;
+    background-color: #ffffff;
+    border-radius: 15px;
+    background-position: center center;
+  }
+  
+  .Column {
+    background-image: url("./images/column1.png");
+    background-repeat: no-repeat;
+    background-size: 30%;
+    background-color: #ffffff;
+    border-radius: 15px;
+    background-position: center center;
+  }
+  
+  .StackedColumn {
+    background-image: url("./images/StackedColumn1.png");
+    background-repeat: no-repeat;
+    background-size: 30%;
+    background-color: #ffffff;
+    border-radius: 15px;
+    background-position: center center;
+  }
+  
+  .Heatmap {
+    background-image: url("./images/Heatmap1.png");
+    background-repeat: no-repeat;
+    background-size: 30%;
+    background-color: #ffffff;
+    border-radius: 15px;
+    background-position: center center;
+  }
+  
+  .StackedArea100 {
+    background-image: url("./images/100StackedArea1.png");
+    background-repeat: no-repeat;
+    background-size: 30%;
+    background-color: #ffffff;
+    border-radius: 15px;
+    background-position: center center;
+  }
+  
+  .Card {
+    background-image: url("./images/card1.png");
+    background-repeat: no-repeat;
+    background-size: 30%;
+    background-color: #ffffff;
+    border-radius: 15px;
+    background-position: center center;
+  }
+  
+  .ComplexChart {
+    background-image: url("./images/Complex Chart1.png");
+    background-repeat: no-repeat;
+    background-size: 30%;
+    background-color: #ffffff;
+    border-radius: 15px;
+    background-position: center center;
+  }
+  
+  .DecisionTree {
+    background-image: url("./images/Decision Tree1.png");
+    background-repeat: no-repeat;
+    background-size: 30%;
+    background-color: #ffffff;
+    border-radius: 15px;
+    background-position: center center;
+  }
+  @media screen and (max-width: 1024px) {
+    .Recommended button{
+      width: 22%;
+      height: 65px;
+      font-size: 0.5em;
+      margin: 1%;
+      padding-top: 10%;
+      background-position: center 22%;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .Recommended button{
+      width: 22%;
+      height: 90px;
+      padding: 1%;
+      font-size: 0.5em;
+      margin: 1%;
+      padding-top: 10%;
+    }
+  }
+
+  @media screen and (max-width: 420px) {
+    .Recommended button{
+      word-break: keep-all;
+      width: 22%;
+      height: 70px;
+      font-size: 0.5em;
+      margin: 1%;
+      padding-top: 10%;
+      background-position: center 22%;
+    }
+  }
