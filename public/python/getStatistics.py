@@ -9,8 +9,6 @@ stopTime = sys.argv[2]
 index_date = sys.argv[3]
 index_num = sys.argv[4]
 
-defServer, defTable , defColumn = db_connection.getDefThings(index_date, index_num)
-
 data_db_info = {
    "host" : "192.168.101.50",   
    "port" : 16033,   
@@ -18,6 +16,8 @@ data_db_info = {
    "password" : "its@1234" ,   
    "database" : "UYeG_Cloud",  
 }
+
+defServer, defTable , defColumn = db_connection.getDefThings(data_db_info, index_date, index_num)
 
 _server_name = defServer
 _table_name = defTable
