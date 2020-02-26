@@ -34,46 +34,53 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const createData = (name, starttime, endtime, median, average, area,max,min) => ({
-  id: name,
-  name, starttime, endtime, median, average, area,max,min,
-  isEditMode: false
-});
+// const createData = (name, starttime, endtime, median, average, area,max,min) => ({
+//   id: name,
+//   name, starttime, endtime, median, average, area,max,min,
+//   isEditMode: false
+// });
 
 const CustomTableCell = ({ row, name, onChange }) => {
   const classes = useStyles();
   const { isEditMode } = row;
+
   return (
     <TableCell align="center" className={classes.tableCell}>
       {isEditMode ? (
         <Input
-          value={row[name]}
-          name={name}
+          value={row[name.key]}
+          name={name.key}
           onChange={e => onChange(e, row)}
           className={classes.input}
         />
       ) : (
-        row[name]
+        row[name.key]
       )}
     </TableCell>
   );
 };
 
-function GraphTable() {
-  const [rows, setRows] = React.useState([
-    createData(1, "2020-02-01 11:10:00.000", "2020-02-01 11:20:00.000", 24, 4.0,1,2,3),
-    createData(2, "2020-02-01 11:21:00.000", "2020-02-01 11:30:00.000", 37, 4.3,1,2,3),
-    createData(3, "2020-02-01 11:31:00.000", "2020-02-01 11:40:00.000", 24, 6.0,1,2,3)
-  ]);
+function GraphTable(props) {
+  if (props.splitData.parts!== undefined) {
+    var tempArr = [];
+    Object.entries(props.splitData.parts).map(([key,value])=>{ 
+        var tempJson = Object.assign({"id":key, isEditMode: false}, value);
+        tempArr.push(tempJson)                                               
+    }) 
+    //console.log(tempArr)
+  }
+
+  const [rows, setRows] = React.useState(tempArr);
   const [previous, setPrevious] = React.useState({});
+  const [save, setSave] = React.useState("");
   const classes = useStyles();
 
   const onToggleEditMode = id => {
     setRows(state => {
       return rows.map(row => {
         if (row.id === id) {
-          return { ...row, isEditMode: !row.isEditMode };
-        }
+            return { ...row, isEditMode: !row.isEditMode };
+        }        
         return row;
       });
     });
@@ -110,63 +117,119 @@ function GraphTable() {
     onToggleEditMode(id);
   };
 
+  const resetClick = () => {
+    var tempArr = [];
+    Object.entries(props.splitData.parts).map(([key,value])=>{ 
+        var tempJson = Object.assign({"id":key, isEditMode: false}, value);
+        tempArr.push(tempJson)                                               
+    }) 
+    setRows(tempArr);
+
+  }
+
+  const saveClick = () => {    
+    setSave("Processing")
+    var tempParts = {}
+    rows.map((row)=>{
+      tempParts[row.id] = {"startTime":row.startTime,"stopTime":row.stopTime}
+    })
+    var params = {
+      "index_date":props.splitData.index_date,
+      "index_num":props.splitData.index_num,
+      "parts":tempParts
+    }
+    // console.log("saveClick",params)
+
+    fetch("http://192.168.100.175:5000/indexed/splitlist", {
+        method: 'PATCH', 
+        headers: { 
+            'Content-Type': 'application/json',
+            'Accept' : '*/*'
+        },
+        body : JSON.stringify(params)
+    })
+    .then(response => {
+      const statusCode = response.status;
+      setSave("Complete")
+      return { statusCode };
+    
+    })
+    .catch(error => {
+      console.error(error);
+      setSave("network error")
+      return { name: "network error", description: "" };
+    });
+  }
+
+  const tableCellElement =(data)=> {
+
+    const tableCell =  Object.entries(data[0]).map(([key,value],idx)=>{ 
+      if (key !== "isEditMode"){
+        return(<TableCell align="left" key={idx} >{key}</TableCell>)  
+      }             
+    }) 
+    return tableCell;
+  }
+
   return (
-    <Paper className={classes.root}>
-      <Table className={classes.table} aria-label="caption table">
-    <TableHead>
-          <TableRow>
-          <TableCell align="left" />
-            <TableCell align="left">id</TableCell>
-            <TableCell align="left">시작시간</TableCell>
-            <TableCell align="left">끝시간</TableCell>
-            <TableCell align="left">MEDIAN</TableCell>
-            <TableCell align="left">AVERAGE</TableCell>
-            <TableCell align="left">AREA</TableCell>
-            <TableCell align="left">MAX</TableCell>
-            <TableCell align="left">MIN</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map(row => (
-            <TableRow key={row.id}>
-              <TableCell className={classes.selectTableCell}>
-                {row.isEditMode ? (
-                  <>
+    <div>
+      <button className="Reset_btn" onClick ={resetClick}>Reset</button>
+      <button className="Save_btn" onClick = {saveClick}>Save</button>
+      {save}
+      <Paper className={classes.root}>
+        <Table className={classes.table} aria-label="caption table">
+      <TableHead>
+            <TableRow>
+            <TableCell align="left" />
+              {tableCellElement(rows)}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map(row => (
+              <TableRow key={row.id}>
+                <TableCell className={classes.selectTableCell}>
+                  {row.isEditMode ? (
+                    <>
+                      <IconButton
+                        aria-label="done"
+                        onClick={() => onToggleEditMode(row.id)}
+                      >
+                        <DoneIcon />
+                      </IconButton>
+                      <IconButton
+                        aria-label="revert"
+                        onClick={() => onRevert(row.id)}
+                      >
+                        <RevertIcon />
+                      </IconButton>
+                    </>
+                  ) : (
                     <IconButton
-                      aria-label="done"
+                      aria-label="delete"
                       onClick={() => onToggleEditMode(row.id)}
                     >
-                      <DoneIcon />
+                      <EditIcon />
                     </IconButton>
-                    <IconButton
-                      aria-label="revert"
-                      onClick={() => onRevert(row.id)}
-                    >
-                      <RevertIcon />
-                    </IconButton>
-                  </>
-                ) : (
-                  <IconButton
-                    aria-label="delete"
-                    onClick={() => onToggleEditMode(row.id)}
-                  >
-                    <EditIcon />
-                  </IconButton>
-                )}
-              </TableCell>
-              <CustomTableCell {...{ row, name: "name", onChange }} />
-              <CustomTableCell {...{ row, name: "starttime", onChange }} />
-              <CustomTableCell {...{ row, name: "endtime", onChange }} />
-              <CustomTableCell {...{ row, name: "median", onChange }} />
-              <CustomTableCell {...{ row, name: "average", onChange }} />
-              <CustomTableCell {...{ row, name: "area", onChange }} />
-              <CustomTableCell {...{ row, name: "max", onChange }} />
-              <CustomTableCell {...{ row, name: "min", onChange }} />
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </Paper>
+                  )}
+                </TableCell>
+                  {
+                    Object.entries(row).map(([key,value])=>{ 
+                      if (key !== "isEditMode"){
+                        if(key ==="startTime" || key ==="stopTime"){
+                          return(<CustomTableCell {...{ row, name: {key}, onChange}} key ={key} />)
+                        }                  
+                        else {
+                          return(<TableCell align="center" className={classes.tableCell}  key ={key}> {row[key]} </TableCell>)
+                        }                      
+                      }
+                    })
+                  }
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Paper>
+    </div>
   );
 }
 

@@ -22,13 +22,15 @@
 
 .title {
     grid-column: 1/2;
+    /*background-image: url("./images/logo.png");
+    background-repeat: no-repeat;*/
+    
 }
 
 .title h1 {
     margin: 0;
     padding: $s-size 0;
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-
+    /*visibility: hidden;*/
 }
 
 .headerSettings {

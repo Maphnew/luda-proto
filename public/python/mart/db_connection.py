@@ -117,15 +117,7 @@ def df2db_save(
 
 
 
-def getDefThings(index_date, index_num):
-    data_db_info = {
-       'host' : '192.168.101.50',   
-       'port' : 16033,   
-       'user' : 'root',   
-       'password' : 'its@1234' ,   
-       'database' : 'UYeG_Cloud',  
-    }
-
+def getDefThings(data_db_info, index_date, index_num):
     query = """
         SELECT defServer, defTable, defColumn
         FROM WaveIndex
