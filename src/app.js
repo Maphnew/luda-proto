@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const path = require('path')
 const indexedRouter = require('./router/indexed')
 const featuresRouter = require('./router/features')
+const pythonRouter = require('./router/python')
 
 const app = express()
 const publicDirectoryPath = path.join(__dirname, '../public')
@@ -15,6 +16,7 @@ app.use(cors())
 app.use(express.json())
 app.use(indexedRouter)
 app.use(featuresRouter)
+app.use(pythonRouter)
 
 app.get('/test', (req, res) => {
     console.log('yas')
