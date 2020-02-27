@@ -31,11 +31,6 @@ class WaveListTable extends React.Component {
     }
   }
 
-  componentDidMount = async () => {
-    console.log(this.props.wavelist)
-    this.setState({ data: this.props.wavelist })
-  }
-
   componentWillReceiveProps = async (nextProps) => {
     if (!equal(this.props.wavelist, nextProps.wavelist)) // Check if it's a new user, you can also use some unique property, like the ID  (this.props.user.id !== prevProps.user.id)
     {
