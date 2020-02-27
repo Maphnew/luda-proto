@@ -43,7 +43,7 @@ def rawSelect(
     if len(list_for_data) == 0:
         return pd.DataFrame([])
     df = pd.DataFrame(list_for_data)
-#     df = pd.DataFrame(list_for_data).fillna(0)
+    df = pd.DataFrame(list_for_data).fillna(0)
     df.columns=['DataSavedTime', col_name]
     # print(df.head())    
     conn.close()

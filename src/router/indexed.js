@@ -7,28 +7,53 @@ const pythonDirectoryPath = path.join(__dirname, '../../public/python')
 const getStatisticsPath = path.join(pythonDirectoryPath, 'getStatistics.py')
 const { spawn } = require('child_process');
 
-const runPy = (startTime, stopTime, index_date, index_num) => {
-    return new Promise((resolve, reject) => {
-        const pyprog = spawn('python', [getStatisticsPath, startTime, stopTime, index_date, index_num])
+const runPy = async (startTime, stopTime, index_date, index_num) => {
+    return new Promise(async (resolve, reject) => {
+        const pyprog = await spawn('python', [getStatisticsPath, startTime, stopTime, index_date, index_num])
     
-        pyprog.stdout.on('data', (data) => {
-            console.log('python data', data)
-            resolve(data)
+        await pyprog.stdout.on('data', async (data) => {
+            // console.log('python data', data)
+            const str = await data.toString()
+            //console.log('str: ', str)
+            const replace = str.replace(/'/gi, "\"")
+            // console.log('json: ', replace)
+            const json = JSON.parse(replace)
+            //
+            await resolve(json)
         })
-        pyprog.stderr.on('data', (data) => {
+        await pyprog.stderr.on('data', (data) => {
             reject(data)
         })
+    }).catch((e) => {
+        console.log('error! ',e)
     })
 }
 
-const getStatistics = async (indexDate, indexNum, parts) => {
-    await runPy(indexDate, indexNum, parts).then( async (statistics) => {
-        console.log(statistics)
-    }).catch((e) => {
-        console.log(e)
-    })
-
-
+const getStatisticsQuery = async (indexDate, indexNum, parts) => {
+    const partsIndex = Object.keys(parts)
+    //console.log(partsIndex) // [0,1,2]
+    let query = `UPDATE WaveSplit SET features = JSON_SET(features,`
+    for await (let k of partsIndex) {
+        startTime = parts[k]['startTime']
+        stopTime = parts[k]['stopTime']
+        //console.log('k:', k, startTime, stopTime)
+        await runPy(startTime, stopTime, indexDate, indexNum).then( async (json) => {
+            const key = Object.keys(json)
+            let queryKey = ''
+            for await (let s of key) {
+                const stat = json[s]
+                queryKey += `'$.${k}.${s}', ${stat},`
+            }
+            // console.log('queryKey', queryKey)
+            query += queryKey
+        }).catch((e) => {
+            console.log(e)
+        })
+    }
+    query = query.slice(0, -1)
+    query += `) WHERE index_date = '${indexDate}' AND index_num = ${indexNum};`
+    console.log('query: ', query)
+    return query
 }
 
 router.get('/indexed', (req, res) => {
@@ -96,11 +121,16 @@ router.patch('/indexed/splitlist', async (req, res) => {
         WHERE index_date = '${indexDate}' AND index_num = ${indexNum};
     `
     console.log(queryUpdateWaveList)
+    const queryStatistics = await getStatisticsQuery(indexDate,indexNum,parts)
     await dbUpdate(queryUpdateWaveList).then((result) => {
         return result
-    }).then( async (result) => {
+    }).then( async(result) => {
         if(result) {
-            await getStatistics(indexDate,indexNum,parts)
+            await dbUpdate(queryStatistics).then((result) => {
+                console.log(result)
+            }).catch((e) => {
+                console.log(e)
+            })
         }
         res.status(200).send('ok')
     }).catch((e) => {
