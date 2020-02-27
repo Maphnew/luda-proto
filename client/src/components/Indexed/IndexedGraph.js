@@ -5,35 +5,31 @@ var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 var startTime = 0, endTime = 0;
  
 class Graph extends Component {
+	state = {
+		jsondata: [],
+		data:[]
+	  };
 
 	componentDidMount() {
 		endTime = new Date();
+		startTime = new Date();
 		// document.getElementById("timeToRender").innerHTML = "Time to Render: " + (endTime - startTime) + "ms";
 	}
 	
+	componentWillReceiveProps = async (nextProps) => {
+		// document.getElementById("timeToRender").innerHTML = "Time to Render: " + (endTime - startTime) + "ms";
+		console.log("waveform",this.props.waveform)
+		this.setState({ jsondata: this.props.waveform})
+	}
+
 	render() {
 		var limit = 100;
 		var y = 100;    
-		var data = [];
 		var dataSeries = { type: "line" };
-		var dataPoints = [
-			{
-				x: new Date(2020, 2, 20, 10, 33, 30, 0),
-				y: 1,
-			  },
-			  {
-				x: new Date(2020, 2, 20, 10, 34, 31, 0),
-				y: 3,
-			  },
-			  {
-				x: new Date(2020, 2, 20, 10, 35, 32, 0),
-				y: 2,
-			  },
-			  
-		];
+		var dataPoints = this.state.jsondata;
 
 		dataSeries.dataPoints = dataPoints;
-		data.push(dataSeries);
+		this.state.data.push(dataSeries);
 		// console.log(test);
 		const spanStyle = {
 			position:'absolute', 
@@ -54,10 +50,8 @@ class Graph extends Component {
 			axisY: {
 				includeZero: false
 			},
-			data: data  // random data
+			data: this.state.data  // random data
 		}
-		
-		startTime = new Date();
 				
 		return (
 			<div>
