@@ -62,9 +62,10 @@ const CustomTableCell = ({ row, name, onChange }) => {
 };
 
 function GraphTable(props) {
-  const [rows, setRows] = React.useState(tempArr);
+  const [rows, setRows] = React.useState(undefined);
   const [previous, setPrevious] = React.useState({});
   const [save, setSave] = React.useState("");
+  const [nextProps, setNextProps] = React.useState(undefined);
   const classes = useStyles();
 
   if(props.splitData.parts!== undefined){
@@ -75,11 +76,13 @@ function GraphTable(props) {
         tempArr.push(tempJson)                                               
     }) 
 
-    if(!equal(tempArr, rows)){
-      setRows(tempArr)
-    }
+    if (!equal(nextProps,props) ){
+        setNextProps(props)
+        setRows(tempArr)
+    }    
   }
   const onToggleEditMode = id => {
+    console.log("edit")
     setRows(state => {
       return rows.map(row => {
         if (row.id === id) {
@@ -123,7 +126,8 @@ function GraphTable(props) {
 
   const resetClick = () => {
     var tempArr = [];
-    Object.entries(props.splitData.parts).map(([key,value])=>{ 
+    const partsJson = JSON.parse(props.splitData.parts)
+    Object.entries(partsJson).map(([key,value])=>{ 
         var tempJson = Object.assign({"id":key, isEditMode: false}, value);
         tempArr.push(tempJson)                                               
     }) 
