@@ -60,7 +60,7 @@ class Index extends Component {
 
     const params = { "TagName": this.state.Item, "StartTime": getData.startTime, "StopTime": getData.stopTime }
     // console.log(params)
-    fetch("http://192.168.100.99:5000/indexed/waveform", {
+    fetch("http://192.168.100.175:5000/indexed/waveform", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ class Index extends Component {
         var requiredPattern = 'YYYY-MM-DD HH:mm:ss.SSS';
 
         JSON.stringify(json.map(function (record) {
-          record.x = moment(record.x).format(requiredPattern);
+          record.x = new Date(record.x);
           return record;
         }));
       
