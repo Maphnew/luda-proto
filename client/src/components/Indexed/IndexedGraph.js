@@ -20,14 +20,12 @@ class Graph extends Component {
 		// document.getElementById("timeToRender").innerHTML = "Time to Render: " + (endTime - startTime) + "ms";
 		console.log("waveform",this.props.waveform)
 		this.setState({ jsondata: this.props.waveform})
+		this.state.data = []
 	}
 
 	render() {
-		var limit = 100;
-		var y = 100;    
 		var dataSeries = { type: "line" };
-		var dataPoints = this.state.jsondata;
-
+		var dataPoints = this.state.jsondata
 		dataSeries.dataPoints = dataPoints;
 		this.state.data.push(dataSeries);
 		// console.log(test);
