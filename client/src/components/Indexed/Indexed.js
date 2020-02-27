@@ -81,14 +81,14 @@ class Index extends Component {
             <Graph></Graph>
             <div className="WaveListGraphTable">
               <GraphTable 
-                splitData1={this.state.graphData}
-                splitData={{
-                  "index_date": "2020-02-24T00:00:00.000Z",
-                  "index_num" : 3,
-                  "parts": {"0": {"startTime": "2020-02-24 00:51:15.100000","stopTime": "2020-02-24 00:51:18.400000",  "max": 65.05, "average": 38.54, "median": 50.25, "area": 1310.52}, 
-                            "1": {"startTime": "2020-02-24 00:51:18.500000", "stopTime": "2020-02-24 00:51:26.900000", "max": 28.37, "average": 27.76, "median": 27.78, "area": 2359.86}, 
-                            "2": {"startTime": "2020-02-24 00:51:27", "stopTime": "2020-02-24 00:51:30.700000", "max": 45.62, "average": 28.0, "median": 31.89, "area": 1064.05}}
-                }}
+                splitData={this.state.graphData}
+                // splitData={{
+                //   "index_date": "2020-02-24T00:00:00.000Z",
+                //   "index_num" : 3,
+                //   "parts": {"0": {"startTime": "2020-02-24 00:51:15.100000","stopTime": "2020-02-24 00:51:18.400000",  "max": 65.05, "average": 38.54, "median": 50.25, "area": 1310.52}, 
+                //             "1": {"startTime": "2020-02-24 00:51:18.500000", "stopTime": "2020-02-24 00:51:26.900000", "max": 28.37, "average": 27.76, "median": 27.78, "area": 2359.86}, 
+                //             "2": {"startTime": "2020-02-24 00:51:27", "stopTime": "2020-02-24 00:51:30.700000", "max": 45.62, "average": 28.0, "median": 31.89, "area": 1064.05}}
+                // }}
               />
             </div>
           </div>

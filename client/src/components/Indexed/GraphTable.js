@@ -12,6 +12,7 @@ import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/EditOutlined";
 import DoneIcon from "@material-ui/icons/DoneAllTwoTone";
 import RevertIcon from "@material-ui/icons/NotInterestedOutlined";
+import equal from 'fast-deep-equal'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -61,30 +62,23 @@ const CustomTableCell = ({ row, name, onChange }) => {
 };
 
 function GraphTable(props) {
-  console.log(props.splitData1.parts);  
-  if(props.splitData1.parts!== undefined){
-    const partsJson = JSON.parse(props.splitData1.parts)
-    var tempArr = [];
-    Object.entries(partsJson).map(([key,value])=>{ 
-        var tempJson = Object.assign({"id":key, isEditMode: false}, value);
-        tempArr.push(tempJson)                                               
-    }) 
-  }
-
-  // if (props.splitData.parts!== undefined) {
-  //   var tempArr = [];
-  //   Object.entries(props.splitData.parts).map(([key,value])=>{ 
-  //       var tempJson = Object.assign({"id":key, isEditMode: false}, value);
-  //       tempArr.push(tempJson)                                               
-  //   }) 
-  //   //console.log(tempArr)
-  // }
-
   const [rows, setRows] = React.useState(tempArr);
   const [previous, setPrevious] = React.useState({});
   const [save, setSave] = React.useState("");
   const classes = useStyles();
 
+  if(props.splitData.parts!== undefined){
+    const partsJson = JSON.parse(props.splitData.parts)
+    var tempArr = [];
+    Object.entries(partsJson).map(([key,value])=>{ 
+        var tempJson = Object.assign({"id":key, isEditMode: false}, value);
+        tempArr.push(tempJson)                                               
+    }) 
+
+    if(!equal(tempArr, rows)){
+      setRows(tempArr)
+    }
+  }
   const onToggleEditMode = id => {
     setRows(state => {
       return rows.map(row => {
@@ -172,13 +166,20 @@ function GraphTable(props) {
   }
 
   const tableCellElement =(data)=> {
-
     const tableCell =  Object.entries(data[0]).map(([key,value],idx)=>{ 
       if (key !== "isEditMode"){
         return(<TableCell align="left" key={idx} >{key}</TableCell>)  
       }             
     }) 
     return tableCell;
+  }
+
+  if(rows=== undefined){
+    // console.log(rows,props.splitData.parts)
+    return (
+      <div>
+      </div>
+    )
   }
 
   return (
