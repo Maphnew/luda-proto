@@ -61,14 +61,24 @@ const CustomTableCell = ({ row, name, onChange }) => {
 };
 
 function GraphTable(props) {
-  if (props.splitData.parts!== undefined) {
+  console.log(props.splitData1.parts);  
+  if(props.splitData1.parts!== undefined){
+    const partsJson = JSON.parse(props.splitData1.parts)
     var tempArr = [];
-    Object.entries(props.splitData.parts).map(([key,value])=>{ 
+    Object.entries(partsJson).map(([key,value])=>{ 
         var tempJson = Object.assign({"id":key, isEditMode: false}, value);
         tempArr.push(tempJson)                                               
     }) 
-    //console.log(tempArr)
   }
+
+  // if (props.splitData.parts!== undefined) {
+  //   var tempArr = [];
+  //   Object.entries(props.splitData.parts).map(([key,value])=>{ 
+  //       var tempJson = Object.assign({"id":key, isEditMode: false}, value);
+  //       tempArr.push(tempJson)                                               
+  //   }) 
+  //   //console.log(tempArr)
+  // }
 
   const [rows, setRows] = React.useState(tempArr);
   const [previous, setPrevious] = React.useState({});

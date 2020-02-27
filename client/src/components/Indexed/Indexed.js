@@ -14,7 +14,7 @@ class Index extends Component {
     stopdate: new Date(), 
     wavelist: [],
     json: [],
-    graphData : {},  
+    graphData: {}
   }
 
   componentWillReceiveProps = async (nextProps) => {
@@ -48,11 +48,14 @@ class Index extends Component {
     }
   }
 
-  onGraphData=(getData)=> {
-    this.setState({ graphData: getData});
-    console.log('test',this.state.graphData.index_date);
-    console.log('test',this.state.graphData.index_num);
-    console.log('test',this.state.graphData.parts);
+  onGraphData=async(getData)=> {
+    const rowValue = {
+      "index_date": getData.index_date,
+      "index_num": getData.index_num,
+      "parts": getData.parts
+    };
+    await this.setState({ graphData: rowValue});
+    //console.log("set",typeof(this.state.graphData),this.state.graphData)
   }
 
   render() {
@@ -67,8 +70,6 @@ class Index extends Component {
       <div>
         <div className="Layout1">
           <div className="Total">
-          </div>
-          <div className="Total">
             <WaveListTable
                wavelist={this.state.wavelist}
                onGraphData={this.onGraphData}
@@ -80,11 +81,7 @@ class Index extends Component {
             <Graph></Graph>
             <div className="WaveListGraphTable">
               <GraphTable 
-                  // splitData={{
-                  //   "index_date":this.state.graphData.index_date,
-                  //   "index_num" : this.state.graphData.index_num,
-                  //   "parts":this.state.graphData.parts
-                  // }}
+                splitData1={this.state.graphData}
                 splitData={{
                   "index_date": "2020-02-24T00:00:00.000Z",
                   "index_num" : 3,
