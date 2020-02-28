@@ -112,7 +112,10 @@ router.post('/features/feature', async (req, res) => {
                 defColumn = '${tagNameSplit[2]}' AND 
                 startTime BETWEEN '${start}' AND '${stop}'
             ) t2
-            WHERE t1.index_date = t2.index_date AND t1.index_num = t2.index_num
+            WHERE t1.index_date = t2.index_date AND t1.index_num = t2.index_num AND
+            defServer = '${tagNameSplit[0]}' AND
+            defTable = '${tagNameSplit[1]}' AND 
+            defColumn = '${tagNameSplit[2]}'
         `
         console.log(query)
 
