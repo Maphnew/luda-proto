@@ -156,7 +156,10 @@ router.post('/indexed/wavelist', async (req, res) => {
             defColumn = '${column}' AND
             startTime BETWEEN '${start}' AND '${stop}'
         ) t2
-        WHERE t1.index_date = t2.index_date AND t1.index_num = t2.index_num
+        WHERE t1.index_date = t2.index_date AND t1.index_num = t2.index_num AND 
+        defServer = '${server}' AND
+        defTable = '${table}' AND
+        defColumn = '${column}'
     `
     console.log(queryWavelist)
 
