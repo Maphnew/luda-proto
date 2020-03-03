@@ -78,6 +78,7 @@ function GraphTable(props) {
 
     if (!equal(nextProps,props) ){
         setNextProps(props)
+        console.log(props)
         setRows(tempArr)
     }    
   }
@@ -142,6 +143,7 @@ function GraphTable(props) {
       tempParts[row.id] = {"startTime":row.startTime,"stopTime":row.stopTime}
     })
     var params = {
+      "tagName":props.splitData.tagName,
       "index_date":props.splitData.index_date,
       "index_num":props.splitData.index_num,
       "parts":tempParts

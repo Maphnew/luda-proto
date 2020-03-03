@@ -54,7 +54,7 @@ class Index extends Component {
 
   onGraphData=async(getData)=> {
     const rowValue = {
-      "TagName": this.state.Item,
+      "tagName": this.state.Item,
       "index_date": getData.index_date,
       "index_num": getData.index_num,
       "parts": getData.parts
