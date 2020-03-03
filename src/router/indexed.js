@@ -29,8 +29,9 @@ const runPy = async (startTime, stopTime, index_date, index_num) => {
     })
 }
 
-const getStatisticsQuery = async (indexDate, indexNum, parts) => {
+const getStatisticsQuery = async (tagNameSplit,indexDate, indexNum, parts) => {
     const partsIndex = Object.keys(parts)
+    const [ server = 'S1', table = 'HisItemCurr', column = 'Item005' ] = tagNameSplit
     //console.log(partsIndex) // [0,1,2]
     let query = `UPDATE WaveSplit SET features = JSON_SET(features,`
     for await (let k of partsIndex) {
@@ -51,7 +52,10 @@ const getStatisticsQuery = async (indexDate, indexNum, parts) => {
         })
     }
     query = query.slice(0, -1)
-    query += `) WHERE index_date = '${indexDate}' AND index_num = ${indexNum};`
+    query += `
+        ) WHERE index_date = '${indexDate}' AND index_num = ${indexNum} AND
+        defServer = '${server}' AND defTable = '${table}' AND defColumn = '${column}';
+        `
     console.log('query: ', query)
     return query
 }
@@ -128,7 +132,7 @@ router.patch('/indexed/splitlist', async (req, res) => {
         defServer = '${server}' AND defTable = '${table}' AND defColumn = '${column}';
     `
     console.log(queryUpdateWaveList)
-    const queryStatistics = await getStatisticsQuery(indexDate,indexNum,parts)
+    const queryStatistics = await getStatisticsQuery(tagNameSplit,indexDate,indexNum,parts)
     await dbUpdate(queryUpdateWaveList).then((result) => {
         return result
     }).then( async(result) => {
