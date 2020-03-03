@@ -19,17 +19,17 @@ class PaletteFeature extends Component {
     componentDidMount=async()=>{
         this.setState({ isLoading: true, show: true });
         
-        let featureReq = JSON.parse( localStorage.getItem('featureReq'))
-        if(featureReq===null){
-            await this.setState({ featureReq:{"Table":"WaveIndex","Feature":"max"}})   
-        }
-        else {
+        try {
+            let featureReq = JSON.parse( localStorage.getItem('featureReq'))
             await this.setState({ featureReq})
-        }            
+        }
+        catch {
+            await this.setState({ featureReq:{"table":"WaveIndex","feature":"max"}})   
+            localStorage.setItem('featureReq', JSON.stringify(this.state.featureReq)) 
+        }        
+
         await this.updateValues(this.state.sendData);
-
         this.setState({ isLoading: false, show: false });   
-
     }
 
     componentWillReceiveProps = async(nextProps) => {
@@ -42,14 +42,14 @@ class PaletteFeature extends Component {
     }
 
     updateValues=async(values)=>{
-        if (values.TagName===undefined){
+        if (values.tagName===undefined){
             alert("Please enter data!")
             return
         }
         this.setState({ sendData:values},async()=>{
             const params = {
-                "TagName":this.state.sendData.TagName,"Table": this.state.sendData.Table,  
-                "StartTime" : this.state.sendData.StartTime, "StopTime" : this.state.sendData.StopTime
+                "tagName":this.state.sendData.tagName,"table": this.state.sendData.table,  
+                "startTime" : this.state.sendData.startTime, "stopTime" : this.state.sendData.stopTime
             }
 
             const jsonGet = await featureGet(params)
@@ -65,7 +65,7 @@ class PaletteFeature extends Component {
     }
 
     tableKinds = async (event) => {             
-        if (this.state.sendData.TagName===undefined){
+        if (this.state.sendData.tagName===undefined){
             alert("Please enter data!")
             return
         }
@@ -80,7 +80,7 @@ class PaletteFeature extends Component {
             tableName = "WaveSplit"
         }
 
-        await this.setState({featureReq:{ ...this.state.featureReq, Table: tableName}}) 
+        await this.setState({featureReq:{ ...this.state.featureReq, table: tableName}}) 
         localStorage.setItem('featureReq', JSON.stringify(this.state.featureReq))    
         const json = await featurePost(this.state.sendData,this.state.featureReq)
         this.props.onGraphDataSubmit(json)
@@ -89,14 +89,14 @@ class PaletteFeature extends Component {
     }
 
     statistics = async (event) => {     
-        if (this.state.sendData.TagName===undefined){
+        if (this.state.sendData.tagName===undefined){
             alert("Please enter data!")
             return
         }        
 
         this.setState({ isLoading: true, show: true });
 
-        await this.setState({featureReq:{ ...this.state.featureReq, Feature: event.target.id}} )
+        await this.setState({featureReq:{ ...this.state.featureReq, feature: event.target.id}} )
         localStorage.setItem('featureReq', JSON.stringify(this.state.featureReq))    
         const json = await featurePost(this.state.sendData,this.state.featureReq)
         this.props.onGraphDataSubmit(json)

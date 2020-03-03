@@ -47,7 +47,7 @@ class DataSelector extends Component {
         }
 
         const tagName = this.state.selectedOption.DefServer+"."+this.state.selectedOption.DefTable+"."+this.state.selectedOption.DefColumn
-        const params = {"TagName":tagName, "StartTime" : this.state.startdate, "StopTime" : this.state.stopdate}    
+        const params = {"tagName":tagName, "startTime" : this.state.startdate, "stopTime" : this.state.stopdate}    
         this.props.onDataSubmit(params)
 
     }

@@ -22,10 +22,10 @@ class Index extends Component {
   componentWillReceiveProps = async (nextProps) => {
     if (!equal(this.props.values, nextProps.values)) // Check if it's a new user, you can also use some unique property, like the ID  (this.props.user.id !== prevProps.user.id)
     {
-      const params = { "TagName": nextProps.values.TagName, "StartTime": nextProps.values.StartTime, "StopTime": nextProps.values.StopTime }
+      const params = { "tagName": nextProps.values.tagName, "startTime": nextProps.values.startTime, "stopTime": nextProps.values.stopTime }
       // console.log(params)
-      this.setState({Item:nextProps.values.TagName})
-      fetch("http://192.168.100.175:5000/indexed/wavelist", {
+      this.setState({item:nextProps.values.tagName})
+      fetch("http://192.168.100.99:5000/indexed/wavelist", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ class Index extends Component {
 
   onGraphData=async(getData)=> {
     const rowValue = {
-      "tagName": this.state.Item,
+      "tagName": this.state.item,
       "index_date": getData.index_date,
       "index_num": getData.index_num,
       "parts": getData.parts
@@ -62,9 +62,9 @@ class Index extends Component {
     await this.setState({ graphData: rowValue});
     // console.log("set",typeof(this.state.graphData),this.state.graphData)
 
-    const params = { "TagName": this.state.Item, "StartTime": getData.startTime, "StopTime": getData.stopTime }
+    const params = { "tagName": this.state.item, "startTime": getData.startTime, "stopTime": getData.stopTime }
     // console.log(params)
-    fetch("http://192.168.100.175:5000/indexed/waveform", {
+    fetch("http://192.168.100.99:5000/indexed/waveform", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -91,7 +91,7 @@ class Index extends Component {
   }
 
   onGraphChange=async()=>{
-    const params = { "TagName": this.props.values.TagName, "StartTime": this.props.values.StartTime, "StopTime": this.props.values.StopTime }
+    const params = { "tagName": this.props.values.tagName, "startTime": this.props.values.startTime, "stopTime": this.props.values.stopTime }
     fetch("http://192.168.100.175:5000/indexed/wavelist", {
       method: 'POST',
       headers: {
