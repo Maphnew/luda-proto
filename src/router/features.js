@@ -27,7 +27,7 @@ const resultdbSelect = async (query, reqBody) => {
     for (let splitResult of resultdbSelect) {
         parts = JSON.parse(splitResult.parts)
         // console.log('parts: ', parts,'length :', Object.keys(parts).length, reqBody.Feature)
-        let eachParts = await reArrangeFeatures(parts, Object.keys(parts).length, reqBody.Feature)
+        let eachParts = await reArrangeFeatures(parts, Object.keys(parts).length, reqBody.feature)
         newParts.push(eachParts)
     }
     return newParts
@@ -58,17 +58,17 @@ router.get('/features/info', async (req, res) => {
 
 
 router.post('/features/feature', async (req, res) => {
-    const tagNameSplit = req.body.TagName.split(".")
-    startTime = new Date(req.body.StartTime)
-    stopTime = new Date(req.body.StopTime)
+    const tagNameSplit = req.body.tagName.split(".")
+    startTime = new Date(req.body.startTime)
+    stopTime = new Date(req.body.stopTime)
     const start = moment(startTime).format('YYYY-MM-DD HH:mm:ss.SSS')
     const stop = moment(stopTime).format('YYYY-MM-DD HH:mm:ss.SSS')
     let query = ''
-    if (req.body.Table == 'WaveIndex') {
-        if (req.body.Feature == 'length') {
+    if (req.body.table == 'WaveIndex') {
+        if (req.body.feature == 'length') {
             query = `
                 SELECT startTime, stopTime, ROUND(TIMESTAMPDIFF(MICROSECOND, startTime, stopTime)/1000,0) as 'values'
-                FROM ${req.body.Table} 
+                FROM ${req.body.table} 
                 WHERE defServer = '${tagNameSplit[0]}' AND
                 defTable = '${tagNameSplit[1]}' AND 
                 defColumn = '${tagNameSplit[2]}' AND 
@@ -84,8 +84,8 @@ router.post('/features/feature', async (req, res) => {
             }
         } else {
             query  = `
-                SELECT startTime, stopTime, json_value(basicFeatures,'$.${req.body.Feature}') as 'values'
-                FROM ${req.body.Table} 
+                SELECT startTime, stopTime, json_value(basicFeatures,'$.${req.body.feature}') as 'values'
+                FROM ${req.body.table} 
                 WHERE defServer = '${tagNameSplit[0]}' AND
                 defTable = '${tagNameSplit[1]}' AND 
                 defColumn = '${tagNameSplit[2]}' AND 
@@ -101,7 +101,7 @@ router.post('/features/feature', async (req, res) => {
             }
         }
         
-    } else if (req.body.Table == 'WaveSplit') {
+    } else if (req.body.table == 'WaveSplit') {
         query = `
             SELECT JSON_MERGE(t1.parts, t1.features) as parts
             FROM WaveSplit t1, (
@@ -128,9 +128,9 @@ router.post('/features/feature', async (req, res) => {
 
 router.post('/features/feature/statistics', async (req, res) => {
     // console.log(req.body)
-    const tagNameSplit = req.body.TagName.split(".")
-    startTime = new Date(req.body.StartTime)
-    stopTime = new Date(req.body.StopTime)
+    const tagNameSplit = req.body.tagName.split(".")
+    startTime = new Date(req.body.startTime)
+    stopTime = new Date(req.body.stopTime)
     const start = moment(startTime).format('YYYY-MM-DD HH:mm:ss.SSS')
     const stop = moment(stopTime).format('YYYY-MM-DD HH:mm:ss.SSS')
     const queryFeaturesStatistics = `

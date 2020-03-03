@@ -6,7 +6,7 @@ const { spawn } = require('child_process');
 const publicDirectoryPath = path.join(__dirname, '../../public')
 const pythonDirectoryPath = path.join(publicDirectoryPath, 'python')
 const testPath = path.join(pythonDirectoryPath, 'getStatistics.py')
-console.log(testPath)
+// console.log(testPath)
 
 const runPy = (startTime, stopTime, index_date, index_num) => {
     return new Promise((resolve, reject) => {
