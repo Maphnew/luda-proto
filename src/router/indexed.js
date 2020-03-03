@@ -63,10 +63,10 @@ router.get('/indexed', (req, res) => {
 
 router.post('/indexed/waveform', async (req,res) => {
     console.log(req.body)
-    const tagNameSplit = req.body.TagName.split(".")
+    const tagNameSplit = req.body.tagName.split(".")
     const [ , table = 'HisItemCurr', column = 'Item005' ] = tagNameSplit
-    startTime = new Date(req.body.StartTime)
-    stopTime = new Date(req.body.StopTime)
+    startTime = new Date(req.body.startTime)
+    stopTime = new Date(req.body.stopTime)
     const start = moment(startTime).format('YYYY-MM-DD HH:mm:ss.SSS')
     const stop = moment(stopTime).format('YYYY-MM-DD HH:mm:ss.SSS')
     const queryWaveForm = `
@@ -80,6 +80,8 @@ router.post('/indexed/waveform', async (req,res) => {
     }).catch((e) => {
         res.status(500).send(e)
     })
+}, (error, req, res, next) => {
+    res.status(400).send('Error!', error)
 })
 
 // router.patch('/indexed/test', async (req, res) => {
@@ -101,7 +103,9 @@ router.post('/indexed/waveform', async (req,res) => {
 
 router.patch('/indexed/splitlist', async (req, res) => {
     console.log('req.body:', req.body)
-    const tagNameSplit = req.body.TagName.split(".")
+    const stringify = JSON.stringify(req.body)
+    console.log('req.body to stringify:', stringify)
+    const tagNameSplit = req.body.tagName.split(".")
     const [ server = 'S1', table = 'HisItemCurr', column = 'Item005' ] = tagNameSplit
     const indexDate = moment(req.body.index_date).format('YYYY-MM-DD')
     const indexNum = req.body.index_num
@@ -139,14 +143,16 @@ router.patch('/indexed/splitlist', async (req, res) => {
     }).catch((e) => {
         res.status(400).send(e)
     })
+}, (error, req, res, next) => {
+    res.status(400).send('Error!', error)
 })
 
 router.post('/indexed/wavelist', async (req, res) => {
     console.log(req.body)
-    const tagNameSplit = req.body.TagName.split(".")
+    const tagNameSplit = req.body.tagName.split(".")
     const [ server = 'S1', table = 'HisItemCurr', column = 'Item005' ] = tagNameSplit
-    startTime = new Date(req.body.StartTime)
-    stopTime = new Date(req.body.StopTime)
+    startTime = new Date(req.body.startTime)
+    stopTime = new Date(req.body.stopTime)
     const start = moment(startTime).format('YYYY-MM-DD HH:mm:ss.SSS')
     const stop = moment(stopTime).format('YYYY-MM-DD HH:mm:ss.SSS')
     const queryWavelist = `
@@ -171,6 +177,8 @@ router.post('/indexed/wavelist', async (req, res) => {
     }).catch((e) => {
         res.status(500).send(e)
     })
+}, (error, req, res, next) => {
+    res.status(400).send('Error!', error)
 })
 
 
