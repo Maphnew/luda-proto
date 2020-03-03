@@ -8,9 +8,9 @@ class Graph extends Component {
 	state = {
 		jsondata: [],
 		splitdata: [],
-		startTime1:'',
-		startTime2:'',
-		startTime3:'',
+		// startTime1:'',
+		// startTime2:'',
+		// startTime3:'',
 		start:[]
 	  };
 
@@ -19,10 +19,10 @@ class Graph extends Component {
 		startTime = new Date();
 	}
 
-	componentWillReceiveProps = async (Props) => {
+	componentWillReceiveProps = async (nextProps) => {
 		this.state.data = []
-		if(this.props.splitData.parts!== undefined){
-			await this.setState({splitdata: this.props.splitData.parts})
+		if(nextProps.splitData.parts!== undefined){
+			await this.setState({splitdata: nextProps.splitData.parts})
 			// console.log(this.state.splitdata)
 			var json = JSON.parse(this.state.splitdata)
 			var jsonLen = Object.keys(json).length
@@ -30,27 +30,26 @@ class Graph extends Component {
 			for(let i=0; i < jsonLen; i++){
 				var time = new Date(json[i].startTime)
 				this.state.start.push(time)
-				console.log('start',this.state.start)
 			}
 			
-			try{
-				var time1 = new Date(json[0].startTime)
-				this.setState({startTime1: time1})
-			}catch{
-				this.setState({startTime1: 0})
-			}	
-			try{
-				var time2 = new Date(json[1].startTime)
-				this.setState({startTime2: time2})
-			}catch{
-				this.setState({startTime2: 0})
-			}
-			try{
-				var time3 = new Date(json[2].startTime)
-				this.setState({startTime3: time3})
-			}catch{
-				this.setState({startTime3: 0})
-			}
+			// try{
+			// 	var time1 = new Date(json[0].startTime)
+			// 	this.setState({startTime1: time1})
+			// }catch{
+			// 	this.setState({startTime1: 0})
+			// }	
+			// try{
+			// 	var time2 = new Date(json[1].startTime)
+			// 	this.setState({startTime2: time2})
+			// }catch{
+			// 	this.setState({startTime2: 0})
+			// }
+			// try{
+			// 	var time3 = new Date(json[2].startTime)
+			// 	this.setState({startTime3: time3})
+			// }catch{
+			// 	this.setState({startTime3: 0})
+			// }
 		}
 		await this.setState({ jsondata: this.props.waveform})	
 	}
@@ -58,7 +57,7 @@ class Graph extends Component {
 	render() {
 		var dataSeries = { type: "line" };
 		var dataPoints = this.state.jsondata
-		console.log(this.state.startTime1,this.state.startTime2,this.state.startTime3)
+		//console.log(this.state.startTime1,this.state.startTime2,this.state.startTime3)
 		this.state.data = []
 		dataSeries.dataPoints = dataPoints;
 		this.state.data.push(dataSeries);

@@ -135,7 +135,7 @@ function GraphTable(props) {
 
   }
 
-  const saveClick = () => {    
+  const saveClick = async() => {    
     setSave("Processing")
     var tempParts = {}
     rows.map((row)=>{
@@ -148,7 +148,7 @@ function GraphTable(props) {
     }
     // console.log("saveClick",params)
 
-    fetch("http://192.168.100.175:5000/indexed/splitlist", {
+    await fetch("http://192.168.100.175:5000/indexed/splitlist", {
         method: 'PATCH', 
         headers: { 
             'Content-Type': 'application/json',
@@ -167,6 +167,8 @@ function GraphTable(props) {
       setSave("network error")
       return { name: "network error", description: "" };
     });
+
+    props.onGraphChange()    
   }
 
   const tableCellElement =(data)=> {
