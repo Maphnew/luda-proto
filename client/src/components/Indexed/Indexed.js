@@ -45,7 +45,7 @@ class Index extends Component {
             return record;
           }));
           this.setState({ wavelist: json })
-          console.log('wavelist',this.state.wavelist)
+          // console.log('wavelist',this.state.wavelist)
         })
         .catch(err => console.log(err));
     }
