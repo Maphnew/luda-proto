@@ -46,7 +46,7 @@ class WaveListTable extends React.Component {
       unselectable: [2],
       selected: [1],
       onSelect: this.onRowSelect,
-      bgColor: "rgb(238, 193, 213)" 
+      bgColor: "rgb(238, 193, 213)" ,
     };
     return (
       <Router>

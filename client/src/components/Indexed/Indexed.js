@@ -15,7 +15,8 @@ class Index extends Component {
     wavelist: [],
     json: [],
     graphData: {},
-    Item:''
+    Item:'',
+    starttime : {}
   }
 
   componentWillReceiveProps = async (nextProps) => {
@@ -44,6 +45,7 @@ class Index extends Component {
             return record;
           }));
           this.setState({ wavelist: json })
+          // console.log('wavelist',this.state.wavelist)
         })
         .catch(err => console.log(err));
     }
@@ -72,8 +74,6 @@ class Index extends Component {
       .then(response => response.json())
       .then((json) => {
         //console.log(json)
-        const moment = require('moment')
-        var requiredPattern = 'YYYY-MM-DD HH:mm:ss.SSS';
 
         JSON.stringify(json.map(function (record) {
           record.x = new Date(record.x);
@@ -81,7 +81,8 @@ class Index extends Component {
         }));
       
         this.setState({ waveformData: json })
-        // console.log("waveformData",this.state.waveformData);
+
+        //  console.log("waveformData",this.state.waveformData);
       })
       .catch(err => console.log(err));
 
@@ -134,7 +135,8 @@ class Index extends Component {
         </div>
         <div className="Layout2">
           <div className="Total">
-             <IndexedGraph waveform={this.state.waveformData}></IndexedGraph>
+             <IndexedGraph waveform={this.state.waveformData}
+             splitData={this.state.graphData}></IndexedGraph>
             <div className="WaveListGraphTable">
               <GraphTable 
                 splitData={this.state.graphData}
