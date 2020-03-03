@@ -81,7 +81,8 @@ class Index extends Component {
         }));
       
         this.setState({ waveformData: json })
-        // console.log("waveformData",this.state.waveformData);
+
+        //  console.log("waveformData",this.state.waveformData);
       })
       .catch(err => console.log(err));
 

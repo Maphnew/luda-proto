@@ -4,11 +4,14 @@ import Chart from'chart.js';
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 var startTime = 0, endTime = 0;
 const moment = require('moment')
+const addSubtractDate = require("add-subtract-date");
 class Graph extends Component {
 	state = {
 		jsondata: [],
 		splitdata: [],
-		data:[],
+		startTime1:'',
+		startTime2:'',
+		startTime3:'',
 		start:[]
 	  };
 
@@ -22,17 +25,22 @@ class Graph extends Component {
 		this.state.data = []
 		if(this.props.splitData.parts!== undefined){
 			await this.setState({splitdata: this.props.splitData.parts})
+			// console.log(this.state.splitdata)
 			var json = JSON.parse(this.state.splitdata)	
-			console.log("here",json) //선택했던 파형 2개 들어감, 앞에 파형만 들어가도록
+			var time1 = new Date(json[0].startTime)
+			var time2 = new Date(json[1].startTime)
+			var time3 = new Date(json[2].startTime)
+			this.setState({startTime1: time1})
+			this.setState({startTime2: time2})
+			this.setState({startTime3: time3})
+
 		}
-		await this.setState({ jsondata: this.props.waveform})
-	
+		await this.setState({ jsondata: this.props.waveform})	
 	}
 
 	render() {
 		var dataSeries = { type: "line" };
 		var dataPoints = this.state.jsondata
-		console.log('dataPoints',dataPoints);
 		// var dataPoints =[{
 		// 	x: new Date(2020, 2, 28, 11, 5, 21,100),
 		// 	y: 41.58
@@ -42,17 +50,15 @@ class Graph extends Component {
 		// 	y: 41.50
 		// 	}
 		// 	];
-		const date1 = new Date(2020,2,2,11,53,33);
-		const date2 = new Date(2020,2,2,11,53,38);
-		const date3 = new Date(2020,2,2,11,53,44);
+		console.log(this.state.startTime1,this.state.startTime2,this.state.startTime3)
 		this.state.data = []
 		dataSeries.dataPoints = dataPoints;
 		this.state.data.push(dataSeries);
-		// this.state.start.push(this.state.date[2])
-	
-		console.log('data ',this.state.data);
+		// console.log('data ',this.state.data);
+		// const date1 = new Date(2020,2,2,11,53,33);
+		// const date2 = new Date(2020,2,2,11,53,38);
+		// const date3 = new Date(2020,2,2,11,53,44);
 
-		// console.log(test);
 		const spanStyle = {
 			position:'absolute', 
 			top: '10px',
@@ -71,25 +77,22 @@ class Graph extends Component {
 			},
 			axisX:{
 				stripLines: [{
-				value: date1,
-				thickness: 1,
-				color: "black",
+					value: this.state.startTime1,
+					thickness: 1,
+					color: "black",
 				},
 				{
-					value: date2,
+					value: this.state.startTime2,
 					thickness: 1,
 					color: "black",
-				}
-				,
+				},
 				{
-					value: date3,
+					value: this.state.startTime3,
 					thickness: 1,
 					color: "black",
-				}
-			],
+				}],
 			  },
-			data: this.state.data  // random data
-			
+			data: this.state.data  // random data		
 		}
 				
 		return (
@@ -103,4 +106,5 @@ class Graph extends Component {
 	} 			
 }
 export default Graph;
+
            
