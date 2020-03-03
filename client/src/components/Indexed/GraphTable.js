@@ -78,12 +78,10 @@ function GraphTable(props) {
 
     if (!equal(nextProps,props) ){
         setNextProps(props)
-        console.log(props)
         setRows(tempArr)
     }    
   }
   const onToggleEditMode = id => {
-    console.log("edit")
     setRows(state => {
       return rows.map(row => {
         if (row.id === id) {
@@ -142,6 +140,7 @@ function GraphTable(props) {
     rows.map((row)=>{
       tempParts[row.id] = {"startTime":row.startTime,"stopTime":row.stopTime}
     })
+
     var params = {
       "tagName":props.splitData.tagName,
       "index_date":props.splitData.index_date,
@@ -150,7 +149,7 @@ function GraphTable(props) {
     }
     // console.log("saveClick",params)
 
-    await fetch("http://192.168.100.175:5000/indexed/splitlist", {
+    await fetch("http://192.168.100.99:5000/indexed/splitlist", {
         method: 'PATCH', 
         headers: { 
             'Content-Type': 'application/json',

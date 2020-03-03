@@ -17,14 +17,9 @@ class Graph extends Component {
                 await this.setState({graphData: nextProps.graphData["0"]})
             }
                       
-            if (nextProps.graph.graphType===undefined &&nextProps.graph.featureType===undefined ){
-                let featureReq = JSON.parse( localStorage.getItem('featureReq'))  
-                await this.setState({graph:{graphType:"table",featureType:featureReq.Feature}})             
-            }
-            else {
-                await this.setState({graph: nextProps.graph})   
-            }
-            
+            let featureReq = JSON.parse( localStorage.getItem('featureReq'))  
+            await this.setState({graph:{graphType:"table",featureType:featureReq.feature}})          
+
         }
       
     }
@@ -113,7 +108,7 @@ class Graph extends Component {
 
     render() {                   
         //console.log("data_length : ",this.props.graphData.length,"type : ",this.state.graph)
-        // console.log(this.state.graph)
+        // console.log(this.props.graphData)
         if (this.props.graphData.length ===undefined) {  
             return(
                 <div>
