@@ -101,6 +101,8 @@ router.post('/indexed/waveform', async (req,res) => {
 
 router.patch('/indexed/splitlist', async (req, res) => {
     console.log('req.body:', req.body)
+    const tagNameSplit = req.body.TagName.split(".")
+    const [ server = 'S1', table = 'HisItemCurr', column = 'Item005' ] = tagNameSplit
     const indexDate = moment(req.body.index_date).format('YYYY-MM-DD')
     const indexNum = req.body.index_num
     const parts = req.body.parts
@@ -118,7 +120,8 @@ router.patch('/indexed/splitlist', async (req, res) => {
     queryUpdateWaveList = await queryUpdateWaveList.slice(0, -1)
     queryUpdateWaveList += `
         )  
-        WHERE index_date = '${indexDate}' AND index_num = ${indexNum};
+        WHERE index_date = '${indexDate}' AND index_num = ${indexNum} AND
+        defServer = '${server}' AND defTable = '${table}' AND defColumn = '${column}';
     `
     console.log(queryUpdateWaveList)
     const queryStatistics = await getStatisticsQuery(indexDate,indexNum,parts)
