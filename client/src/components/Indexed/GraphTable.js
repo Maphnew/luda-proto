@@ -149,7 +149,7 @@ function GraphTable(props) {
     }
     // console.log("saveClick",params)
 
-    await fetch("http://192.168.100.99:5000/indexed/splitlist", {
+    await fetch("http://192.168.100.175:5000/indexed/splitlist", {
         method: 'PATCH', 
         headers: { 
             'Content-Type': 'application/json',

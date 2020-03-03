@@ -25,7 +25,7 @@ class Index extends Component {
       const params = { "tagName": nextProps.values.tagName, "startTime": nextProps.values.startTime, "stopTime": nextProps.values.stopTime }
       // console.log(params)
       this.setState({item:nextProps.values.tagName})
-      fetch("http://192.168.100.99:5000/indexed/wavelist", {
+      fetch("http://192.168.100.175:5000/indexed/wavelist", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ class Index extends Component {
 
     const params = { "tagName": this.state.item, "startTime": getData.startTime, "stopTime": getData.stopTime }
     // console.log(params)
-    fetch("http://192.168.100.99:5000/indexed/waveform", {
+    fetch("http://192.168.100.175:5000/indexed/waveform", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
