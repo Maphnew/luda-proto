@@ -61,7 +61,7 @@ class Graph extends Component {
 		this.state.data = []
 		dataSeries.dataPoints = dataPoints;
 		this.state.data.push(dataSeries);
-
+		
 		const spanStyle = {
 			position:'absolute', 
 			top: '10px',

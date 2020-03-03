@@ -23,7 +23,8 @@ class Index extends Component {
     if (!equal(this.props.values, nextProps.values)) // Check if it's a new user, you can also use some unique property, like the ID  (this.props.user.id !== prevProps.user.id)
     {
       const params = { "TagName": nextProps.values.TagName, "StartTime": nextProps.values.StartTime, "StopTime": nextProps.values.StopTime }
-      console.log(params)
+      // console.log(params)
+      this.setState({Item:nextProps.values.TagName})
       fetch("http://192.168.100.175:5000/indexed/wavelist", {
         method: 'POST',
         headers: {
@@ -44,7 +45,7 @@ class Index extends Component {
             record.stopTime = moment(record.stopTime).format(requiredPattern);
             return record;
           }));
-          this.setState({ wavelist: json })
+          this.setState({ wavelist: json})
           // console.log('wavelist',this.state.wavelist)
         })
         .catch(err => console.log(err));
@@ -53,12 +54,13 @@ class Index extends Component {
 
   onGraphData=async(getData)=> {
     const rowValue = {
+      "TagName": this.state.Item,
       "index_date": getData.index_date,
       "index_num": getData.index_num,
       "parts": getData.parts
     };
     await this.setState({ graphData: rowValue});
-    //console.log("set",typeof(this.state.graphData),this.state.graphData)
+    // console.log("set",typeof(this.state.graphData),this.state.graphData)
 
     const params = { "TagName": this.state.Item, "StartTime": getData.startTime, "StopTime": getData.stopTime }
     // console.log(params)

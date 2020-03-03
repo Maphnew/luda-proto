@@ -24,7 +24,7 @@ class WaveListTable extends React.Component {
       const moment = require('moment')
       var requiredPattern = 'YYYY-MM-DD HH:mm:ss.SSS';
       row.index_date = moment(row.index_date).format(requiredPattern);
-      await this.setState({ selected: row});     
+      await this.setState({selected: row});     
       this.props.onGraphData(this.state.selected)
     } else {
       this.props.onGraphData({})
@@ -43,8 +43,8 @@ class WaveListTable extends React.Component {
     var selectRowProp = {
       mode: 'radio',
       clickToSelect: true,
-      unselectable: [2],
-      selected: [1],
+      // unselectable: [2],
+      // selected: [3],
       onSelect: this.onRowSelect,
       bgColor: "rgb(238, 193, 213)" ,
     };
