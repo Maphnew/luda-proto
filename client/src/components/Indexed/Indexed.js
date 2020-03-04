@@ -54,6 +54,7 @@ class Index extends Component {
   }
 
   onGraphData=async(getData)=> {
+    console.log('getData',getData)
     const rowValue = {
       "tagName": this.state.item,
       "index_date": getData.index_date,
@@ -115,6 +116,7 @@ class Index extends Component {
           return record;
         }));
         this.setState({ wavelist: json })
+        console.log("this.state.wavelist",this.state.wavelist)
       })
       .catch(err => console.log(err));    
 }
