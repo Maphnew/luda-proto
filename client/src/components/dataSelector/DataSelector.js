@@ -42,6 +42,7 @@ class DataSelector extends Component {
 
     dataloadClick = async () => {
         if (this.state.selectedOption.hasOwnProperty("DefColumn")===false) {
+            console.log(this.state.selectedOption.DefColumn)
             alert("Please enter data!");
             return
         }

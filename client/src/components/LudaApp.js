@@ -18,13 +18,25 @@ export default class LudaApp extends React.Component {
     }
     componentDidMount() {
         console.log('componentDidMount')
+        this.setupBeforeUnloadListener();
     }
     componentDidUpdate(prevProps, prevState) {
         console.log('componentDidUpdate')
     }
-    componentWillUnmount() {
-        console.log('componentWillUnmount')
+
+    // Things to do before unloading/closing the tab
+    doSomethingBeforeUnload = () => {
+        localStorage.setItem('featureReq', undefined)    
     }
+
+    // Setup the `beforeunload` event listener
+    setupBeforeUnloadListener = () => {
+        window.addEventListener("beforeunload", (ev) => {
+            ev.preventDefault();
+            return this.doSomethingBeforeUnload();
+        });
+    };
+
     render() {
         const naviMenu = ['Raw', 'Indexed', 'Features']
         
