@@ -108,7 +108,7 @@ class Index extends Component {
         const moment = require('moment')
         var requiredPattern = 'YYYY-MM-DD HH:mm:ss.SSS';
 
-        JSON.stringify(json.map(function (record) {
+        JSON.stringify(json.map(function (record, idx) {
           record.idx = idx
           record.startTime = moment(record.startTime).format(requiredPattern);
           record.stopTime = moment(record.stopTime).format(requiredPattern);
