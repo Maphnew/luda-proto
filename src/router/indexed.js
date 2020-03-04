@@ -66,7 +66,7 @@ router.get('/indexed', (req, res) => {
 })
 
 router.post('/indexed/waveform', async (req,res) => {
-    console.log(req.body)
+    console.log('/indexed/waveform', req.body)
     const tagNameSplit = req.body.tagName.split(".")
     const [ , table = 'HisItemCurr', column = 'Item005' ] = tagNameSplit
     startTime = new Date(req.body.startTime)
@@ -106,7 +106,7 @@ router.post('/indexed/waveform', async (req,res) => {
 // })
 
 router.patch('/indexed/splitlist', async (req, res) => {
-    console.log('req.body:', req.body)
+    console.log('/indexed/splitlist:', req.body)
     const stringify = JSON.stringify(req.body)
     console.log('req.body to stringify:', stringify)
     const tagNameSplit = req.body.tagName.split(".")
@@ -155,7 +155,7 @@ router.patch('/indexed/splitlist', async (req, res) => {
 })
 
 router.post('/indexed/wavelist', async (req, res) => {
-    console.log(req.body)
+    console.log('/indexed/wavelist', req.body)
     const tagNameSplit = req.body.tagName.split(".")
     const [ server = 'S1', table = 'HisItemCurr', column = 'Item005' ] = tagNameSplit
     startTime = new Date(req.body.startTime)
