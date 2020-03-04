@@ -35,7 +35,10 @@ class WaveListTable extends React.Component {
     if (!equal(this.props.wavelist, nextProps.wavelist)) // Check if it's a new user, you can also use some unique property, like the ID  (this.props.user.id !== prevProps.user.id)
     {
       await this.setState({ data: nextProps.wavelist })      
-      console.log(nextProps.wavelist)
+      //console.log("nextProps.wavelist",nextProps.wavelist)
+      if (this.state.selected.idx !== undefined) {
+        this.props.onGraphData(nextProps.wavelist[this.state.selected.idx])
+      }
     }
   }
 
@@ -61,7 +64,7 @@ class WaveListTable extends React.Component {
             condensed
             pagination
             >
-            <TableHeaderColumn isKey dataField='startTime'>
+          <TableHeaderColumn isKey dataField='startTime'>
               StartTime
           </TableHeaderColumn>
             <TableHeaderColumn dataField='stopTime'>

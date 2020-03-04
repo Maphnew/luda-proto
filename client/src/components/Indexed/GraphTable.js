@@ -79,6 +79,8 @@ function GraphTable(props) {
     if (!equal(nextProps,props) ){
         setNextProps(props)
         setRows(tempArr)
+        setSave("Complete")
+        console.log("update")
     }    
   }
   const onToggleEditMode = id => {
@@ -137,7 +139,13 @@ function GraphTable(props) {
   const saveClick = async() => {    
     setSave("Processing")
     var tempParts = {}
-    rows.map((row)=>{
+    rows.map((row,idx)=>{
+      if((idx+1) < rows.length){
+        const subTime = new Date(rows[idx+1].startTime)-new Date(row.stopTime)
+        if (Math.abs(subTime) > 100){
+          console.log("다뀜")
+        }
+      }      
       tempParts[row.id] = {"startTime":row.startTime,"stopTime":row.stopTime}
     })
 
@@ -147,7 +155,7 @@ function GraphTable(props) {
       "index_num":props.splitData.index_num,
       "parts":tempParts
     }
-    // console.log("saveClick",params)
+    console.log("saveClick",params)
 
     await fetch("http://192.168.100.175:5000/indexed/splitlist", {
         method: 'PATCH', 
@@ -158,8 +166,7 @@ function GraphTable(props) {
         body : JSON.stringify(params)
     })
     .then(response => {
-      const statusCode = response.status;
-      setSave("Complete")
+      const statusCode = response.status;      
       return { statusCode };
     
     })
@@ -169,7 +176,7 @@ function GraphTable(props) {
       return { name: "network error", description: "" };
     });
 
-    props.onGraphChange()    
+    props.onGraphChange()
   }
 
   const tableCellElement =(data)=> {
