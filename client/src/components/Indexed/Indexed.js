@@ -109,6 +109,7 @@ class Index extends Component {
         var requiredPattern = 'YYYY-MM-DD HH:mm:ss.SSS';
 
         JSON.stringify(json.map(function (record) {
+          record.idx = idx
           record.startTime = moment(record.startTime).format(requiredPattern);
           record.stopTime = moment(record.stopTime).format(requiredPattern);
           return record;
