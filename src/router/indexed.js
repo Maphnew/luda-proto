@@ -32,12 +32,16 @@ const runPy = async (startTime, stopTime, index_date, index_num) => {
 const getStatisticsQuery = async (tagNameSplit,indexDate, indexNum, parts) => {
     const partsIndex = Object.keys(parts)
     const [ server = 'S1', table = 'HisItemCurr', column = 'Item005' ] = tagNameSplit
-    //console.log(partsIndex) // [0,1,2]
+    console.log('partsIndex:', partsIndex)
+    console.log('tagNameSplit:', tagNameSplit)
+    console.log('indexDate:', indexDate)
+    console.log('indexNum:', indexNum)
+    console.log('parts:', parts)
     let query = `UPDATE WaveSplit SET features = JSON_SET(features,`
     for await (let k of partsIndex) {
         startTime = parts[k]['startTime']
         stopTime = parts[k]['stopTime']
-        //console.log('k:', k, startTime, stopTime)
+        console.log('k:', k, indexDate, indexNum, startTime, stopTime)
         await runPy(startTime, stopTime, indexDate, indexNum).then( async (json) => {
             const key = Object.keys(json)
             let queryKey = ''
