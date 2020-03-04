@@ -80,13 +80,11 @@ class Index extends Component {
         //console.log(json)
 
         JSON.stringify(json.map(function (record) {
-          record.x = new Date(record.x);
+          record.x= new Date(record.x)
           return record;
         }));
       
         this.setState({ waveformData: json })
-
-        //  console.log("waveformData",this.state.waveformData);
       })
       .catch(err => console.log(err));
 
