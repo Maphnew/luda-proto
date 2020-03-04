@@ -68,20 +68,20 @@ function GraphTable(props) {
   const [nextProps, setNextProps] = React.useState(undefined);
   const classes = useStyles();
 
-  if(props.splitData.parts!== undefined){
-    const partsJson = JSON.parse(props.splitData.parts)
-    var tempArr = [];
-    Object.entries(partsJson).map(([key,value])=>{ 
-        var tempJson = Object.assign({"id":key, isEditMode: false}, value);
-        tempArr.push(tempJson)                                               
-    }) 
-
-    if (!equal(nextProps,props) ){
-        setNextProps(props)
-        setRows(tempArr)
-        setSave("Complete")
-    }    
+  if(props.splitData.parts!== undefined && !equal(nextProps,props) ){
+      console.log("update")
+      const partsJson = JSON.parse(props.splitData.parts)
+      var partDataArr = [];
+      Object.entries(partsJson).map(([key,value])=>{ 
+          var tempJson = Object.assign({"id":key, isEditMode: false}, value);
+          partDataArr.push(tempJson)
+          return partDataArr                                          
+      }) 
+      setNextProps(props)      
+      setRows(partDataArr)
+      setSave("Complete")  
   }
+
   const onToggleEditMode = id => {
     setRows(state => {
       return rows.map(row => {
@@ -129,7 +129,8 @@ function GraphTable(props) {
     const partsJson = JSON.parse(props.splitData.parts)
     Object.entries(partsJson).map(([key,value])=>{ 
         var tempJson = Object.assign({"id":key, isEditMode: false}, value);
-        tempArr.push(tempJson)                                               
+        tempArr.push(tempJson)  
+        return tempArr                                 
     }) 
     setRows(tempArr);
 
@@ -139,14 +140,16 @@ function GraphTable(props) {
     setSave("Processing")
     var tempParts = {}
     rows.map((row,idx)=>{
-      if((idx+1) < rows.length){
-        const subTime = new Date(rows[idx+1].startTime)-new Date(row.stopTime)
-        if (Math.abs(subTime) > 100){
-          console.log("바뀜")
-          console.log(tempArr[idx+1],rows[idx+1])
+      if(idx !== 0 ){
+        if (Math.abs(new Date(row.startTime)-new Date(rows[idx-1].stopTime)) > 100){      
+          const moment = require('moment') 
+          var tempDate = new Date(row.startTime)         
+          tempDate.setTime(tempDate.getTime() - 100)
+          tempParts[rows[idx-1].id].stopTime = moment(tempDate).format("YYYY-MM-DD HH:mm:ss.SSSSSS")
         }
       }      
       tempParts[row.id] = {"startTime":row.startTime,"stopTime":row.stopTime}
+      return tempParts
     })
 
     var params = {
@@ -155,9 +158,9 @@ function GraphTable(props) {
       "index_num":props.splitData.index_num,
       "parts":tempParts
     }
-    console.log("saveClick",params)
+    // console.log("saveClick",params)
 
-    await fetch("http://192.168.100.99:5000/indexed/splitlist", {
+    await fetch("http://192.168.100.175:5000/indexed/splitlist", {
         method: 'PATCH', 
         headers: { 
             'Content-Type': 'application/json',
@@ -180,10 +183,8 @@ function GraphTable(props) {
   }
 
   const tableCellElement =(data)=> {
-    const tableCell =  Object.entries(data[0]).map(([key,value],idx)=>{ 
-      if (key !== "isEditMode"){
-        return(<TableCell align="left" key={idx} >{key}</TableCell>)  
-      }             
+    const tableCell =  Object.entries(data[0]).filter(([key]) => key !== 'isEditMode').map(([key,value],idx)=>{       
+      return(<TableCell align="left" key={idx} >{key}</TableCell>)  
     }) 
     return tableCell;
   }
@@ -238,15 +239,13 @@ function GraphTable(props) {
                   )}
                 </TableCell>
                   {
-                    Object.entries(row).map(([key,value])=>{ 
-                      if (key !== "isEditMode"){
-                        if(key ==="startTime" || key ==="stopTime"){
-                          return(<CustomTableCell {...{ row, name: {key}, onChange}} key ={key} />)
-                        }                  
-                        else {
-                          return(<TableCell align="center" className={classes.tableCell}  key ={key}> {row[key]} </TableCell>)
-                        }                      
-                      }
+                    Object.entries(row).filter(([key]) => key !== 'isEditMode').map(([key,value])=>{                       
+                      if(key ==="startTime"){
+                        return(<CustomTableCell {...{ row, name: {key}, onChange}} key ={key} />)
+                      }                  
+                      else {
+                        return(<TableCell align="center" className={classes.tableCell}  key ={key}> {row[key]} </TableCell>)
+                      }    
                     })
                   }
               </TableRow>
