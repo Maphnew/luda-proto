@@ -38,14 +38,13 @@ class Graph extends Component {
 				stripLineData.thickness = 1
 				stripLineData.color = "black"
 				this.state.stripLineArray.push(stripLineData);
-				console.log(this.state.stripLineArray);
 			}			
 		}
 		await this.setState({ jsondata: this.props.waveform})	
 	}
 
 	render() {
-		var dataSeries = { type: "line" };
+		var dataSeries = { type: "line" ,toolTipContent: "<b>StartTime: </b>{x}<br/><b>Data: </b>{y}",xValueFormatString:"YYYY-MM-DD HH:mm:ss.fff",};
 		var dataPoints = this.state.jsondata
 		//console.log(this.state.startTime1,this.state.startTime2,this.state.startTime3)
 		this.state.data = []

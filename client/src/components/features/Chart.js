@@ -46,6 +46,7 @@ const scatter = (data,feature) =>{
         data: [{
             type: "scatter",
             markerSize: 15,
+            xValueFormatString:"YYYY-MM-DD HH:mm:ss.fff",
             toolTipContent: "<b>StartTime: </b>{x}<br/><b>Data: </b>{y}",
             dataPoints: data
         }]
@@ -72,7 +73,7 @@ const area = (data,feature) =>{
         data: [
         {
             type: "area",
-            xValueFormatString: "YYYY",
+            xValueFormatString:"YYYY-MM-DD HH:mm:ss.fff",
             yValueFormatString: "#,##0.## Million",
             dataPoints: data
         }
@@ -101,7 +102,7 @@ const stackedarea = (data,feature) =>{
         data: [
         {
             type: "area",
-            xValueFormatString: "YYYY",
+            xValueFormatString:"YYYY-MM-DD HH:mm:ss.fff",
             yValueFormatString: "#,##0.## Million",
             dataPoints: data
         }
