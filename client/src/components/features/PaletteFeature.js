@@ -18,7 +18,7 @@ class PaletteFeature extends Component {
 
     componentDidMount=async()=>{
         this.setState({ isLoading: true, show: true });
-        
+
         try {
             let featureReq = JSON.parse( localStorage.getItem('featureReq'))
             await this.setState({ featureReq})

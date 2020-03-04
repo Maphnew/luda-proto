@@ -80,7 +80,6 @@ function GraphTable(props) {
         setNextProps(props)
         setRows(tempArr)
         setSave("Complete")
-        console.log("update")
     }    
   }
   const onToggleEditMode = id => {
@@ -143,7 +142,8 @@ function GraphTable(props) {
       if((idx+1) < rows.length){
         const subTime = new Date(rows[idx+1].startTime)-new Date(row.stopTime)
         if (Math.abs(subTime) > 100){
-          console.log("다뀜")
+          console.log("바뀜")
+          console.log(tempArr[idx+1],rows[idx+1])
         }
       }      
       tempParts[row.id] = {"startTime":row.startTime,"stopTime":row.stopTime}
@@ -157,7 +157,7 @@ function GraphTable(props) {
     }
     console.log("saveClick",params)
 
-    await fetch("http://192.168.100.175:5000/indexed/splitlist", {
+    await fetch("http://192.168.100.99:5000/indexed/splitlist", {
         method: 'PATCH', 
         headers: { 
             'Content-Type': 'application/json',

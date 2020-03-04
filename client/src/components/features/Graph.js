@@ -18,8 +18,12 @@ class Graph extends Component {
             }
                       
             let featureReq = JSON.parse( localStorage.getItem('featureReq'))  
-            await this.setState({graph:{graphType:"table",featureType:featureReq.feature}})          
-
+            if(nextProps.graph.graphType===undefined){
+                await this.setState({graph:{graphType:"table",featureType:featureReq.feature}})  
+            }
+            else {
+                await this.setState({graph:{graphType:nextProps.graph.graphType,featureType:featureReq.feature}})   
+            }
         }
       
     }
