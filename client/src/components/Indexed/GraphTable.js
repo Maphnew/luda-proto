@@ -125,18 +125,16 @@ function GraphTable(props) {
   };
 
   const resetClick = () => {
-    var tempArr = [];
-    const partsJson = JSON.parse(props.splitData.parts)
-    Object.entries(partsJson).map(([key,value])=>{ 
-        var tempJson = Object.assign({"id":key, isEditMode: false}, value);
-        tempArr.push(tempJson)  
-        return tempArr                                 
-    }) 
-    setRows(tempArr);
-
+    const partDataArr = graphTableData()
+    setRows(partDataArr);      
   }
 
-  const saveClick = async() => {    
+  const saveClick = async() => {
+    const partDataArr = graphTableData()
+    if (equal(rows,partDataArr)) {
+      return
+    }    
+    
     setSave("Processing")
     var tempParts = {}
     rows.map((row,idx)=>{
@@ -158,7 +156,7 @@ function GraphTable(props) {
       "index_num":props.splitData.index_num,
       "parts":tempParts
     }
-    // console.log("saveClick",params)
+    console.log("saveClick",params)
 
     await fetch("http://192.168.100.175:5000/indexed/splitlist", {
         method: 'PATCH', 
@@ -182,6 +180,16 @@ function GraphTable(props) {
     props.onGraphChange()
   }
 
+  const graphTableData =()=>{
+    var tempArr = [];
+    const partsJson = JSON.parse(props.splitData.parts)
+    Object.entries(partsJson).map(([key,value])=>{ 
+        var tempJson = Object.assign({"id":key, isEditMode: false}, value);
+        tempArr.push(tempJson)  
+        return tempArr                                 
+    }) 
+    return tempArr
+  }
   const tableCellElement =(data)=> {
     const tableCell =  Object.entries(data[0]).filter(([key]) => key !== 'isEditMode').map(([key,value],idx)=>{       
       return(<TableCell align="left" key={idx} >{key}</TableCell>)  
