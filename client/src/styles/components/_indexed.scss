@@ -82,17 +82,21 @@
     height: 75vh;
   }
 
-  .WaveListGraphTable {
-    margin-top:0.5%;   
-    height: auto;
-    overflow-x: scroll;
-    height: 30vh;
-  }
-
+.MuiPaper-root {
+  margin-top:0.5%;   
+  height: 25.2vh;
+  overflow-x: scroll;
+  overflow-y: scroll;
+}
   .col-md-6, .col-xs-6, .col-sm-6, .col-lg-6 {
     margin-right: -5%;
   }
-
+.MuiInputBase-root {
+  width: 140px !important;
+  font-family: 'Jeju Gothic', sans-serif !important;
+  font-size: 10px !important;
+  font-weight: bold !important;
+}
   .page-item {
     width: 20%;
     text-align: center;
