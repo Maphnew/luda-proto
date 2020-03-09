@@ -5,13 +5,6 @@ import { Link, Route, BrowserRouter as Router } from 'react-router-dom';
 import Indexed from './Indexed';
 import GraphTable from './GraphTable';
 
-// function onSelectRow(row, isSelected, e) {
-//   if (isSelected) {     
-//      const selectedItem = {"index_date":`${row['index_date']}`, "index_num":`${row['index_num']}`, "parts":`${row['parts']}`}
-//      return selectedItem
-//     }
-// }
-
 class WaveListTable extends React.Component {
   state = {
     selected:{},
@@ -58,12 +51,7 @@ class WaveListTable extends React.Component {
           <BootstrapTable 
             data={this.state.data} 
             selectRow={selectRowProp} 
-            pagination={true}
-            striped
-            hover
-            condensed
-            pagination
-            >
+            pagination={true}>
           <TableHeaderColumn isKey dataField='startTime'>
               StartTime
           </TableHeaderColumn>
@@ -74,14 +62,6 @@ class WaveListTable extends React.Component {
               split
           </TableHeaderColumn>
           </BootstrapTable>
-          <Route
-            path='/indexed/Indexed'
-            render={() => <Indexed values={this.props.values} onGraphDataSubmit={this.onGraphDataSubmit} />}
-          />
-          <Route
-            path='/indexed/GraphTable'
-            render={() => <GraphTable values={this.props.values} onGraphDataSubmit={this.onGraphDataSubmit} />}
-          />
         </div>
       </Router>
     );

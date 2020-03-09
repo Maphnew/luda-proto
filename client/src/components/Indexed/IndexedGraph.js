@@ -8,9 +8,6 @@ class Graph extends Component {
 	state = {
 		jsondata: [],
 		splitdata: [],
-		// startTime1:'',
-		// startTime2:'',
-		// startTime3:'',
 		start:[],
 		stripLineArray:[]
 	  };
