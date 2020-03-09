@@ -47,14 +47,13 @@ class Index extends Component {
             return record;
           }));
           this.setState({ wavelist: json})
-          // console.log('wavelist',this.state.wavelist)
+           console.log('wavelist',this.state.wavelist)
         })
         .catch(err => console.log(err));
     }
   }
 
   onGraphData=async(getData)=> {
-    console.log('getData',getData)
     const rowValue = {
       "tagName": this.state.item,
       "index_date": getData.index_date,
@@ -85,6 +84,7 @@ class Index extends Component {
         }));
       
         this.setState({ waveformData: json })
+        console.log('waveformData',this.state.waveformData)
       })
       .catch(err => console.log(err));
 
@@ -120,13 +120,6 @@ class Index extends Component {
 }
 
   render() {
-    // const wavelist = []
-    // this.state.waveMaster.map(function(item){
-    //   wavelist.push(item);
-    //   console.log(wavelist)
-    //   return wavelist;
-    // })
-
     return (
       <div>
         <div className="Layout1">
@@ -145,13 +138,6 @@ class Index extends Component {
               <GraphTable 
                 splitData={this.state.graphData}
                 onGraphChange = {this.onGraphChange}
-                // splitData={{
-                //   "index_date": "2020-02-24T00:00:00.000Z",
-                //   "index_num" : 3,
-                //   "parts": {"0": {"startTime": "2020-02-24 00:51:15.100000","stopTime": "2020-02-24 00:51:18.400000",  "max": 65.05, "average": 38.54, "median": 50.25, "area": 1310.52}, 
-                //             "1": {"startTime": "2020-02-24 00:51:18.500000", "stopTime": "2020-02-24 00:51:26.900000", "max": 28.37, "average": 27.76, "median": 27.78, "area": 2359.86}, 
-                //             "2": {"startTime": "2020-02-24 00:51:27", "stopTime": "2020-02-24 00:51:30.700000", "max": 45.62, "average": 28.0, "median": 31.89, "area": 1064.05}}
-                // }}
               />
             </div>
           </div>

@@ -184,7 +184,8 @@ function GraphTable(props) {
         body : JSON.stringify(params)
     })
     .then(response => {
-      const statusCode = response.status;      
+      const statusCode = response.status;  
+      console.log('statusCode',statusCode);    
       return { statusCode };
     
     })
