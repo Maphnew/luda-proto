@@ -8,10 +8,8 @@ class Graph extends Component {
 	state = {
 		jsondata: [],
 		splitdata: [],
-		// startTime1:'',
-		// startTime2:'',
-		// startTime3:'',
-		start:[]
+		start:[],
+		stripLineArray:[]
 	  };
 
 	componentDidMount() {
@@ -27,41 +25,29 @@ class Graph extends Component {
 			var json = JSON.parse(this.state.splitdata)
 			var jsonLen = Object.keys(json).length
 			this.state.start = []
+			this.state.stripLineArray=[];
 			for(let i=0; i < jsonLen; i++){
 				var time = new Date(json[i].startTime)
 				this.state.start.push(time)
-			}
 			
-			// try{
-			// 	var time1 = new Date(json[0].startTime)
-			// 	this.setState({startTime1: time1})
-			// }catch{
-			// 	this.setState({startTime1: 0})
-			// }	
-			// try{
-			// 	var time2 = new Date(json[1].startTime)
-			// 	this.setState({startTime2: time2})
-			// }catch{
-			// 	this.setState({startTime2: 0})
-			// }
-			// try{
-			// 	var time3 = new Date(json[2].startTime)
-			// 	this.setState({startTime3: time3})
-			// }catch{
-			// 	this.setState({startTime3: 0})
-			// }
+				var stripLineData = new Object();
+				stripLineData.value = this.state.start[i]
+				stripLineData.thickness = 1
+				stripLineData.color = "black"
+				this.state.stripLineArray.push(stripLineData);
+			}			
 		}
 		await this.setState({ jsondata: this.props.waveform})	
 	}
 
 	render() {
-		var dataSeries = { type: "line" };
+		var dataSeries = { type: "line" ,toolTipContent: "<b>StartTime: </b>{x}<br/><b>Data: </b>{y}",xValueFormatString:"YYYY-MM-DD HH:mm:ss.fff",};
 		var dataPoints = this.state.jsondata
 		//console.log(this.state.startTime1,this.state.startTime2,this.state.startTime3)
 		this.state.data = []
 		dataSeries.dataPoints = dataPoints;
 		this.state.data.push(dataSeries);
-		
+
 		const spanStyle = {
 			position:'absolute', 
 			top: '10px',
@@ -71,22 +57,8 @@ class Graph extends Component {
 			padding: '0px 4px',
 			color: '#ffffff'
 		}
-		const stripline = [{
-			value: this.state.start[0],
-			thickness: 1,
-			color: "black",
-		},
-		{
-			value: this.state.start[1],
-			thickness: 1,
-			color: "black",
-		},
-		{
-			value: this.state.start[2],
-			thickness: 1,
-			color: "black",
-		}
-	];
+		
+		const stripline = this.state.stripLineArray
 
 		const options = {
 			zoomEnabled: true,

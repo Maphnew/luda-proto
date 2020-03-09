@@ -12,6 +12,7 @@ import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/EditOutlined";
 import DoneIcon from "@material-ui/icons/DoneAllTwoTone";
 import RevertIcon from "@material-ui/icons/NotInterestedOutlined";
+import DeleteIcon from '@material-ui/icons/Delete';
 import equal from 'fast-deep-equal'
 
 const useStyles = makeStyles(theme => ({
@@ -34,12 +35,6 @@ const useStyles = makeStyles(theme => ({
     height: 40
   }
 }));
-
-// const createData = (name, starttime, endtime, median, average, area,max,min) => ({
-//   id: name,
-//   name, starttime, endtime, median, average, area,max,min,
-//   isEditMode: false
-// });
 
 const CustomTableCell = ({ row, name, onChange }) => {
   const classes = useStyles();
@@ -68,21 +63,20 @@ function GraphTable(props) {
   const [nextProps, setNextProps] = React.useState(undefined);
   const classes = useStyles();
 
-  if(props.splitData.parts!== undefined){
-    const partsJson = JSON.parse(props.splitData.parts)
-    var tempArr = [];
-    Object.entries(partsJson).map(([key,value])=>{ 
-        var tempJson = Object.assign({"id":key, isEditMode: false}, value);
-        tempArr.push(tempJson)                                               
-    }) 
-
-    if (!equal(nextProps,props) ){
-        setNextProps(props)
-        setRows(tempArr)
-        setSave("Complete")
-        console.log("update")
-    }    
+  if(props.splitData.parts!== undefined && !equal(nextProps,props)){
+      console.log("update")
+      const partsJson = JSON.parse(props.splitData.parts)
+      var partDataArr = [];
+      Object.entries(partsJson).map(([key,value])=>{ 
+          var tempJson = Object.assign({"id":key, isEditMode: false}, value);
+          partDataArr.push(tempJson)
+          return partDataArr                                          
+      }) 
+      setNextProps(props)      
+      setRows(partDataArr)
+      setSave("Complete")  
   }
+  
   const onToggleEditMode = id => {
     setRows(state => {
       return rows.map(row => {
@@ -125,28 +119,52 @@ function GraphTable(props) {
     onToggleEditMode(id);
   };
 
-  const resetClick = () => {
-    var tempArr = [];
-    const partsJson = JSON.parse(props.splitData.parts)
-    Object.entries(partsJson).map(([key,value])=>{ 
-        var tempJson = Object.assign({"id":key, isEditMode: false}, value);
-        tempArr.push(tempJson)                                               
-    }) 
-    setRows(tempArr);
+  const onDelete = (id) => {
+    if (rows.length===1){
+      alert("Can't delete")
+      return
+    }
 
+    if ((rows.length-1).toString() ===id){
+      rows[rows.length-2].stopTime =rows[rows.length-1].stopTime
+    } else if (id==="0") {
+      rows[1].startTime =rows[0].startTime
+    }
+
+    rows.splice(parseInt(id), 1);
+
+    const newRows = rows.map((row,idx) => {
+      row.id=idx.toString()
+      return row;
+    });
+
+    setRows(newRows);
   }
 
-  const saveClick = async() => {    
+  const resetClick = () => {
+    const partDataArr = graphTableData()
+    setRows(partDataArr);      
+  }
+
+  const saveClick = async() => {
+    const partDataArr = graphTableData()
+    if (equal(rows,partDataArr)) {
+      return
+    }    
+    
     setSave("Processing")
     var tempParts = {}
     rows.map((row,idx)=>{
-      if((idx+1) < rows.length){
-        const subTime = new Date(rows[idx+1].startTime)-new Date(row.stopTime)
-        if (Math.abs(subTime) > 100){
-          console.log("다뀜")
+      if(idx !== 0 ){
+        if (Math.abs(new Date(row.startTime)-new Date(rows[idx-1].stopTime)) > 100){      
+          const moment = require('moment') 
+          var tempDate = new Date(row.startTime)         
+          tempDate.setTime(tempDate.getTime() - 100)
+          tempParts[rows[idx-1].id].stopTime = moment(tempDate).format("YYYY-MM-DD HH:mm:ss.SSSSSS")
         }
       }      
       tempParts[row.id] = {"startTime":row.startTime,"stopTime":row.stopTime}
+      return tempParts
     })
 
     var params = {
@@ -166,7 +184,8 @@ function GraphTable(props) {
         body : JSON.stringify(params)
     })
     .then(response => {
-      const statusCode = response.status;      
+      const statusCode = response.status;  
+      console.log('statusCode',statusCode);    
       return { statusCode };
     
     })
@@ -179,11 +198,29 @@ function GraphTable(props) {
     props.onGraphChange()
   }
 
+  const addClick = async() => {
+    var newRow = {"id":rows.length.toString(),"isEditMode":true,"startTime":"","stopTime":rows[rows.length-1].stopTime}
+    Object.entries(rows[0]).filter(([key]) => key !== 'isEditMode' && key !== 'id' && key !== 'stopTime' && key !== 'startTime').map(([key])=>{                       
+      newRow[key] = ""
+    })
+
+    rows.push(newRow);
+    setRows(rows);
+  }
+
+  const graphTableData =()=>{
+    var tempArr = [];
+    const partsJson = JSON.parse(props.splitData.parts)
+    Object.entries(partsJson).map(([key,value])=>{ 
+        var tempJson = Object.assign({"id":key, isEditMode: false}, value);
+        tempArr.push(tempJson)  
+        return tempArr                                 
+    }) 
+    return tempArr
+  }
   const tableCellElement =(data)=> {
-    const tableCell =  Object.entries(data[0]).map(([key,value],idx)=>{ 
-      if (key !== "isEditMode"){
-        return(<TableCell align="left" key={idx} >{key}</TableCell>)  
-      }             
+    const tableCell =  Object.entries(data[0]).filter(([key]) => key !== 'isEditMode').map(([key,value],idx)=>{       
+      return(<TableCell align="left" key={idx} >{key}</TableCell>)  
     }) 
     return tableCell;
   }
@@ -196,10 +233,12 @@ function GraphTable(props) {
     )
   }
 
+  console.log("rerender")
   return (
     <div>
       <button className="Reset_btn" onClick ={resetClick}>Reset</button>
       <button className="Save_btn" onClick = {saveClick}>Save</button>
+      <button className="Save_btn" onClick = {addClick}>Add</button>
       {save}
       <Paper className={classes.root}>
         <Table className={classes.table} aria-label="caption table">
@@ -227,10 +266,16 @@ function GraphTable(props) {
                       >
                         <RevertIcon />
                       </IconButton>
+                      <IconButton
+                        aria-label="delete"
+                        onClick={() => onDelete(row.id)}
+                      >
+                        <DeleteIcon/>
+                      </IconButton>                      
                     </>
                   ) : (
                     <IconButton
-                      aria-label="delete"
+                      aria-label="edit"
                       onClick={() => onToggleEditMode(row.id)}
                     >
                       <EditIcon />
@@ -238,15 +283,13 @@ function GraphTable(props) {
                   )}
                 </TableCell>
                   {
-                    Object.entries(row).map(([key,value])=>{ 
-                      if (key !== "isEditMode"){
-                        if(key ==="startTime" || key ==="stopTime"){
-                          return(<CustomTableCell {...{ row, name: {key}, onChange}} key ={key} />)
-                        }                  
-                        else {
-                          return(<TableCell align="center" className={classes.tableCell}  key ={key}> {row[key]} </TableCell>)
-                        }                      
-                      }
+                    Object.entries(row).filter(([key]) => key !== 'isEditMode').map(([key,value])=>{                       
+                      if(key ==="startTime"){
+                        return(<CustomTableCell {...{ row, name: {key}, onChange}} key ={key} />)
+                      }                  
+                      else {
+                        return(<TableCell align="center" className={classes.tableCell}  key ={key}> {row[key]} </TableCell>)
+                      }    
                     })
                   }
               </TableRow>

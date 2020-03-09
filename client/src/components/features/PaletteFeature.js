@@ -18,7 +18,7 @@ class PaletteFeature extends Component {
 
     componentDidMount=async()=>{
         this.setState({ isLoading: true, show: true });
-        
+
         try {
             let featureReq = JSON.parse( localStorage.getItem('featureReq'))
             await this.setState({ featureReq})
@@ -129,13 +129,10 @@ class PaletteFeature extends Component {
     }
 
     waveformElement=(data, func)=>{
-        const waveform = data.map(
-            (id, idx) => {
-                if (this.state.buttonSearch.indexOf(id) !== -1 || this.state.buttonSearch.length === 0) {
-                    return (
-                        <button id={id} key={idx} className="FeatureButton" onClick={func}>{ id }</button>
-                    )
-                }
+        const waveform = data.filter((id, idx) => this.state.buttonSearch.indexOf(id) !== -1 || this.state.buttonSearch.length === 0).map((id, idx) => {
+                return (
+                    <button id={id} key={idx} className="FeatureButton" onClick={func}>{ id }</button>
+                )
             });
         return waveform;
     }
