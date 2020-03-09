@@ -58,38 +58,6 @@ const runPy = async (startTime, stopTime, index_date, index_num, defServer, defT
     })
 }
 
-// const getStatisticsQuery = async (tagNameSplit,indexDate, indexNum, parts) => {
-//     const partsIndex = Object.keys(parts)
-//     const [ server , table , column ] = tagNameSplit
-//     let query = `UPDATE WaveSplit SET features = JSON_SET(features,`
-//     for await (let k of partsIndex) {
-//         startTime = parts[k]['startTime']
-//         stopTime = parts[k]['stopTime']
-//         console.log('k:', k, indexDate, indexNum, startTime, stopTime, server , table , column)
-//         await runPy(startTime, stopTime, indexDate, indexNum, server , table , column).then( async (json) => {
-//             console.log('json: ',json)
-//             str = JSON.stringify(json)
-//             console.log('str: ', str)
-//             const key = Object.keys(json)
-//             let queryKey = ''
-//             for await (let s of key) {
-//                 const stat = json[s]
-//                 queryKey += `'$.${k}.${s}', ${stat},`
-//             }
-//             // console.log('queryKey', queryKey)
-//             query += queryKey
-//         }).catch((e) => {
-//             console.log(e)
-//         })
-//     }
-//     query = query.slice(0, -1)
-//     query += `
-//         ) WHERE index_date = '${indexDate}' AND index_num = ${indexNum} AND
-//         defServer = '${server}' AND defTable = '${table}' AND defColumn = '${column}';
-//         `
-//     console.log('query: ', query)
-//     return query
-// }
 
 const getInsertFeaturesQuery = async (tagNameSplit,indexDate, indexNum, parts) => {
     const partsIndex = Object.keys(parts)
@@ -181,54 +149,6 @@ router.patch('/indexed/splitlist', async (req, res) => {
     })
 })
 
-// router.patch('/indexed/splitlist', async (req, res) => {
-//     console.log('/indexed/splitlist:', req.body)
-//     const stringify = JSON.stringify(req.body)
-//     console.log('req.body to stringify:', stringify)
-//     const tagNameSplit = req.body.tagName.split(".")
-//     const [ server = 'S1', table = 'HisItemCurr', column = 'Item005' ] = tagNameSplit
-//     const indexDate = moment(req.body.index_date).format('YYYY-MM-DD')
-//     const indexNum = req.body.index_num
-//     const parts = req.body.parts
-//     const count = Object.keys(parts).length
-//     console.log(count)
-
-//     let queryUpdateWaveList = `
-//         UPDATE WaveSplit SET parts = JSON_REPLACE(parts,
-//     `
-//     for (let part in parts) {
-//         console.log('part: ', part)
-//         let startTime = await parts[part]['startTime']
-//         let stopTime = await parts[part]['stopTime']
-//         let queryTemp = await `'$.${part}.startTime', '${startTime}', '$.${part}.stopTime', '${stopTime}',`
-//         console.log('queryTemp: ',queryTemp)
-//         queryUpdateWaveList += queryTemp
-//     }
-//     queryUpdateWaveList = await queryUpdateWaveList.slice(0, -1)
-//     queryUpdateWaveList += `
-//         )  
-//         WHERE index_date = '${indexDate}' AND index_num = ${indexNum} AND
-//         defServer = '${server}' AND defTable = '${table}' AND defColumn = '${column}';
-//     `
-//     console.log(queryUpdateWaveList)
-//     const queryStatistics = await getStatisticsQuery(tagNameSplit,indexDate,indexNum,parts)
-//     await dbUpdate(queryUpdateWaveList).then((result) => {
-//         return result
-//     }).then( async(result) => {
-//         if(result) {
-//             await dbUpdate(queryStatistics).then((result) => {
-//                 console.log(result)
-//             }).catch((e) => {
-//                 console.log(e)
-//             })
-//         }
-//         res.status(200).send('ok')
-//     }).catch((e) => {
-//         res.status(400).send(e)
-//     })
-// }, (error, req, res, next) => {
-//     res.status(400).send('Error!', error)
-// })
 
 router.post('/indexed/wavelist', async (req, res) => {
     console.log('/indexed/wavelist', req.body)
