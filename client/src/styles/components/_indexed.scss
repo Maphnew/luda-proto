@@ -85,6 +85,8 @@
   .WaveListGraphTable {
     margin-top:0.5%;   
     height: auto;
+    overflow-x: scroll;
+    height: 30vh;
   }
 
   .col-md-6, .col-xs-6, .col-sm-6, .col-lg-6 {
@@ -113,26 +115,8 @@
     font-size: 0.8em;
     text-align: center;
 }
-.MuiInputBase-root, .MuiInput-root, .MuiInput-underline, .makeStyles-input-5 {
-  font-size: 2em;
-}
 
-.MuiInputBase-input, .MuiInput-input {
-  font-family: 'Jeju Gothic', sans-serif !important;
-  text-align: center !important;
-  width: 155px !important;
-  font-size: 1.1em !important;
-  font-weight: bold !important;
-  word-break: break-all !important;
-}
-
-
-.MuiTableCell-body {
-  height: 10vh !important;
-}
 .WaveListGraphTable td {
-  font-size: 0.7em;
-
   font-family: 'Jeju Gothic', sans-serif;
   text-align: center;
   border-top: 1px solid #fff;
@@ -199,27 +183,61 @@
   font-weight: bold;
 }
 
-
+@media screen and (max-width: 1537px) {
+  .Layout1{
+    width: 38%;
+    margin-left: -42%;
+    height: 80vh;
+  }
+  .Layout2{
+    height: 80vh;
+  }
+  .WaveListGraphTable {
+    height: 22vh;
+  }
+}
   @media screen and (max-width: 1426px) {
     .Layout1{
       margin-left: -40%;
+      height: auto;
+    }
+    .Layout2{
+      height: auto;
     }
   }
   
   @media screen and (max-width: 1316px) {
     .Layout1{
       margin-left: 2%;
+      height: auto;
+    }
+    .Layout2{
+      height: auto;
     }
   }
   
   @media screen and (max-width: 1024px) {
     .Layout1{
       width: 95%;
-      height: 90vh;
+      height: auto;
     }
     .Layout2{
       width: 95%;
-      height: 100vh;
+      height: 92vh;
+    }
+    .WaveListGraphTable {
+      height: 22vh;
     }
   }
 
+  @media screen and (max-width: 420px) {
+    .Layout1{
+      width: 95%;
+      height: auto;
+    }
+    .Layout2{
+      width: 95%;
+      height: auto;
+      padding: 5px 5px 10px 5px;
+    }
+    }

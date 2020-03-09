@@ -34,7 +34,7 @@
     color: #535353;
     width: 70%;
     height: auto;
-    height: 80vh;
+    height: 87vh;
     border-radius: 5px;
     float: right;
     overflow-y: scroll;
@@ -46,6 +46,11 @@
     font-size: calc(10px + 2vmin); */
   }
 
+  @media screen and (max-width: 1537px) {
+    .GraphEntry {
+      height: 89vh;
+    }
+  }
   @media screen and (max-width: 1024px) {
     .PaletteEntry {
       width: 35%;
@@ -66,13 +71,13 @@
     .PaletteEntry {
       width: 35%;
       margin: 0%;
-      height: 130vh;
+      height: 182vh;
     }
     .GraphEntry {
       width: 65%;
       margin: 0%;
-      padding: 0px;
-      height: 130vh;
+      padding: 15px;
+      height: 182vh;
     }
     .FeaturesEntry {
       margin : 2%;
