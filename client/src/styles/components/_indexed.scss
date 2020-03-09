@@ -21,9 +21,6 @@
     width: 100%;
   }
   
-  .WaveListGraphTable {
-    margin-top:0.5%;
-  }
 
 .Reset_btn {
   padding: 5px;
@@ -31,7 +28,7 @@
   background: #ffffff;
   border-radius: 5px;
   border: 1px solid #FF7474;
-  margin-right: 3%;
+  margin-right: 1%;
   transition: all 0.3s ease 0s;
   margin-bottom: 0.5%;
   &:hover {
@@ -85,13 +82,33 @@
     height: 75vh;
   }
 
+.MuiPaper-root {
+  margin-top:0.5%;   
+  height: 25.2vh;
+  overflow-x: scroll;
+  overflow-y: scroll;
+}
+  .col-md-6, .col-xs-6, .col-sm-6, .col-lg-6 {
+    margin-right: -5%;
+  }
+.MuiInputBase-root {
+  width: 140px !important;
+  font-family: 'Jeju Gothic', sans-serif !important;
+  font-size: 10px !important;
+  font-weight: bold !important;
+}
+  .page-item {
+    width: 20%;
+    text-align: center;
+    float: right;
+  }
+
   .WaveListGraphTable table {
     font-family: 'Jeju Gothic', sans-serif;
-    table-layout: fixed;
-    border-collapse: collapse;
     border-right: 1px solid #e8e8e8;
     border-left: 1px solid #e8e8e8;
     color: #fff;
+    overflow-y: scroll;
 }   
 
 .WaveListGraphTable th {
@@ -99,10 +116,8 @@
     background: url(https://jackrugile.com/images/misc/noise-diagonal.png), linear-gradient(#486199, #425c96);
     color: #fff;
     padding: 0.2%;
-    font-size: 0.9em;
+    font-size: 0.8em;
     text-align: center;
-    width: 100px;
-    
 }
 
 .WaveListGraphTable td {
@@ -112,8 +127,6 @@
   border-bottom: 1px solid #e8e8e8;
   background: #fff;
   transition: all 300ms;
-white-space:pre-wrap;
-  overflow:hidden;
 }
 
 .WaveListGraphTable tbody:hover td {
@@ -127,13 +140,16 @@ white-space:pre-wrap;
   font-weight: bold;
 }
 
+.makeStyles-root-1 {
+  height: 25vh;
+}
 .Layout1 table {
   table-layout: fixed;
-  border-collapse: collapse;
   border-right: 1px solid #e8e8e8;
   border-left: 1px solid #e8e8e8;
   width: 95%;
   height: 58vh;
+  vertical-align: middle;
   margin: 0% 3% 0% 3%;
 }   
 
@@ -144,16 +160,22 @@ white-space:pre-wrap;
   text-align: center;
   font-size: 0.9em;
 }
-
 .Layout1 td {
+  font-size: 0.9em;
+  text-align: center;
   border-top: 1px solid #fff;
   border-bottom: 1px solid #e8e8e8;
   padding: 0.5% 1%;
   background: #fff;
   transition: all 300ms;
-  font-size: 0.8em;
+  font-size: 0.8em;  
 }
-
+.react-bs-table {
+  text-align: center;
+}
+.react-bs-table-bordered {
+  text-align: center;
+}
 .Layout1 tbody:hover td {
   color: transparent;
   text-shadow: 0 0 1px #aaa;
@@ -165,30 +187,61 @@ white-space:pre-wrap;
   font-weight: bold;
 }
 
-
+@media screen and (max-width: 1537px) {
+  .Layout1{
+    width: 38%;
+    margin-left: -42%;
+    height: 80vh;
+  }
+  .Layout2{
+    height: 80vh;
+  }
+  .WaveListGraphTable {
+    height: 22vh;
+  }
+}
   @media screen and (max-width: 1426px) {
     .Layout1{
       margin-left: -40%;
+      height: auto;
+    }
+    .Layout2{
+      height: auto;
     }
   }
   
   @media screen and (max-width: 1316px) {
     .Layout1{
       margin-left: 2%;
+      height: auto;
+    }
+    .Layout2{
+      height: auto;
     }
   }
   
   @media screen and (max-width: 1024px) {
     .Layout1{
       width: 95%;
-      height: 90vh;
+      height: auto;
     }
     .Layout2{
       width: 95%;
-      height: 100vh;
+      height: 92vh;
     }
     .WaveListGraphTable {
-      height: auto;
+      height: 22vh;
     }
   }
 
+  @media screen and (max-width: 420px) {
+    .Layout1{
+      width: 95%;
+      height: auto;
+    }
+    .Layout2{
+      width: 95%;
+      height: auto;
+      padding: 5px 5px 10px 5px;
+    }
+    }
