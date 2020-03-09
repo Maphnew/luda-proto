@@ -24,7 +24,10 @@ class Body extends Component{
                 />
                 <Switch>
                     <Route 
-                        path="/" component={Home} exact={true}
+                        // path="/" component={Home} exact={true}
+                        path="/" 
+                        render={() => <Indexed values={this.state.selectedOption}/> }
+                        exact={true}
                     />
                     <Route 
                         path="/raw" component={Raw} exact={true}
