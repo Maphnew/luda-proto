@@ -25,6 +25,7 @@ class DataSelector extends Component {
         .then(response => response.json())
         .then((json) => {            
             this.setState({ waveMaster:json }); 
+            console.log(json)
         })
         .catch(err => console.log(err));
     }

@@ -1,6 +1,5 @@
 const featurePost =  async (data,feature) => {    
     const params =  Object.assign(data,feature)
-    // console.log(params)
     const postJson = await fetch("http://192.168.100.175:5000/features/feature", {
         method: 'POST', 
         headers: { 
@@ -44,7 +43,6 @@ const featurePost =  async (data,feature) => {
         console.log(err)
 
     })  
-
     return postJson
 }
 
@@ -59,7 +57,7 @@ const featureGet =  async (data) => {
     })
     //.then(response => console.log(response))
     .then(response => response.json())
-    .then((json) => {      
+    .then((json) => { 
         return json
     })
     .catch(err => {
