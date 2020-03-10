@@ -3,24 +3,24 @@
 .indexedbutton {
   margin-left: 80%;
 }
-  .Reset_btn{
+
+.Reset_btn{
     height: 1%;
     padding: 3%;
     margin-right: 5%;
-  }
+}
   
-  .Save_btn{
+.Save_btn{
     height: 1%;
     padding: 3%;
-  }
+}
   
-  .WaveListTable{    
+.WaveListTable{    
     margin-right: auto;
     margin-left: auto;
     /* border: 1px solid black; */
     width: 100%;
-  }
-  
+}
 
 .Reset_btn {
   padding: 5px;
@@ -52,6 +52,7 @@
     border: 1px solid #70dd82;
   }
 }
+
 .Total {
   width: 100%;
   margin-left: auto;
@@ -59,7 +60,8 @@
   padding: 1%;
   border-radius: 5px;
 }
-  .Layout1{
+
+.Layout1{
     margin: 1% 3% 1% 1%;
     width: 35%;
     float: left;
@@ -69,9 +71,9 @@
     padding-top: 1%;
     padding-bottom: 1%;
     height: 75vh;
-  }
+}
   
-  .Layout2{
+.Layout2{
     margin: 1% 3% 1% 1%;
     width: 55%;
     float: right;
@@ -80,40 +82,41 @@
     margin-left: -40%;
     padding-bottom: 1%;
     height: 75vh;
-  }
+}
 
 .MuiPaper-root {
   margin-top:0.5%;   
-  height: 25.2vh;
+  height: 22vh;
   overflow-x: scroll;
   overflow-y: scroll;
 }
-  .col-md-6, .col-xs-6, .col-sm-6, .col-lg-6 {
+
+.col-md-6, .col-xs-6, .col-sm-6, .col-lg-6 {
     margin-right: -5%;
-  }
+}
+
 .MuiInputBase-root {
   width: 140px !important;
   font-family: 'Jeju Gothic', sans-serif !important;
   font-size: 10px !important;
   font-weight: bold !important;
 }
-  .page-item {
+
+.page-item {
     width: 20%;
     text-align: center;
     float: right;
-  }
+}
 
-  .WaveListGraphTable table {
+.WaveListGraphTable table {
     font-family: 'Jeju Gothic', sans-serif;
-    border-right: 1px solid #e8e8e8;
-    border-left: 1px solid #e8e8e8;
     color: #fff;
     overflow-y: scroll;
 }   
 
 .WaveListGraphTable th {
   font-family: 'Jeju Gothic', sans-serif;
-    background: url(https://jackrugile.com/images/misc/noise-diagonal.png), linear-gradient(#486199, #425c96);
+    background: #486199;
     color: #fff;
     padding: 0.2%;
     font-size: 0.8em;
@@ -143,10 +146,20 @@
 .makeStyles-root-1 {
   height: 25vh;
 }
+
+.Layout1 table th, .Layout1 table td{
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+
+.Layout1 th {
+  border-collapse: collapse !important;
+  border-right: 1px solid  #425c96 !important;
+}
+
 .Layout1 table {
   table-layout: fixed;
-  border-right: 1px solid #e8e8e8;
-  border-left: 1px solid #e8e8e8;
+  border-collapse: collapse;
   width: 95%;
   height: 58vh;
   vertical-align: middle;
@@ -154,12 +167,13 @@
 }   
 
 .Layout1 th {
-  background: url(https://jackrugile.com/images/misc/noise-diagonal.png), linear-gradient(#486199, #425c96);
+  background: #425c96;
   color: #fff;
   padding: 1%;
   text-align: center;
   font-size: 0.9em;
 }
+
 .Layout1 td {
   font-size: 0.9em;
   text-align: center;
@@ -170,12 +184,13 @@
   transition: all 300ms;
   font-size: 0.8em;  
 }
-.react-bs-table {
+
+.react-bs-container-header {
   text-align: center;
+  margin-left: 0 auto;
+  margin-right: 0 auto;
 }
-.react-bs-table-bordered {
-  text-align: center;
-}
+
 .Layout1 tbody:hover td {
   color: transparent;
   text-shadow: 0 0 1px #aaa;
@@ -198,50 +213,51 @@
   }
   .WaveListGraphTable {
     height: 22vh;
+    }
+}
+
+@media screen and (max-width: 1426px) {
+  .Layout1{
+    margin-left: -40%;
+    height: auto;
+  }
+  .Layout2{
+    height: auto;
   }
 }
-  @media screen and (max-width: 1426px) {
-    .Layout1{
-      margin-left: -40%;
-      height: auto;
-    }
-    .Layout2{
-      height: auto;
-    }
-  }
   
-  @media screen and (max-width: 1316px) {
-    .Layout1{
-      margin-left: 2%;
-      height: auto;
-    }
-    .Layout2{
-      height: auto;
-    }
+@media screen and (max-width: 1316px) {
+  .Layout1{
+    margin-left: 2%;
+    height: auto;
   }
+  .Layout2{
+    height: auto;
+  }
+}
   
-  @media screen and (max-width: 1024px) {
-    .Layout1{
-      width: 95%;
-      height: auto;
-    }
-    .Layout2{
-      width: 95%;
-      height: 92vh;
-    }
-    .WaveListGraphTable {
-      height: 22vh;
-    }
+@media screen and (max-width: 1024px) {
+  .Layout1{
+    width: 95%;
+    height: auto;
   }
+  .Layout2{
+    width: 95%;
+    height: 92vh;
+  }
+  .WaveListGraphTable {
+    height: 22vh;
+  }
+}
 
-  @media screen and (max-width: 420px) {
-    .Layout1{
-      width: 95%;
-      height: auto;
-    }
-    .Layout2{
-      width: 95%;
-      height: auto;
-      padding: 5px 5px 10px 5px;
-    }
-    }
+@media screen and (max-width: 420px) {
+  .Layout1{
+    width: 95%;
+    height: auto;
+  }
+  .Layout2{
+    width: 95%;
+    height: auto;
+    padding: 5px 5px 10px 5px;
+  }
+}

@@ -26,42 +26,43 @@
     }
   }
 
-.GraphEntry table {
-      table-layout: fixed;
-      border-collapse: collapse;
-      border-right: 1px solid #e8e8e8;
-      border-left: 1px solid #e8e8e8;
-      width: 95%;
-      margin: 0% 3% 0% 3%;
-  }   
-  
+  .GraphEntry table {
+    font-family: 'Jeju Gothic', sans-serif;
+    color: rgb(0, 0, 0);
+    overflow-y: scroll;
+}   
 .GraphEntry th {
-      background: url(https://jackrugile.com/images/misc/noise-diagonal.png), linear-gradient(#486199, #425c96);
-      color: #fff;
-      padding: 1%;
-      text-align: center;
-      font-size: 0.9em;
-  }
+    background: #425c96;
+    color: #fff;
+    padding: 0.5%;
+    font-size: 0.9em;
+    border-right: 1px solid  #425c96;
+}
+.GraphEntry th, .GraphEntry td {
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+.GraphEntry td {
+  text-align: center;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #e8e8e8;
+  border-right: 1px solid #ffffff;
+  border-left: 1px solid #ffffff;
+  background: #fff;
+  font-size: 0.8em;
+  transition: all 300ms;
+}
 
-  .GraphEntry td {
-      border-top: 1px solid #fff;
-      border-bottom: 1px solid #e8e8e8;
-      padding: 0.5% 1%;
-      background: #fff;
-      transition: all 300ms;
-      font-size: 0.8em;
-  }
-  
-  .GraphEntry tbody:hover td {
-      color: transparent;
-      text-shadow: 0 0 1px #aaa;
-  }
-  
-  .GraphEntry tbody:hover tr:hover td {
-      color: #444;
-      text-shadow: 0 1px 0 #fff;
-      font-weight: bold;
-  }
+.GraphEntry tbody:hover td {
+  color: transparent;
+  text-shadow: 0 0 1px #aaa;
+}
+
+.GraphEntry tbody:hover tr:hover td {
+  color: #444;
+  text-shadow: 0 1px 0 rgb(129, 129, 129);
+  font-weight: bold;
+}
   .GraphEntry .react-bs-table {
     height: 83vh !important;
     overflow-y: scroll !important;
