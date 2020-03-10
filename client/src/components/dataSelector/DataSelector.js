@@ -141,7 +141,7 @@ class DataSelector extends Component {
                     showDropdowns
                     timePicker
                     onApply={this.onChange}
-                    onEvent={this.onChange}
+                    // onEvent={this.onChange}
                 >
                 <button className="SearchPeriod" > Search Period</button>
                 </DateRangePicker>
