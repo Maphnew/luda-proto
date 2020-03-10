@@ -149,6 +149,53 @@ router.patch('/indexed/splitlist', async (req, res) => {
     })
 })
 
+router.post('/indexed/waveinfo', async (req,res) => {
+    console.log('/indexed/waveinfo', req.body)
+    const tagNameSplit = req.body.tagName.split(".")
+    const [ server , table , column ] = tagNameSplit
+    const indexDate = moment(req.body.index_date).format('YYYY-MM-DD')
+    const indexNum = req.body.index_num
+    const queryWabeinfo = `
+        SELECT JSON_MERGE(parts, features) AS parts
+        FROM WaveSplit
+        WHERE index_date = '${indexDate}' AND index_num = ${indexNum} AND
+        defServer = '${server}' AND defTable = '${table}' AND defColumn = '${column}';
+    `
+    console.log(queryWabeinfo)
+    await dbSelect(queryWabeinfo).then((result) => {
+        res.send(result)
+    }).catch((e) => {
+        res.status(500).send(e)
+    })
+}, (error, req, res, next) => {
+    res.status(400).send('Error!', error)
+})
+
+router.post('/indexed/wavelisttest', async (req,res) => {
+    console.log('/indexed/wavelisttest', req.body)
+    const tagNameSplit = req.body.tagName.split(".")
+    const [ server , table , column ] = tagNameSplit
+    startTime = new Date(req.body.startTime)
+    stopTime = new Date(req.body.stopTime)
+    const start = moment(startTime).format('YYYY-MM-DD HH:mm:ss.SSS')
+    const stop = moment(stopTime).format('YYYY-MM-DD HH:mm:ss.SSS')
+    const queryWavelist = `
+        SELECT index_date, index_num, startTime, stopTime
+        FROM WaveIndex
+        WHERE defServer = '${server}' AND
+        defTable = '${table}' AND
+        defColumn = '${column}' AND
+        startTime BETWEEN '${start}' AND '${stop}'
+    `
+    console.log(queryWavelist)
+    await dbSelect(queryWavelist).then((result) => {
+        res.send(result)
+    }).catch((e) => {
+        res.status(500).send(e)
+    })
+}, (error, req, res, next) => {
+    res.status(400).send('Error!', error)
+})
 
 router.post('/indexed/wavelist', async (req, res) => {
     console.log('/indexed/wavelist', req.body)
