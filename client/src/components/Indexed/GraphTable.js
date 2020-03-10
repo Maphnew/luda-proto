@@ -64,6 +64,7 @@ function GraphTable(props) {
   const classes = useStyles();
 
   if(props.splitData.parts!== undefined && !equal(nextProps,props)){
+    console.log("update")
       const partsJson = JSON.parse(props.splitData.parts)
       var partDataArr = [];
       Object.entries(partsJson).map(([key,value])=>{ 
@@ -205,6 +206,7 @@ function GraphTable(props) {
 
     rows.push(newRow);
     setRows(rows);
+    setPrevious(rows);
   }
 
   const graphTableData =()=>{
