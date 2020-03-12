@@ -16,8 +16,8 @@ router.post('/indexed/waveform', async (req,res) => {
     console.log('/indexed/waveform', req.body)
     const tagNameSplit = req.body.tagName.split(".")
     const [ , table = 'HisItemCurr', column = 'Item005' ] = tagNameSplit
-    startTime = new Date(req.body.startTime)
-    stopTime = new Date(req.body.stopTime)
+    const startTime = new Date(req.body.startTime)
+    const stopTime = new Date(req.body.stopTime)
     const start = moment(startTime).format('YYYY-MM-DD HH:mm:ss.SSS')
     const stop = moment(stopTime).format('YYYY-MM-DD HH:mm:ss.SSS')
     const queryWaveForm = `
@@ -65,8 +65,8 @@ const getInsertFeaturesQuery = async (tagNameSplit,indexDate, indexNum, parts) =
 
     let query = `UPDATE WaveSplit SET features = JSON_OBJECT(`
     for await (let k of partsIndex) {
-        startTime = parts[k]['startTime']
-        stopTime = parts[k]['stopTime']
+        const startTime = parts[k]['startTime']
+        const stopTime = parts[k]['stopTime']
         console.log('k:', k, indexDate, indexNum, startTime, stopTime, server , table , column)
         await runPy(startTime, stopTime, indexDate, indexNum, server, table, column).then( async (json) => {
             console.log('json: ',json)
@@ -175,8 +175,8 @@ router.post('/indexed/wavelisttest', async (req,res) => {
     console.log('/indexed/wavelisttest', req.body)
     const tagNameSplit = req.body.tagName.split(".")
     const [ server , table , column ] = tagNameSplit
-    startTime = new Date(req.body.startTime)
-    stopTime = new Date(req.body.stopTime)
+    const startTime = new Date(req.body.startTime)
+    const stopTime = new Date(req.body.stopTime)
     const start = moment(startTime).format('YYYY-MM-DD HH:mm:ss.SSS')
     const stop = moment(stopTime).format('YYYY-MM-DD HH:mm:ss.SSS')
     const queryWavelist = `
@@ -201,8 +201,8 @@ router.post('/indexed/wavelist', async (req, res) => {
     console.log('/indexed/wavelist', req.body)
     const tagNameSplit = req.body.tagName.split(".")
     const [ server = 'S1', table = 'HisItemCurr', column = 'Item005' ] = tagNameSplit
-    startTime = new Date(req.body.startTime)
-    stopTime = new Date(req.body.stopTime)
+    const startTime = new Date(req.body.startTime)
+    const stopTime = new Date(req.body.stopTime)
     const start = moment(startTime).format('YYYY-MM-DD HH:mm:ss.SSS')
     const stop = moment(stopTime).format('YYYY-MM-DD HH:mm:ss.SSS')
     const queryWavelist = `
