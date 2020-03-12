@@ -12,6 +12,7 @@ class PaletteFeature extends Component {
         sendData : this.props.values,
         featureReq:localStorage.getItem( 'featureReq' ),
         statisticsItem : [],
+        labelItem : [],
         waveformItem : ["All","Split"],
         buttonSearch : [],
     };    
@@ -52,13 +53,14 @@ class PaletteFeature extends Component {
                 "startTime" : this.state.sendData.startTime, "stopTime" : this.state.sendData.stopTime
             }
 
-            const jsonGet = await featureGet(params)
-            if (jsonGet.length===undefined || jsonGet.length===0){
+            const getJson = await featureGet(params)
+            if (getJson[0].length===undefined || getJson[0].length===0){
                 alert("The feature does not exist.\n Please check data!")
                 return
-            }
-
-            await this.setState({ statisticsItem:jsonGet })            
+            }            
+            console.log(getJson[0] ,getJson[1])
+            await this.setState({ labelItem:getJson[1] })
+            await this.setState({ statisticsItem:getJson[0] })            
             const jsonPost = await featurePost(this.state.sendData,this.state.featureReq)
             this.props.onGraphDataSubmit(jsonPost)
         })
@@ -101,6 +103,18 @@ class PaletteFeature extends Component {
         const json = await featurePost(this.state.sendData,this.state.featureReq)
         this.props.onGraphDataSubmit(json)
         this.props.onGraphTypeSubmit(undefined,this.state.featureReq.Feature)       
+        this.setState({ isLoading: false, show: false });
+    }
+
+    label = async (event) => {     
+        if (this.state.sendData.tagName===undefined){
+            alert("Please enter data!")
+            return
+        }        
+
+        this.setState({ isLoading: true, show: true });
+
+        console.log("load")
         this.setState({ isLoading: false, show: false });
     }
 
@@ -161,6 +175,11 @@ class PaletteFeature extends Component {
                 <div>
                     <h4 className = "Subheading"> Statistics</h4>                
                     {this.waveformElement(this.state.statisticsItem,this.statistics)}			
+                </div> 
+
+                <div>
+                    <h4 className = "Subheading"> Label</h4>                
+                    {this.waveformElement(this.state.labelItem,this.label)}			
                 </div> 
             </div>
         );
