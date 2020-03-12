@@ -171,8 +171,8 @@ router.post('/indexed/waveinfo', async (req,res) => {
     res.status(400).send('Error!', error)
 })
 
-router.post('/indexed/wavelisttest', async (req,res) => {
-    console.log('/indexed/wavelisttest', req.body)
+router.post('/indexed/wavelist', async (req,res) => {
+    console.log('/indexed/wavelist', req.body)
     const tagNameSplit = req.body.tagName.split(".")
     const [ server , table , column ] = tagNameSplit
     const startTime = new Date(req.body.startTime)
@@ -197,39 +197,6 @@ router.post('/indexed/wavelisttest', async (req,res) => {
     res.status(400).send('Error!', error)
 })
 
-router.post('/indexed/wavelist', async (req, res) => {
-    console.log('/indexed/wavelist', req.body)
-    const tagNameSplit = req.body.tagName.split(".")
-    const [ server = 'S1', table = 'HisItemCurr', column = 'Item005' ] = tagNameSplit
-    const startTime = new Date(req.body.startTime)
-    const stopTime = new Date(req.body.stopTime)
-    const start = moment(startTime).format('YYYY-MM-DD HH:mm:ss.SSS')
-    const stop = moment(stopTime).format('YYYY-MM-DD HH:mm:ss.SSS')
-    const queryWavelist = `
-        SELECT t2.index_date, t2.index_num, t2.startTime, t2.stopTime, JSON_LENGTH(JSON_KEYS(t1.parts)) AS split, JSON_MERGE(t1.parts, t1.features) AS parts 
-        FROM WaveSplit t1, (
-            SELECT index_date, index_num, startTime, stopTime
-            FROM WaveIndex
-            WHERE defServer = '${server}' AND
-            defTable = '${table}' AND
-            defColumn = '${column}' AND
-            startTime BETWEEN '${start}' AND '${stop}'
-        ) t2
-        WHERE t1.index_date = t2.index_date AND t1.index_num = t2.index_num AND 
-        defServer = '${server}' AND
-        defTable = '${table}' AND
-        defColumn = '${column}'
-    `
-    console.log(queryWavelist)
-
-    await dbSelect(queryWavelist).then((result) => {
-        res.send(result)
-    }).catch((e) => {
-        res.status(500).send(e)
-    })
-}, (error, req, res, next) => {
-    res.status(400).send('Error!', error)
-})
 
 router.delete('/indexed', async (req,res) => {
     console.log('DELETE /indexed', req.body)
