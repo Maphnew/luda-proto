@@ -148,8 +148,9 @@ router.post('/features/feature/labels', async (req,res) => {
     console.log(queryLabels)
 
     await dbSelect(queryLabels).then((result) =>{
-        console.log(result)
-        res.send(result)
+        const keys = Object.keys(result[0])
+        console.log(keys)
+        res.send(keys)
     }).catch((e) => {
         res.status(200).send(e)
     })
