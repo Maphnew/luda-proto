@@ -253,7 +253,7 @@ router.delete('/indexed', async (req,res) => {
         if(result) {
             await dbUpdate(queryDeleteWaveSplit).then((delResult) => {
                 if(delResult) {
-                    req.status(200).send('ok', delResult)
+                    res.status(200).send('ok', delResult)
                 }
             })
         }
