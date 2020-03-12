@@ -47,7 +47,7 @@ const featurePost =  async (data,feature) => {
 }
 
 const featureGet =  async (data) => {
-    const GetJson = await fetch("http://192.168.100.175:5000/features/feature/statistics", {
+    const statisticsJson = await fetch("http://192.168.100.175:5000/features/feature/statistics", {
         method: 'POST', 
         headers: { 
             'Content-Type': 'application/json',
@@ -63,7 +63,25 @@ const featureGet =  async (data) => {
     .catch(err => {
         console.log(err)
     });      
-    return GetJson
+
+    const labelsJson = await fetch("http://192.168.100.175:5000/features/feature/labels", {
+        method: 'POST', 
+        headers: { 
+            'Content-Type': 'application/json',
+            'Accept' : '*/*'
+        },
+        body : JSON.stringify(data)
+    })
+    //.then(response => console.log(response))
+    .then(response => response.json())
+    .then((json) => { 
+        return json
+    })
+    .catch(err => {
+        console.log(err)
+    });      
+
+    return [statisticsJson,labelsJson]
 }
 
 export {featurePost,featureGet};
