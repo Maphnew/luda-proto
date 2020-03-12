@@ -126,9 +126,32 @@ router.post('/features/feature', async (req, res) => {
     }
 })
 
+router.post('/features/feature/labels', async (req,res) => {
+    console.log('/features/feature/labels', req.body)
+    const tagNameSplit = req.body.tagName.split(".")
+    const [ server, table, column ] = tagNameSplit
+
+    const queryLabels = `
+        SELECT DISTINCT JSON_KEYS(labels) as 'labels'
+        FROM WaveLabels
+        WHERE defServer = '${server}' AND
+            defTable = '${table}' AND 
+            defColumn = '${column}'
+    `
+    console.log(queryLabels)
+
+    await dbSelect(queryLabels).then((result) =>{
+        console.log(result)
+        res.send(result)
+    }).catch((e) => {
+        res.status(200).send(e)
+    })
+})
+
 router.post('/features/feature/statistics', async (req, res) => {
     // console.log(req.body)
     const tagNameSplit = req.body.tagName.split(".")
+    const [ server, table, column ] = tagNameSplit
     startTime = new Date(req.body.startTime)
     stopTime = new Date(req.body.stopTime)
     const start = moment(startTime).format('YYYY-MM-DD HH:mm:ss.SSS')
@@ -136,9 +159,9 @@ router.post('/features/feature/statistics', async (req, res) => {
     const queryFeaturesStatistics = `
         SELECT DISTINCT JSON_KEYS(basicFeatures) as 'keys'
         FROM WaveIndex 
-        WHERE defServer = '${tagNameSplit[0]}' AND
-            defTable = '${tagNameSplit[1]}' AND 
-            defColumn = '${tagNameSplit[2]}' AND 
+        WHERE defServer = '${server}' AND
+            defTable = '${table}' AND 
+            defColumn = '${column}' AND 
             startTime BETWEEN '${start}' AND '${stop}';
     `
     console.log(queryFeaturesStatistics)

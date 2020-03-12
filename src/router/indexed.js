@@ -155,14 +155,14 @@ router.post('/indexed/waveinfo', async (req,res) => {
     const [ server , table , column ] = tagNameSplit
     const indexDate = moment(req.body.index_date).format('YYYY-MM-DD')
     const indexNum = req.body.index_num
-    const queryWabeinfo = `
+    const queryWaveinfo = `
         SELECT JSON_MERGE(parts, features) AS parts
         FROM WaveSplit
         WHERE index_date = '${indexDate}' AND index_num = ${indexNum} AND
         defServer = '${server}' AND defTable = '${table}' AND defColumn = '${column}';
     `
-    console.log(queryWabeinfo)
-    await dbSelect(queryWabeinfo).then((result) => {
+    console.log(queryWaveinfo)
+    await dbSelect(queryWaveinfo).then((result) => {
         res.send(result)
     }).catch((e) => {
         res.status(500).send(e)
@@ -231,5 +231,37 @@ router.post('/indexed/wavelist', async (req, res) => {
     res.status(400).send('Error!', error)
 })
 
+router.delete('/indexed', async (req,res) => {
+    console.log('DELETE /indexed', req.body)
+    const tagNameSplit = req.body.tagName.split(".")
+    const [ server , table , column ] = tagNameSplit
+    const indexDate = moment(req.body.index_date).format('YYYY-MM-DD')
+    const indexNum = req.body.index_num
+    const queryDeleteWaveIndex = `
+        DELETE
+        FROM WaveIndex
+        WHERE index_date = '${indexDate}' AND index_num = ${indexNum} AND
+        defServer = '${server}' AND defTable = '${table}' AND defColumn = '${column}';
+    `
+    const queryDeleteWaveSplit = `
+        DELETE
+        FROM WaveSplit
+        WHERE index_date = '${indexDate}' AND index_num = ${indexNum} AND
+        defServer = '${server}' AND defTable = '${table}' AND defColumn = '${column}';
+    `
+    await dbUpdate(queryDeleteWaveIndex).then( async (result) => {
+        if(result) {
+            await dbUpdate(queryDeleteWaveSplit).then((delResult) => {
+                if(delResult) {
+                    req.status(200).send('ok', delResult)
+                }
+            })
+        }
+    }).catch((e) => {
+        res.status(500).send(e)
+    })
+
+
+})
 
 module.exports = router
