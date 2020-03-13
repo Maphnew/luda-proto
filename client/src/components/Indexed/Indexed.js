@@ -42,7 +42,7 @@ class Index extends Component {
             record.stopTime = moment(record.stopTime).format(requiredPattern);
             return record;
           }));
-          this.setState({ Item:nextProps.values.tagName});
+          this.setState({ Item: nextProps.values.tagName});
           this.setState({ wavelist: json })
           // console.log('wavelist', this.state.wavelist, 'Item ', this.state.Item)
         })
@@ -50,14 +50,14 @@ class Index extends Component {
     }
   }
 
-  onGraphData = async (getData, partsData) => {
+  onGraphData = async (getData) => {
     const rowValue = {
       "tagName": this.state.item,
       "index_date": getData.index_date,
       "index_num": getData.index_num,
-      "parts": partsData[0].parts
+      "parts": getData.parts
     };
-    console.log("set",typeof(rowValue),rowValue)
+
     await this.setState({ graphData: rowValue });
     // console.log("set",typeof(this.state.graphData),this.state.graphData)
 
