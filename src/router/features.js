@@ -128,6 +128,40 @@ router.post('/features/feature', async (req, res) => {
     }
 })
 
+router.post('/features/feature/labeldata', async (req, res) => {
+    console.log('/features/feature/labeldata', req.body)
+    const tagNameSplit = req.body.tagName.split(".")
+    const [ server, table, column ] = tagNameSplit
+    const startTime = new Date(req.body.startTime)
+    const stopTime = new Date(req.body.stopTime)
+    console.log(startTime, stopTime)
+    const start = moment(startTime).format('YYYY-MM-DD HH:mm:ss.SSS')
+    const stop = moment(stopTime).format('YYYY-MM-DD HH:mm:ss.SSS')
+    const label = req.body.label
+    queryLabelData = `
+        SELECT t1.index_date, t1.index_num, t2.startTime, t2.stopTime, json_value(t1.labels,'$.${label}') as 'labels'
+        FROM WaveLabels t1, (
+            SELECT index_date, index_num, startTime, stopTime
+            FROM WaveIndex
+            WHERE defServer = '${server}' AND
+            defTable = '${table}' AND 
+            defColumn = '${column}' AND 
+            startTime BETWEEN '${start}' AND '${stop}'
+        ) t2
+        WHERE t1.index_date = t2.index_date AND t1.index_num = t2.index_num AND
+        defServer = '${server}' AND
+        defTable = '${table}' AND 
+        defColumn = '${column}'
+    `
+    console.log('queryLabelData: ',queryLabelData)
+    await dbSelect(queryLabelData).then((result) => {
+        console.log(result)
+        res.send(result)
+    }).catch((e) => {
+        res.status(500).send(e)
+    })
+})
+
 router.post('/features/feature/labels', async (req,res) => {
     console.log('/features/feature/labels', req.body)
     const tagNameSplit = req.body.tagName.split(".")
