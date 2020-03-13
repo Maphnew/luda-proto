@@ -105,19 +105,13 @@ router.post('/features/feature', async (req, res) => {
         
     } else if (req.body.table == 'WaveSplit') {
         query = `
-            SELECT JSON_MERGE(t1.parts, t1.features) as parts
-            FROM WaveSplit t1, (
-                SELECT index_date, index_num, startTime, stopTime
-                FROM WaveIndex
-                WHERE defServer = '${server}' AND
-                defTable = '${table}' AND 
-                defColumn = '${column}' AND 
-                startTime BETWEEN '${start}' AND '${stop}'
-            ) t2
-            WHERE t1.index_date = t2.index_date AND t1.index_num = t2.index_num AND
+            SELECT index_date, index_num, startTime, stopTime, JSON_MERGE(parts, features) as parts
+            FROM WaveSplit 
+            WHERE 
             defServer = '${server}' AND
             defTable = '${table}' AND 
-            defColumn = '${column}'
+            defColumn = '${column}' AND
+            startTime BETWEEN '${start}' AND '${stop}'
         `
         console.log(query)
 
