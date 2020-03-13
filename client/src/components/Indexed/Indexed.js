@@ -21,7 +21,7 @@ class Index extends Component {
       const params = { "tagName": nextProps.values.tagName, "startTime": nextProps.values.startTime, "stopTime": nextProps.values.stopTime }
       // console.log(params)
       this.setState({ item: nextProps.values.tagName })
-      fetch("http://192.168.100.175:5000/indexed/wavelisttest", {
+      fetch("http://192.168.100.175:5000/indexed/wavelist", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ class Index extends Component {
 
   onGraphChange = async () => {
     const params = { "tagName": this.props.values.tagName, "startTime": this.props.values.startTime, "stopTime": this.props.values.stopTime }
-    fetch("http://192.168.100.175:5000/indexed/wavelisttest", {
+    fetch("http://192.168.100.175:5000/indexed/wavelist", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
