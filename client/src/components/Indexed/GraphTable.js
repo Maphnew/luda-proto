@@ -57,6 +57,7 @@ const CustomTableCell = ({ row, name, onChange }) => {
 };
 
 function GraphTable(props) {
+  console.log(props.value)
   const [rows, setRows] = React.useState(undefined);
   const [previous, setPrevious] = React.useState({});
   const [save, setSave] = React.useState("");

@@ -8,15 +8,11 @@ import equal from 'fast-deep-equal'
 class Index extends Component {
   state = {
     date: new Date(),
-    waveMaster: [],
-    selectedOption: {},
-    startdate: new Date(),
-    stopdate: new Date(), 
     wavelist: [],
     json: [],
     graphData: {},
-    Item:'',
-    starttime : {}
+    Item: '',
+    starttime: {}
   }
 
   componentWillReceiveProps = async (nextProps) => {
@@ -24,8 +20,8 @@ class Index extends Component {
     {
       const params = { "tagName": nextProps.values.tagName, "startTime": nextProps.values.startTime, "stopTime": nextProps.values.stopTime }
       // console.log(params)
-      this.setState({item:nextProps.values.tagName})
-      fetch("http://192.168.100.175:5000/indexed/wavelist", {
+      this.setState({ item: nextProps.values.tagName })
+      fetch("http://192.168.100.175:5000/indexed/wavelisttest", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -46,25 +42,26 @@ class Index extends Component {
             record.stopTime = moment(record.stopTime).format(requiredPattern);
             return record;
           }));
-          this.setState({ wavelist: json})
-           console.log('wavelist',this.state.wavelist)
+          this.setState({ Item:nextProps.values.tagName});
+          this.setState({ wavelist: json })
+          // console.log('wavelist', this.state.wavelist, 'Item ', this.state.Item)
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log(err));     
     }
   }
 
-  onGraphData=async(getData)=> {
+  onGraphData = async (getData, partsData) => {
     const rowValue = {
       "tagName": this.state.item,
       "index_date": getData.index_date,
       "index_num": getData.index_num,
-      "parts": getData.parts
+      "parts": partsData[0].parts
     };
-    await this.setState({ graphData: rowValue});
+    console.log("set",typeof(rowValue),rowValue)
+    await this.setState({ graphData: rowValue });
     // console.log("set",typeof(this.state.graphData),this.state.graphData)
 
     const params = { "tagName": this.state.item, "startTime": getData.startTime, "stopTime": getData.stopTime }
-    // console.log(params)
     fetch("http://192.168.100.175:5000/indexed/waveform", {
       method: 'POST',
       headers: {
@@ -79,20 +76,19 @@ class Index extends Component {
         //console.log(json)
 
         JSON.stringify(json.map(function (record) {
-          record.x= new Date(record.x)
+          record.x = new Date(record.x)
           return record;
         }));
-      
+
         this.setState({ waveformData: json })
-        console.log('waveformData',this.state.waveformData)
+        // console.log('waveformData', this.state.waveformData)
       })
       .catch(err => console.log(err));
-
   }
 
-  onGraphChange=async()=>{
+  onGraphChange = async () => {
     const params = { "tagName": this.props.values.tagName, "startTime": this.props.values.startTime, "stopTime": this.props.values.stopTime }
-    fetch("http://192.168.100.175:5000/indexed/wavelist", {
+    fetch("http://192.168.100.175:5000/indexed/wavelisttest", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -114,10 +110,10 @@ class Index extends Component {
           return record;
         }));
         this.setState({ wavelist: json })
-        console.log("this.state.wavelist",this.state.wavelist)
+        // console.log("this.state.wavelist", this.state.wavelist)
       })
-      .catch(err => console.log(err));    
-}
+      .catch(err => console.log(err));
+  }
 
   render() {
     return (
@@ -125,19 +121,21 @@ class Index extends Component {
         <div className="Layout1">
           <div className="Total">
             <WaveListTable
-               wavelist={this.state.wavelist}
-               onGraphData={this.onGraphData}
-               />
+              wavelist={this.state.wavelist}
+              ItemData={this.state.Item}
+              onGraphData={this.onGraphData}
+            />
           </div>
         </div>
         <div className="Layout2">
           <div className="Total">
-             <IndexedGraph waveform={this.state.waveformData}
-             splitData={this.state.graphData}></IndexedGraph>
+            <IndexedGraph 
+            waveform={this.state.waveformData}
+            splitData={this.state.graphData}></IndexedGraph>
             <div className="WaveListGraphTable">
-              <GraphTable 
+              <GraphTable
                 splitData={this.state.graphData}
-                onGraphChange = {this.onGraphChange}
+                onGraphChange={this.onGraphChange}
               />
             </div>
           </div>

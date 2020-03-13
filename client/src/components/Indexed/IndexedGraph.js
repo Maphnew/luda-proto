@@ -1,9 +1,6 @@
 import CanvasJSReact from './assets/canvasjs.react';
 import React, { Component } from 'react';
-import Chart from'chart.js';
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
-var startTime = 0, endTime = 0;
-const moment = require('moment')
 class Graph extends Component {
 	state = {
 		jsondata: [],
@@ -11,11 +8,6 @@ class Graph extends Component {
 		start:[],
 		stripLineArray:[]
 	  };
-
-	componentDidMount() {
-		endTime = new Date();
-		startTime = new Date();
-	}
 
 	componentWillReceiveProps = async (nextProps) => {
 		this.state.data = []
@@ -47,16 +39,6 @@ class Graph extends Component {
 		this.state.data = []
 		dataSeries.dataPoints = dataPoints;
 		this.state.data.push(dataSeries);
-
-		const spanStyle = {
-			position:'absolute', 
-			top: '10px',
-			fontSize: '20px', 
-			fontWeight: 'bold', 
-			backgroundColor: '#d85757',
-			padding: '0px 4px',
-			color: '#ffffff'
-		}
 		
 		const stripline = this.state.stripLineArray
 
@@ -76,7 +58,6 @@ class Graph extends Component {
 		<div>				
 			<div className="WaveListGraph">
 				<CanvasJSChart options = {options} onRef={ref => this.chart = ref}/>
-				<span id="timeToRender" style={spanStyle}></span>
 			</div>
 		</div>
 		);
