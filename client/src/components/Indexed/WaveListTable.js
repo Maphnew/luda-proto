@@ -13,12 +13,7 @@ class WaveListTable extends React.Component {
 
   onRowSelect = async(row, isSelected) => {
     if (isSelected) {
-      const moment = require('moment')
-      var requiredPattern = 'YYYY-MM-DD HH:mm:ss.SSS';
-      row.index_date = moment(row.index_date).format(requiredPattern);
-      await this.setState({selected: row});     
       const params = { "tagName": this.state.Item, "index_date": row.index_date, "index_num": row.index_num }
-      //  console.log('params',params);
       fetch("http://192.168.100.175:5000/indexed/waveinfo", {
         method: 'POST',
         headers: {
@@ -33,8 +28,20 @@ class WaveListTable extends React.Component {
             record.idx = idx
             return record;
           })); 
-          this.setState({ waveinfo: json })
-          this.props.onGraphData(this.state.selected, this.state.waveinfo)
+          this.setState({ waveinfo: json[0] })
+          const rowvalue = {
+            "index_date": row.index_date,
+            "index_num": row.index_num,
+            "startTime": row.startTime,
+            "stopTime": row.stopTime,
+            "idx": row.idx,
+            "parts":this.state.waveinfo.parts
+          }
+          const moment = require('moment')
+          var requiredPattern = 'YYYY-MM-DD HH:mm:ss.SSS';
+          row.index_date = moment(row.index_date).format(requiredPattern);
+          this.setState({selected: rowvalue});     
+          this.props.onGraphData(this.state.selected)
         })
         .catch(err => console.log(err));
     } else {
