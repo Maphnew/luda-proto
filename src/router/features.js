@@ -138,10 +138,11 @@ router.post('/features/feature/labeldata', async (req, res) => {
     const start = moment(startTime).format('YYYY-MM-DD HH:mm:ss.SSS')
     const stop = moment(stopTime).format('YYYY-MM-DD HH:mm:ss.SSS')
     const label = req.body.label
+    const feature = req.body.feature
     queryLabelData = `
-        SELECT t1.index_date, t1.index_num, t2.startTime, t2.stopTime, json_value(t1.labels,'$.${label}') as 'labels'
+        SELECT t1.index_date, t1.index_num, t2.startTime, t2.stopTime, json_value(t1.labels,'$.${label}') as 'labels', t2.feature AS 'values'
         FROM WaveLabels t1, (
-            SELECT index_date, index_num, startTime, stopTime
+            SELECT index_date, index_num, startTime, stopTime, JSON_VALUE(basicFeatures, '$.${feature}') AS feature
             FROM WaveIndex
             WHERE defServer = '${server}' AND
             defTable = '${table}' AND 
