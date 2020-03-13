@@ -69,7 +69,7 @@ router.post('/features/feature', async (req, res) => {
     if (req.body.table == 'WaveIndex') {
         if (req.body.feature == 'length') {
             query = `
-                SELECT startTime, stopTime, ROUND(TIMESTAMPDIFF(MICROSECOND, startTime, stopTime)/1000,0) as 'values'
+                SELECT index_date, index_num, startTime, stopTime, ROUND(TIMESTAMPDIFF(MICROSECOND, startTime, stopTime)/1000,0) as 'values'
                 FROM ${req.body.table} 
                 WHERE defServer = '${server}' AND
                 defTable = '${table}' AND 
@@ -86,7 +86,7 @@ router.post('/features/feature', async (req, res) => {
             }
         } else {
             query  = `
-                SELECT startTime, stopTime, json_value(basicFeatures,'$.${req.body.feature}') as 'values'
+                SELECT index_date, index_num, startTime, stopTime, json_value(basicFeatures,'$.${req.body.feature}') as 'values'
                 FROM ${req.body.table} 
                 WHERE defServer = '${server}' AND
                 defTable = '${table}' AND 
