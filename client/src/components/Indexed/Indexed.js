@@ -19,7 +19,7 @@ class Index extends Component {
     if (!equal(this.props.values, nextProps.values)) // Check if it's a new user, you can also use some unique property, like the ID  (this.props.user.id !== prevProps.user.id)
     {
       const params = { "tagName": nextProps.values.tagName, "startTime": nextProps.values.startTime, "stopTime": nextProps.values.stopTime }
-      // console.log(params)
+      //  console.log(params)
       this.setState({ item: nextProps.values.tagName })
       fetch("http://192.168.100.175:5000/indexed/wavelist", {
         method: 'POST',
@@ -51,6 +51,7 @@ class Index extends Component {
   }
 
   onGraphData = async (getData) => {
+    if(getData != undefined){
     const rowValue = {
       "tagName": this.state.item,
       "index_date": getData.index_date,
@@ -85,7 +86,7 @@ class Index extends Component {
       })
       .catch(err => console.log(err));
   }
-
+  }
   onGraphChange = async () => {
     const params = { "tagName": this.props.values.tagName, "startTime": this.props.values.startTime, "stopTime": this.props.values.stopTime }
     fetch("http://192.168.100.175:5000/indexed/wavelist", {
