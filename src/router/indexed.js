@@ -249,11 +249,19 @@ router.delete('/indexed', async (req,res) => {
         WHERE index_date = '${indexDate}' AND index_num = ${indexNum} AND
         defServer = '${server}' AND defTable = '${table}' AND defColumn = '${column}';
     `
+    const queryDeleteWaveLabels = `
+        DELETE
+        FROM WaveLabels
+        WHERE index_date = '${indexDate}' AND index_num = ${indexNum} AND
+        defServer = '${server}' AND defTable = '${table}' AND defColumn = '${column}';
+    `
     await dbUpdate(queryDeleteWaveIndex).then( async (result) => {
         if(result) {
-            await dbUpdate(queryDeleteWaveSplit).then((delResult) => {
+            await dbUpdate(queryDeleteWaveSplit).then( async (delResult) => {
                 if(delResult) {
-                    res.status(200).send('ok')
+                    await dbUpdate(queryDeleteWaveLabels).then((delLabels) => {
+                        res.status(200).send('ok')
+                    })
                 }
             })
         }
