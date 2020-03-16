@@ -2,9 +2,10 @@ import React from 'react';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import CanvasJSReact from './assets/canvasjs.react';
 
-const table = (data,feature) =>{ 
+const table = (data,feature) =>{     
     return (
     <div>                
+        Table
         <BootstrapTable data={data}>
             <TableHeaderColumn isKey dataField='startTime'>
                 StartTime
@@ -15,6 +16,13 @@ const table = (data,feature) =>{
             <TableHeaderColumn dataField='values'>
                 {feature}
             </TableHeaderColumn>
+            {
+                data[0].labels !== undefined ? 
+                    (<TableHeaderColumn dataField='labels'>
+                            label
+                    </TableHeaderColumn>)
+                    : (<></>)
+            }
         </BootstrapTable>         
     </div>
     )
@@ -22,10 +30,40 @@ const table = (data,feature) =>{
 
 const scatter = (data,feature) =>{            
     var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+    var chartData = []
+    if (Object.prototype.toString.call(data) !== '[object Array]') {        
+        Object.keys(data).map(function (record) {
+            // console.log(record)
+            const chart = {
+                type: "scatter",
+                name: record,
+                markerSize: 15,
+                xValueFormatString:"YYYY-MM-DD HH:mm:ss.fff",
+                toolTipContent: "<b>StartTime: </b>{x}<br/><b>Data: </b>{y}",
+                dataPoints: data[record]
+            }
+            chartData.push(chart)
+            return chartData
+        })        
+    }      
+    else {
+        chartData = [{
+            type: "scatter",
+            markerSize: 15,
+            xValueFormatString:"YYYY-MM-DD HH:mm:ss.fff",
+            toolTipContent: "<b>StartTime: </b>{x}<br/><b>Data: </b>{y}",
+            dataPoints: data
+        }]
+    }
+    //console.log(chartData)
+
     const options = {
         theme: "light2",
         animationEnabled: true,
         zoomEnabled: true,
+        title: {
+            text: "Scatter Chart"
+        },
         axisX: {
             title:"StartTime",
             suffix: "",
@@ -43,13 +81,15 @@ const scatter = (data,feature) =>{
             },
             minimum : 0
         },
-        data: [{
-            type: "scatter",
-            markerSize: 15,
-            xValueFormatString:"YYYY-MM-DD HH:mm:ss.fff",
-            toolTipContent: "<b>StartTime: </b>{x}<br/><b>Data: </b>{y}",
-            dataPoints: data
-        }]
+
+        data: chartData
+        // [{
+        //     type: "scatter",
+        //     markerSize: 15,
+        //     xValueFormatString:"YYYY-MM-DD HH:mm:ss.fff",
+        //     toolTipContent: "<b>StartTime: </b>{x}<br/><b>Data: </b>{y}",
+        //     dataPoints: data
+        // }]
     }
     return(
         <div>

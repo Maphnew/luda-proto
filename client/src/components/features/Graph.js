@@ -43,6 +43,7 @@ class Graph extends Component {
     }    
     rawToxyData = ()=> {
         var tempValue = []
+        var tempMap = {}
         this.state.graphData.map(item => {
             const moment = require('moment') 
             var requiredPattern = 'YYYY-MM-DD HH:mm:ss.SSS';
@@ -51,9 +52,24 @@ class Graph extends Component {
                 "y":parseFloat(item.values),
 
             }
+            if (item.labels !== undefined){
+                if (tempMap[item.labels] === undefined){
+                    tempMap[item.labels] = [tempJson]
+                }
+                else {
+                    tempMap[item.labels].push(tempJson)
+                }                
+            }
             tempValue.push(tempJson)
             return item;
           });
+
+          if (Object.keys(tempMap).length !== 0)
+          {
+            console.log(tempMap)
+            return tempMap;
+          }       
+
           return tempValue;
       }
 
