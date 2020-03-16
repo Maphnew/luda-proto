@@ -19,18 +19,22 @@ const reArrangeFeatures = (splitResult, length, feature) => {
 }
 
 const resultdbSelect = async (query, reqBody) => {
-    let newParts =[]
+    let newResult = []
 
     const resultdbSelect = await dbSelect(query)
-    //console.log('resultdbSelect:', resultdbSelect)
+    // console.log('resultdbSelect:', resultdbSelect)
 
     for (let splitResult of resultdbSelect) {
-        parts = JSON.parse(splitResult.parts)
-        // console.log('parts: ', parts,'length :', Object.keys(parts).length, reqBody.Feature)
-        let eachParts = await reArrangeFeatures(parts, Object.keys(parts).length, reqBody.feature)
-        newParts.push(eachParts)
+        if(splitResult.parts) {
+            const parts = JSON.parse(splitResult.parts)
+            // console.log(parts)
+            let eachParts = await reArrangeFeatures(parts, Object.keys(parts).length, reqBody.feature)
+            splitResult.parts = eachParts.parts
+            newResult.push(splitResult) // feature/features +index_date +index_num (importance C)
+        }
     }
-    return newParts
+    // console.log('newResult: ', newResult)
+    return newResult
 }
 
 router.get('/features', (req, res) => {
@@ -133,28 +137,55 @@ router.post('/features/feature/labeldata', async (req, res) => {
     const stop = moment(stopTime).format('YYYY-MM-DD HH:mm:ss.SSS')
     const label = req.body.label
     const feature = req.body.feature
-    queryLabelData = `
-        SELECT t1.index_date, t1.index_num, t2.startTime, t2.stopTime, json_value(t1.labels,'$.${label}') as 'labels', t2.feature AS 'values'
-        FROM WaveLabels t1, (
-            SELECT index_date, index_num, startTime, stopTime, JSON_VALUE(basicFeatures, '$.${feature}') AS feature
-            FROM WaveIndex
-            WHERE defServer = '${server}' AND
+    if (req.body.table === 'WaveIndex'){
+        const queryLabelData = `
+            SELECT t1.index_date, t1.index_num, t2.startTime, t2.stopTime, json_value(t1.labels,'$.${label}') as 'labels', t2.feature AS 'values'
+            FROM WaveLabels t1, (
+                SELECT index_date, index_num, startTime, stopTime, JSON_VALUE(basicFeatures, '$.${feature}') AS feature
+                FROM WaveIndex
+                WHERE defServer = '${server}' AND
+                defTable = '${table}' AND 
+                defColumn = '${column}' AND 
+                startTime BETWEEN '${start}' AND '${stop}'
+            ) t2
+            WHERE t1.index_date = t2.index_date AND t1.index_num = t2.index_num AND
+            defServer = '${server}' AND
             defTable = '${table}' AND 
             defColumn = '${column}' AND 
-            startTime BETWEEN '${start}' AND '${stop}'
-        ) t2
-        WHERE t1.index_date = t2.index_date AND t1.index_num = t2.index_num AND
-        defServer = '${server}' AND
-        defTable = '${table}' AND 
-        defColumn = '${column}'
-    `
-    console.log('queryLabelData: ',queryLabelData)
-    await dbSelect(queryLabelData).then((result) => {
-        console.log(result)
-        res.send(result)
-    }).catch((e) => {
-        res.status(500).send(e)
-    })
+            t1.startTime BETWEEN '${start}' AND '${stop}'
+        `
+        console.log('queryLabelData: ',queryLabelData)
+        await dbSelect(queryLabelData).then((result) => {
+            // console.log(result)
+            res.send(result)
+        }).catch((e) => {
+            res.status(500).send(e)
+        })
+    } else if (req.body.table === 'WaveSplit') {
+        const queryLabelData = `
+            SELECT t1.index_date, t1.index_num, t2.startTime, t2.stopTime, json_value(t1.labels,'$.${label}') as 'labels', t2.parts AS 'parts'
+            FROM WaveLabels t1, (
+                SELECT index_date, index_num, startTime, stopTime, JSON_MERGE(parts, features) as parts 
+                FROM WaveSplit
+                WHERE defServer = '${server}' AND
+                defTable = '${table}' AND 
+                defColumn = '${column}' AND 
+                startTime BETWEEN '${start}' AND '${stop}'
+            ) t2
+            WHERE t1.index_date = t2.index_date AND t1.index_num = t2.index_num AND
+            defServer = '${server}' AND
+            defTable = '${table}' AND 
+            defColumn = '${column}' AND 
+            t1.startTime BETWEEN '${start}' AND '${stop}'
+        `
+        console.log('queryLabelData: ',queryLabelData)
+        await resultdbSelect(queryLabelData, req.body)
+        .then((splitResults) => {
+            res.send(splitResults)
+        })
+    }
+
+    
 })
 
 router.post('/features/feature/labels', async (req,res) => {
