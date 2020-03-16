@@ -79,7 +79,7 @@ const scatter = (data,feature) =>{
                 enabled: true,
                 snapToDataPoint: true
             },
-            minimum : 0
+            // minimum : 0
         },
 
         data: chartData
