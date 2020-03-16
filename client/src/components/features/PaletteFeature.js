@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import SearchField from "react-search-field";
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
-import {featurePost,featureGet} from './Fetch'
+import {featurePost,featureGet,labelPost} from './Fetch'
 import equal from 'fast-deep-equal'
 
 class PaletteFeature extends Component {      
@@ -27,7 +27,7 @@ class PaletteFeature extends Component {
         catch {
             await this.setState({ featureReq:{"table":"WaveIndex","feature":"max"}})   
             localStorage.setItem('featureReq', JSON.stringify(this.state.featureReq)) 
-        }        
+        }       
 
         await this.updateValues(this.state.sendData);
         this.setState({ isLoading: false, show: false });   
@@ -54,14 +54,19 @@ class PaletteFeature extends Component {
             }
 
             const getJson = await featureGet(params)
-            if (getJson[0].length===undefined || getJson[0].length===0){
+            if (getJson[0].length===undefined || getJson[0].length===0 ){                
                 alert("The feature does not exist.\n Please check data!")
                 return
             }            
-            console.log(getJson[0] ,getJson[1])
             await this.setState({ labelItem:getJson[1] })
-            await this.setState({ statisticsItem:getJson[0] })            
-            const jsonPost = await featurePost(this.state.sendData,this.state.featureReq)
+            await this.setState({ statisticsItem:getJson[0] })     
+            var jsonPost = {}        
+            if (this.state.featureReq.label === undefined){
+                jsonPost = await featurePost(this.state.sendData,this.state.featureReq)
+            }
+            else {
+                jsonPost = await labelPost(this.state.sendData,this.state.featureReq)
+            }   
             this.props.onGraphDataSubmit(jsonPost)
         })
     }
@@ -84,9 +89,15 @@ class PaletteFeature extends Component {
 
         await this.setState({featureReq:{ ...this.state.featureReq, table: tableName}}) 
         localStorage.setItem('featureReq', JSON.stringify(this.state.featureReq))    
-        const json = await featurePost(this.state.sendData,this.state.featureReq)
+        var json = {}
+        if (this.state.featureReq.label === undefined){
+            json = await featurePost(this.state.sendData,this.state.featureReq)
+        }
+        else {
+            json = await labelPost(this.state.sendData,this.state.featureReq)
+        }   
+        // console.log(json[0])
         this.props.onGraphDataSubmit(json)
-
         this.setState({ isLoading: false, show: false });
     }
 
@@ -97,11 +108,16 @@ class PaletteFeature extends Component {
         }        
 
         this.setState({ isLoading: true, show: true });
-
         await this.setState({featureReq:{ ...this.state.featureReq, feature: event.target.id}} )
         localStorage.setItem('featureReq', JSON.stringify(this.state.featureReq))    
-        const json = await featurePost(this.state.sendData,this.state.featureReq)
-        this.props.onGraphDataSubmit(json)
+        var json = {}
+        if (this.state.featureReq.label === undefined){
+            json = await featurePost(this.state.sendData,this.state.featureReq)
+        }
+        else {
+            json = await labelPost(this.state.sendData,this.state.featureReq)
+        } 
+        this.props.onGraphDataSubmit(json)        
         this.props.onGraphTypeSubmit(undefined,this.state.featureReq.Feature)       
         this.setState({ isLoading: false, show: false });
     }
@@ -111,10 +127,11 @@ class PaletteFeature extends Component {
             alert("Please enter data!")
             return
         }        
-
         this.setState({ isLoading: true, show: true });
-
-        console.log("load")
+        await this.setState({featureReq:{ ...this.state.featureReq, label: event.target.id}} )
+        localStorage.setItem('featureReq', JSON.stringify(this.state.featureReq))
+        const json = await labelPost(this.state.sendData,this.state.featureReq)
+        this.props.onGraphDataSubmit(json)
         this.setState({ isLoading: false, show: false });
     }
 
@@ -143,6 +160,9 @@ class PaletteFeature extends Component {
     }
 
     waveformElement=(data, func)=>{
+        if (data.length == undefined ) {
+            return
+        }
         const waveform = data.filter((id, idx) => this.state.buttonSearch.indexOf(id) !== -1 || this.state.buttonSearch.length === 0).map((id, idx) => {
                 return (
                     <button id={id} key={idx} className="FeatureButton" onClick={func}>{ id }</button>
