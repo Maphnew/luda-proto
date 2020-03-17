@@ -16,7 +16,7 @@ class DataSelector extends Component {
         showPopup: false,  
     };        
 
-    componentDidMount() {
+    componentDidMount = async() => {
         if (this.state.selectedOption.Level1  === undefined){
             this.setState({ selectedOption :  {Level1: "Level1", Level2: "Level2", Level3:"Level3", Level4: "Level4", Level5: "Level5"} });       
         }
@@ -28,6 +28,22 @@ class DataSelector extends Component {
             // console.log(json)
         })
         .catch(err => console.log(err));
+
+        try {
+           const dataSelector = JSON.parse(localStorage.getItem('dataSelector'))
+           //console.log("set",dataSelector)
+           if (dataSelector.Level1 !== undefined){
+                await this.setState({ selectedOption :  
+                {Level1: dataSelector.Level1, Level2: dataSelector.Level2, Level3:dataSelector.Level3, Level4: dataSelector.Level4, 
+                Level5: dataSelector.Level5, DefServer:dataSelector.DefServer,DefTable:dataSelector.DefTable,DefColumn:dataSelector.DefColumn} });
+                await this.setState({ startdate:dataSelector.StartTime})
+                await this.setState({ stopdate: dataSelector.StopTime})
+                this.dataloadClick()
+            }
+        }
+        catch {
+            this.setState({ selectedOption :  {Level1: "Level1", Level2: "Level2", Level3:"Level3", Level4: "Level4", Level5: "Level5"} });
+        }
     }
 
     handleChange = (selectedOption) => {     
@@ -52,6 +68,9 @@ class DataSelector extends Component {
         const params = {"tagName":tagName, "startTime" : this.state.startdate, "stopTime" : this.state.stopdate}    
         this.props.onDataSubmit(params)
 
+        const dataSelector = Object.assign(this.state.selectedOption,{"StartTime":this.state.startdate,"StopTime":this.state.stopdate})
+        console.log(dataSelector)
+        localStorage.setItem('dataSelector', JSON.stringify(dataSelector))
     }
 
     render() {  

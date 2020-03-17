@@ -9,7 +9,7 @@ class Graph extends Component {
     }
 
     componentWillReceiveProps=async(nextProps)=>{
-        if(!equal(this.props, nextProps)){
+        if(!equal(this.props, nextProps)){            
             if (nextProps.graphData.length!==undefined){
                 await this.setState({graphData: nextProps.graphData})
             }
@@ -50,7 +50,8 @@ class Graph extends Component {
             var tempJson = {
                 "x":new Date(moment(item.startTime).format(requiredPattern)),
                 "y":parseFloat(item.values),
-
+                "index_num":item.index_num,
+                "index_date":item.index_date,
             }
             if (item.labels !== undefined){
                 if (tempMap[item.labels] === undefined){
@@ -66,7 +67,7 @@ class Graph extends Component {
 
           if (Object.keys(tempMap).length !== 0)
           {
-            console.log(tempMap)
+            // console.log(tempMap)
             return tempMap;
           }       
 

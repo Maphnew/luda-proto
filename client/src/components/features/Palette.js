@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {NavLink , Route, BrowserRouter as Router} from 'react-router-dom'
 import PaletteGraph from './PaletteGraph';
 import PaletteFeature from './PaletteFeature';
+import PaletteMylist from './PaletteMylist';
 
 class Palette extends Component {
     state = { 
@@ -50,6 +51,12 @@ class Palette extends Component {
                             </div>
                             {/* <button id="btnGraph" className={this.state.btnId==="btnGraph"  ? "ButtonClick": "ButtonDefault"} onClick={this.handleClick}>Graph</button> */}
                         </NavLink >    
+                        <NavLink  to="/features/mylist" activeClassName="ButtonClick"  className="ButtonDefault">
+                            <div>
+                                Mylist
+                            </div>
+                            {/* <button id="btnGraph" className={this.state.btnId==="btnGraph"  ? "ButtonClick": "ButtonDefault"} onClick={this.handleClick}>Graph</button> */}
+                        </NavLink >   
                     </div> 
                 </div>
                 <div> 
@@ -63,6 +70,10 @@ class Palette extends Component {
                         render={() => <PaletteGraph values={this.props.values}  onGraphDataSubmit={this.onGraphDataSubmit} onGraphTypeSubmit={this.onGraphTypeSubmit}/> }
                     /> 
 
+                    <Route 
+                        path='/features/mylist' 
+                        render={() => <PaletteMylist/>}
+                    /> 
                 </div>
             </div>
         </Router>)
