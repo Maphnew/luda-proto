@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import equal from 'fast-deep-equal'
-import {NavLink , Redirect} from 'react-router-dom'
-import Indexed from '../Indexed/Indexed'
+
 class PaletteMylist extends Component {
     state = {      
         selectChartData:[],

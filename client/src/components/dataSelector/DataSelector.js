@@ -36,8 +36,8 @@ class DataSelector extends Component {
                 await this.setState({ selectedOption :  
                 {Level1: dataSelector.Level1, Level2: dataSelector.Level2, Level3:dataSelector.Level3, Level4: dataSelector.Level4, 
                 Level5: dataSelector.Level5, DefServer:dataSelector.DefServer,DefTable:dataSelector.DefTable,DefColumn:dataSelector.DefColumn} });
-                await this.setState({ startdate:dataSelector.StartTime})
-                await this.setState({ stopdate: dataSelector.StopTime})
+                await this.setState({ startdate:new Date(dataSelector.startTime)})
+                await this.setState({ stopdate: new Date(dataSelector.stopTime)})
                 this.dataloadClick()
             }
         }
@@ -65,11 +65,16 @@ class DataSelector extends Component {
         }
 
         const tagName = this.state.selectedOption.DefServer+"."+this.state.selectedOption.DefTable+"."+this.state.selectedOption.DefColumn
-        const params = {"tagName":tagName, "startTime" : this.state.startdate, "stopTime" : this.state.stopdate}    
+        const params = {"tagName":tagName, "startTime" :  this.state.startdate, "stopTime" :  this.state.stopdate}    
         this.props.onDataSubmit(params)
 
-        const dataSelector = Object.assign(this.state.selectedOption,{"StartTime":this.state.startdate,"StopTime":this.state.stopdate})
-        console.log(dataSelector)
+        const moment = require('moment') 
+        const requiredPattern = 'YYYY-MM-DD HH:mm:ss.SSS';        
+        const startTime = moment(this.state.startdate).format(requiredPattern);
+        const stopTime = moment(this.state.stopdate).format(requiredPattern);
+
+        const dataSelector = Object.assign(this.state.selectedOption,{"startTime":startTime,"stopTime":stopTime})
+        // console.log(dataSelector)
         localStorage.setItem('dataSelector', JSON.stringify(dataSelector))
     }
 

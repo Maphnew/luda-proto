@@ -17,7 +17,7 @@ export default class LudaApp extends React.Component {
         this.setState(() => ({ modalOpen: false}))
     }
     componentDidMount() {
-        console.log('componentDidMount')
+        console.log('componentDidMount')        
     }
     componentDidUpdate(prevProps, prevState) {
         console.log('componentDidUpdate')

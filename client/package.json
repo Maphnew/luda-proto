@@ -33,6 +33,7 @@
     "react-calendar": "^2.19.2",
     "react-canvas-js": "^1.0.1",
     "react-chartjs-2": "^2.9.0",
+    "react-csv": "^2.0.1",
     "react-datetime-picker": "^2.9.0",
     "react-dom": "^16.12.0",
     "react-fluid-table": "^0.2.5",
