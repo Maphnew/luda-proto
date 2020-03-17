@@ -7,13 +7,12 @@ class Features extends Component {
     state = {
         graph : {},
         graphData : [],
-        
+        mylist : [],        
     }
 
-    // componentWillUnmount=()=> {
-    //     console.log("fetch : componentWillUnmount")
-    //     localStorage.setItem('featureReq',null)          
-    // }
+    onMylist=(getData)=> {
+        this.setState({ mylist: getData}); 
+    }
 
     onGraphShow=(getData)=> {
         this.setState({ graphData: getData});
@@ -28,12 +27,12 @@ class Features extends Component {
             <div className="FeaturesEntry">
                 <div className="PaletteEntry">
                     <Palette
-                        onGraphShow={this.onGraphShow} onGraphType={this.onGraphType} values={this.props.values}
+                        onGraphShow={this.onGraphShow} onGraphType={this.onGraphType} values={this.props.values} mylist={this.state.mylist}
                     />      
                 </div>
                 <div className="GraphEntry" >
                     <Graph
-                        graphData={this.state.graphData} graph={this.state.graph}
+                        graphData={this.state.graphData} graph={this.state.graph} onMylist={this.onMylist}
                     />
                 </div>
             </div>
