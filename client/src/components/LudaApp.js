@@ -26,7 +26,9 @@ export default class LudaApp extends React.Component {
 
     // Things to do before unloading/closing the tab
     doSomethingBeforeUnload = () => {
-        localStorage.setItem('featureReq', undefined)    
+        //localStorage.setItem('featureReq', undefined)  
+        //localStorage.setItem('selectChartData', undefined)  
+        //localStorage.setItem('dataSelector', undefined)                   
     }
 
     // Setup the `beforeunload` event listener
