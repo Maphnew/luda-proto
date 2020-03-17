@@ -21,33 +21,14 @@ class PaletteMylist extends Component {
         }       
     }
 
-    localStorageUpdated(){
-        console.log("localStorageUpdated")
-        if (!localStorage.getItem('selectChartData')) {
-            try {
-                let selectChartData = JSON.parse( localStorage.getItem('selectChartData'))
-                console.log("componentWillReceiveProps",selectChartData)
-                this.setState({ selectChartData})
-            }
-            catch {
-
-            }
-        } 
-
-    }
-
-    componentWillReceiveProps = async() => {       
-        let selectChartData = JSON.parse( localStorage.getItem('selectChartData')) 
-        console.log("componentWillReceiveProps",selectChartData)
-        if(!equal(selectChartData, this.state.selectChartData)) // Check if it's a new user, you can also use some unique property, like the ID  (this.props.user.id !== prevProps.user.id)
-        {           
-            console.log("componentWillReceiveProps",selectChartData)        
-            await this.setState({ selectChartData}) 
+    componentWillReceiveProps = async(nextProps) => {
+        if(!equal(this.props.mylist, nextProps.mylist)) // Check if it's a new user, you can also use some unique property, like the ID  (this.props.user.id !== prevProps.user.id)
+        {
+            await this.setState({ selectChartData:nextProps.mylist})
         }      
     }
 
     render() { 
-        console.log(this.state.selectChartData)
         return (
             <div>
                 <BootstrapTable 

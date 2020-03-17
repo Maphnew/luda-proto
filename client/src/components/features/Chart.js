@@ -2,7 +2,7 @@ import React from 'react';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import CanvasJSReact from './assets/canvasjs.react';
 
-const table = (data,feature) =>{     
+const table = (data,feature,onMylist) =>{     
     const findSelected = () => { 
         var selectChartData=[]
         try {
@@ -22,8 +22,10 @@ const table = (data,feature) =>{
     const onSelectAll = async(isSelected) => {               
         if (isSelected) {
             await localStorage.setItem('selectChartData', JSON.stringify(data))
+            onMylist(data)
         } else {
             await localStorage.setItem('selectChartData', JSON.stringify([]))
+            onMylist([])
         }
     }
 
@@ -42,7 +44,7 @@ const table = (data,feature) =>{
         catch {
             selectChartData.push(row)
         }    
-
+        onMylist(selectChartData)
         await localStorage.setItem('selectChartData', JSON.stringify(selectChartData))
     }
 
@@ -84,7 +86,7 @@ const table = (data,feature) =>{
     )
 }
 
-const scatter = (data,feature) =>{            
+const scatter = (data,feature,onMylist) =>{            
     var CanvasJSChart = CanvasJSReact.CanvasJSChart;
     var chartData = []
 
@@ -107,6 +109,7 @@ const scatter = (data,feature) =>{
             const startTime = moment(e.dataPoint.x).format('YYYY-MM-DD HH:mm:ss.SSS');               
             selectChartData.push({startTime:startTime, index_date:e.dataPoint.index_date, index_num: e.dataPoint.index_num})
         }            
+        onMylist(selectChartData)
         await localStorage.setItem('selectChartData', JSON.stringify(selectChartData))
     }
 

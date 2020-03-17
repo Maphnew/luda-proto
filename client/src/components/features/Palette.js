@@ -72,7 +72,7 @@ class Palette extends Component {
 
                     <Route 
                         path='/features/mylist' 
-                        render={() => <PaletteMylist/>}
+                        render={() => <PaletteMylist mylist = {this.props.mylist}/>}
                     /> 
                 </div>
             </div>

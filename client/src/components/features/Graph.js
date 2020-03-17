@@ -79,7 +79,7 @@ class Graph extends Component {
             if(this.state.graphData.length>0){
                 return(
                     <div>
-                        {table(this.state.graphData,this.state.graph.featureType)}
+                        {table(this.state.graphData,this.state.graph.featureType,this.props.onMylist)}
                     </div>                    
                 )
             }
@@ -94,7 +94,7 @@ class Graph extends Component {
             case 'scatterplot':
                 return(
                     <div>
-                        {scatter(tempValue,this.state.graph.featureType)}
+                        {scatter(tempValue,this.state.graph.featureType,this.props.onMylist)}
                     </div>
                     
                 )      

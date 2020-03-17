@@ -18,17 +18,19 @@ export default class LudaApp extends React.Component {
     }
     componentDidMount() {
         console.log('componentDidMount')
-        this.setupBeforeUnloadListener();
     }
     componentDidUpdate(prevProps, prevState) {
         console.log('componentDidUpdate')
     }
-
+    componentWillUnmount () {
+        console.log('componentWillUnmount')
+        this.setupBeforeUnloadListener();
+    }
     // Things to do before unloading/closing the tab
     doSomethingBeforeUnload = () => {
-        //localStorage.setItem('featureReq', undefined)  
-        //localStorage.setItem('selectChartData', undefined)  
-        //localStorage.setItem('dataSelector', undefined)                   
+        localStorage.setItem('featureReq', undefined)  
+        localStorage.setItem('selectChartData', undefined)  
+        localStorage.setItem('dataSelector', undefined)                   
     }
 
     // Setup the `beforeunload` event listener
