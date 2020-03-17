@@ -12,7 +12,7 @@ class WaveListTable extends React.Component {
     indexDate: '',
     indexNum: ''
   };
-
+//행 클릭 이벤트
   onRowSelect = async (row, isSelected) => {
     if (isSelected) {
       const params = { "tagName": this.state.Item, "index_date": row.index_date, "index_num": row.index_num }
@@ -31,6 +31,7 @@ class WaveListTable extends React.Component {
             return record;
           }));
           this.setState({ waveinfo: json[0] })
+          if(this.state.waveinfo == undefined){alert("no data")}
           const rowvalue = {
             "index_date": row.index_date,
             "index_num": row.index_num,
@@ -46,8 +47,6 @@ class WaveListTable extends React.Component {
           this.props.onGraphData(this.state.selected)
           this.setState({ indexDate: row.index_date })
           this.setState({ indexNum: row.index_num })
-          if(this.state.waveinfo.parts == undefined){alert("no data")}
-          console.log(this.state.waveinfo.parts)
         })
         .catch(err => console.log(err));
     } else {
@@ -66,6 +65,8 @@ class WaveListTable extends React.Component {
       }
     }
   }
+
+  //리스트 삭제버튼 이벤트
   delClick = async () => {
     const params = { "tagName": this.state.Item, "index_date": this.state.indexDate, "index_num": this.state.indexNum }
     fetch("http://192.168.100.175:5000/indexed", {
@@ -82,8 +83,6 @@ class WaveListTable extends React.Component {
         if (statusText != undefined) {alert("complete")} 
         else { alert("error") }
       })
-
-    
   }
 
   render() {
@@ -95,11 +94,12 @@ class WaveListTable extends React.Component {
       onSelect: this.onRowSelect,
       bgColor: "rgb(173, 168, 255)",
     };
+
     return (
       <Router>
         <div>
+        <h4>Wave List</h4>
           <button id="Del_btn" onClick={this.delClick}>Delete</button>
-          <h4>Wave List</h4>
           <BootstrapTable
             data={this.state.data}
             selectRow={selectRowProp}
