@@ -101,13 +101,13 @@ const scatter = (data,feature,onMylist) =>{
             else {
                 const moment = require('moment') 
                 const startTime = moment(e.dataPoint.x).format('YYYY-MM-DD HH:mm:ss.SSS');               
-                selectChartData.push({startTime:startTime, index_date:e.dataPoint.index_date, index_num: e.dataPoint.index_num})
+                selectChartData.push({startTime:startTime, stopTime:e.dataPoint.stopTime, index_date:e.dataPoint.index_date, index_num: e.dataPoint.index_num})
             }
         }
         catch {
             const moment = require('moment') 
             const startTime = moment(e.dataPoint.x).format('YYYY-MM-DD HH:mm:ss.SSS');               
-            selectChartData.push({startTime:startTime, index_date:e.dataPoint.index_date, index_num: e.dataPoint.index_num})
+            selectChartData.push({startTime:startTime, stopTime:e.dataPoint.stopTime, index_date:e.dataPoint.index_date, index_num: e.dataPoint.index_num})
         }            
         onMylist(selectChartData)
         await localStorage.setItem('selectChartData', JSON.stringify(selectChartData))

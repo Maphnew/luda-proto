@@ -52,6 +52,7 @@ class Graph extends Component {
                 "y":parseFloat(item.values),
                 "index_num":item.index_num,
                 "index_date":item.index_date,
+                "stopTime":item.stopTime,
             }
             if (item.labels !== undefined){
                 if (tempMap[item.labels] === undefined){
