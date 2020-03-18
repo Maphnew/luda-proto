@@ -7,20 +7,16 @@ import equal from 'fast-deep-equal'
 
 class Index extends Component {
   state = {
-    date: new Date(),
     wavelist: [],
     json: [],
     graphData: {},
     Item: '',
-    starttime: {}
   }
 
   componentWillReceiveProps = async (nextProps) => {
     if (!equal(this.props.values, nextProps.values)) // Check if it's a new user, you can also use some unique property, like the ID  (this.props.user.id !== prevProps.user.id)
     {
       const params = { "tagName": nextProps.values.tagName, "startTime": nextProps.values.startTime, "stopTime": nextProps.values.stopTime }
-      //  console.log(params)
-      this.setState({ item: nextProps.values.tagName })
       fetch("http://192.168.100.175:5000/indexed/wavelist", {
         method: 'POST',
         headers: {
@@ -44,7 +40,7 @@ class Index extends Component {
           }));
           this.setState({ Item: nextProps.values.tagName});
           this.setState({ wavelist: json })
-           console.log('wavelist', this.state.wavelist, 'Item ', this.state.Item)
+          // console.log('wavelist', this.state.wavelist, 'Item ', this.state.Item)
         })
         .catch(err => console.log(err));     
     }
@@ -53,7 +49,7 @@ class Index extends Component {
   onGraphData = async (getData) => {
     if(getData != undefined){
     const rowValue = {
-      "tagName": this.state.item,
+      "tagName": this.state.Item,
       "index_date": getData.index_date,
       "index_num": getData.index_num,
       "parts": getData.parts
@@ -62,7 +58,7 @@ class Index extends Component {
     await this.setState({ graphData: rowValue });
     // console.log("set",typeof(this.state.graphData),this.state.graphData)
 
-    const params = { "tagName": this.state.item, "startTime": getData.startTime, "stopTime": getData.stopTime }
+    const params = { "tagName": this.state.Item, "startTime": getData.startTime, "stopTime": getData.stopTime }
     fetch("http://192.168.100.175:5000/indexed/waveform", {
       method: 'POST',
       headers: {

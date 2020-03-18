@@ -42,7 +42,7 @@ class WaveListTable extends React.Component {
           }));
           this.setState({ waveinfo: json[0] })
           if(this.state.waveinfo == undefined){alert("no data")}
-          const rowvalue = {
+          const rowValue = {
             "index_date": row.index_date,
             "index_num": row.index_num,
             "startTime": row.startTime,
@@ -53,7 +53,7 @@ class WaveListTable extends React.Component {
           const moment = require('moment')
           var requiredPattern = 'YYYY-MM-DD HH:mm:ss.SSS';
           row.index_date = moment(row.index_date).format(requiredPattern);
-          this.setState({ selected: rowvalue });
+          this.setState({ selected: rowValue });
           this.props.onGraphData(this.state.selected)
           this.setState({ indexDate: row.index_date })
           this.setState({ indexNum: row.index_num })
