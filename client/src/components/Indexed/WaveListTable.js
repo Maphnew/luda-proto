@@ -10,9 +10,19 @@ class WaveListTable extends React.Component {
     data: [],
     Item: '',
     indexDate: '',
-    indexNum: ''
+    indexNum: '',
+    dataTemp:[]
   };
-//행 클릭 이벤트
+  
+  //드롭박스 바뀌는 이벤트
+  optionChange = (event) => {
+    if(event.target.value == "Outlier"){
+      let selectChartData = JSON.parse( localStorage.getItem('selectChartData'))
+      this.setState({ data: selectChartData })
+    } else{this.setState({ data: this.state.dataTemp })}
+  }
+
+  //행 클릭 이벤트
   onRowSelect = async (row, isSelected) => {
     if (isSelected) {
       const params = { "tagName": this.state.Item, "index_date": row.index_date, "index_num": row.index_num }
@@ -59,7 +69,8 @@ class WaveListTable extends React.Component {
     {
       await this.setState({ Item: nextProps.ItemData })
       await this.setState({ data: nextProps.wavelist })
-      // console.log("nextProps.wavelist",this.state.data, "Item", this.state.Item)
+      await this.setState({ dataTemp: nextProps.wavelist })
+      console.log("nextProps.wavelist",this.state.data, "Item", this.state.Item)
       if (this.state.selected.idx !== undefined) {
         this.props.onGraphData(nextProps.wavelist[this.state.selected.idx])
       }
@@ -89,8 +100,6 @@ class WaveListTable extends React.Component {
     var selectRowProp = {
       mode: 'radio',
       clickToSelect: true,
-      // unselectable: [2],
-      // selected: [3],
       onSelect: this.onRowSelect,
       bgColor: "rgb(173, 168, 255)",
     };
@@ -100,16 +109,16 @@ class WaveListTable extends React.Component {
         <div>
         <h4>Wave List</h4>
           <button id="Del_btn" onClick={this.delClick}>Delete</button>
+          <select onChange = {this.optionChange} className="custom-select">
+          <option value="All">All</option>
+          <option value="Outlier">Outlier</option>
+        </select>
           <BootstrapTable
             data={this.state.data}
             selectRow={selectRowProp}
             pagination={true}>
-            <TableHeaderColumn isKey dataField='startTime'>
-              StartTime
-          </TableHeaderColumn>
-            <TableHeaderColumn dataField='stopTime'>
-              StopTime
-          </TableHeaderColumn>
+            <TableHeaderColumn isKey dataField='startTime'> StartTime </TableHeaderColumn>
+            <TableHeaderColumn dataField='stopTime'> StopTime </TableHeaderColumn>
           </BootstrapTable>
         </div>
       </Router>

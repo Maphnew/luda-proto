@@ -44,7 +44,7 @@ class Index extends Component {
           }));
           this.setState({ Item: nextProps.values.tagName});
           this.setState({ wavelist: json })
-          // console.log('wavelist', this.state.wavelist, 'Item ', this.state.Item)
+           console.log('wavelist', this.state.wavelist, 'Item ', this.state.Item)
         })
         .catch(err => console.log(err));     
     }
