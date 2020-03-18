@@ -27,9 +27,15 @@ class PaletteMylist extends Component {
         }      
     }
 
+    onClick = async() => {
+        await localStorage.setItem('selectChartData',[])
+        await this.setState({ selectChartData:[]})
+    }
+
     render() { 
         return (
             <div>
+                <button onClick={this.onClick}>Clear</button>
                 <BootstrapTable 
                 data={this.state.selectChartData} 
                 pagination={true}>
