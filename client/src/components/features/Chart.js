@@ -189,10 +189,13 @@ function Quartile(values, q){
         return a-b;
     });
 
-    var quartile = Math.floor(values.length * q);
-
     if (q == 1)
         return Math.floor(values[values.length-1]*100)/100
+
+    else if (q == 0)
+        return Math.floor(values[0]*100)/100
+
+    var quartile = Math.floor(values.length * q);
 
     if (values.length % (1/q))
         return Math.floor(values[quartile]*100)/100
@@ -206,9 +209,9 @@ const boxplot = (data,feature) =>{
     var chartData = new Array()
     var chartLabel = new Array()
 
-     if (Object.prototype.toString.call(data) !== '[object Array]') {    
-        var tempArr = new Array()   
+     if (Object.prototype.toString.call(data) !== '[object Array]') {            
         Object.keys(data).map(record => {            
+            var tempArr = new Array()   
             data[record].map(function (item) {
                 tempArr.push(item.y)
                 return item
@@ -241,7 +244,7 @@ const boxplot = (data,feature) =>{
         })
 
     }
-    console.log(chartData)
+
     const options ={
         chart: {
                 type: 'boxplot'

@@ -20,15 +20,14 @@ class DataSelector extends Component {
         if (this.state.selectedOption.Level1  === undefined){
             this.setState({ selectedOption :  {Level1: "Level1", Level2: "Level2", Level3:"Level3", Level4: "Level4", Level5: "Level5"} });       
         }
-
+        
         fetch("http://192.168.100.175:5000/features/info", {method: 'GET'})
         .then(response => response.json())
         .then((json) => {            
             this.setState({ waveMaster:json }); 
-            // console.log(json)
         })
         .catch(err => console.log(err));
-
+        console.log("fetch")
         try {
            const dataSelector = JSON.parse(localStorage.getItem('dataSelector'))
            //console.log("set",dataSelector)
