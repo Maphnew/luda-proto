@@ -126,12 +126,20 @@ class PaletteFeature extends Component {
         if (this.state.sendData.tagName===undefined){
             alert("Please enter data!")
             return
-        }        
+        }
         this.setState({ isLoading: true, show: true });
-        await this.setState({featureReq:{ ...this.state.featureReq, label: event.target.id}} )
-        localStorage.setItem('featureReq', JSON.stringify(this.state.featureReq))
-        const json = await labelPost(this.state.sendData,this.state.featureReq)
-        this.props.onGraphDataSubmit(json)
+        var json = new Object()
+        if (event.target.id !== this.state.featureReq.label){
+            await this.setState({featureReq:{ ...this.state.featureReq, label: event.target.id}} )
+            json = await labelPost(this.state.sendData,this.state.featureReq)
+
+        }
+        else {
+            await this.setState({featureReq:{ ...this.state.featureReq, label: undefined}} )
+            json = await featurePost(this.state.sendData,this.state.featureReq)
+        }
+        localStorage.setItem('featureReq', JSON.stringify(this.state.featureReq))         
+        this.props.onGraphDataSubmit(json)  
         this.setState({ isLoading: false, show: false });
     }
 
