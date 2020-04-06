@@ -128,7 +128,7 @@ class PaletteFeature extends Component {
             return
         }
         this.setState({ isLoading: true, show: true });
-        var json = new Object()
+        var json = {}
         if (event.target.id !== this.state.featureReq.label){
             await this.setState({featureReq:{ ...this.state.featureReq, label: event.target.id}} )
             json = await labelPost(this.state.sendData,this.state.featureReq)
@@ -168,7 +168,7 @@ class PaletteFeature extends Component {
     }
 
     waveformElement=(data, func)=>{
-        if (data.length == undefined ) {
+        if (data.length === undefined ) {
             return
         }
         const waveform = data.filter((id, idx) => this.state.buttonSearch.indexOf(id) !== -1 || this.state.buttonSearch.length === 0).map((id, idx) => {
