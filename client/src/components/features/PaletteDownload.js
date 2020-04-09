@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import equal from 'fast-deep-equal'
-import { CSVLink, CSVDownload } from "react-csv";
+import { CSVLink } from "react-csv";
 
 class PaletteDownload extends Component {
     state = {      

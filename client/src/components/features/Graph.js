@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {bubblechart,bar,stackedarea,area,scatter,table} from './Chart';
+import {bubblechart,bar,stackedarea,area,scatter,table,boxplot} from './Chart';
 import equal from 'fast-deep-equal'
 class Graph extends Component { 
     state = {
@@ -41,6 +41,7 @@ class Graph extends Component {
     handleClick = (e, value) =>{      
         this.setState({graphData:value})
     }    
+
     rawToxyData = ()=> {
         var tempValue = []
         var tempMap = {}
@@ -54,6 +55,7 @@ class Graph extends Component {
                 "index_date":item.index_date,
                 "stopTime":item.stopTime,
             }
+
             if (item.labels !== undefined){
                 if (tempMap[item.labels] === undefined){
                     tempMap[item.labels] = [tempJson]
@@ -121,6 +123,13 @@ class Graph extends Component {
                 return(
                     <div>
                         {bubblechart(tempValue,this.state.graph.featureType)}
+                    </div>                    
+                ) 
+
+            case 'boxplot':
+                return(
+                    <div>
+                        {boxplot(tempValue,this.state.graph.featureType)}
                     </div>                    
                 ) 
             default:

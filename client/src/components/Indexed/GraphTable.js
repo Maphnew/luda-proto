@@ -203,6 +203,7 @@ function GraphTable(props) {
     var newRow = {"id":rows.length.toString(),"isEditMode":true,"startTime":"","stopTime":rows[rows.length-1].stopTime}
     Object.entries(rows[0]).filter(([key]) => key !== 'isEditMode' && key !== 'id' && key !== 'stopTime' && key !== 'startTime').map(([key])=>{                       
       newRow[key] = ""
+      return newRow[key]
     })
 
     rows.push(newRow);

@@ -1,6 +1,9 @@
 import React from 'react';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import CanvasJSReact from './assets/canvasjs.react';
+import { render } from 'react-dom';
+import ReactHighchart from 'react-highcharts';
+import HighchartMore from 'highcharts/highcharts-more';
 
 const table = (data,feature,onMylist) =>{     
     const findSelected = () => { 
@@ -179,6 +182,188 @@ const scatter = (data,feature,onMylist) =>{
     )
 }
 
+function Quartile(values, q){
+    if(values.length ===0) return 0;
+
+    values.sort(function(a,b){
+        return a-b;
+    });
+
+    if (q == 1)
+        return Math.floor(values[values.length-1]*100)/100
+
+    else if (q == 0)
+        return Math.floor(values[0]*100)/100
+
+    var quartile = Math.floor(values.length * q);
+
+    if (values.length % (1/q))
+        return Math.floor(values[quartile]*100)/100
+     
+    return  Math.floor((values[quartile - 1] + values[quartile]) * q * 100)/100
+
+}
+
+HighchartMore(ReactHighchart.Highcharts);          
+const boxplot = (data,feature) =>{     
+    var chartData = new Array()
+    var chartLabel = new Array()
+
+     if (Object.prototype.toString.call(data) !== '[object Array]') {            
+        Object.keys(data).map(record => {            
+            var tempArr = new Array()   
+            data[record].map(function (item) {
+                tempArr.push(item.y)
+                return item
+            })           
+
+            const yValues = [Quartile(tempArr,0),Quartile(tempArr,0.25),Quartile(tempArr,0.5),Quartile(tempArr,0.75),Quartile(tempArr,1)]            
+            // const labelInfo =  {"label" :  record, "y": yValues}
+            // chartData.push(labelInfo)
+            chartLabel.push(record)
+            chartData.push(yValues)
+            return data
+        })        
+    }      
+    else {
+        var tempJson = new Object()
+        data.map(record => {
+            if (tempJson[record.index_date] === undefined) {
+                tempJson[record.index_date] = new Array
+            }
+            tempJson[record.index_date].push(record.y)
+            return record
+        })
+
+        Object.keys(tempJson).map(key => {
+            const yValues = [Quartile(tempJson[key],0),Quartile(tempJson[key],0.25),Quartile(tempJson[key],0.5),Quartile(tempJson[key],0.75),Quartile(tempJson[key],1)]
+            //const labelInfo =  {"label" :  key, "y": tempJson[key]}
+            chartLabel.push(key)
+            chartData.push(yValues)
+            return key
+        })
+
+    }
+
+    const options ={
+        chart: {
+                type: 'boxplot'
+            },
+
+            title: {
+                text: 'Box Plot'
+            },
+
+            legend: {
+                enabled: false
+            },
+
+            xAxis: {
+                categories: chartLabel,
+                title: {
+                    text: 'label'
+                }
+            },
+
+            yAxis: {
+                title: {
+                    text: feature
+                }
+            },
+
+            series: [{
+                //name: 'Observations',
+                tooltip: {
+                    headerFormat: '<em>Label : {point.key}</em><br/>'
+                },
+                data:chartData
+            }]
+    }
+    
+    return (
+      <div>
+        <ReactHighchart config={options} />
+      </div>
+    );
+  
+
+    // var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+    // var chartData = new Array()
+
+    //  if (Object.prototype.toString.call(data) !== '[object Array]') {    
+    //     var tempArr = new Array()   
+    //     Object.keys(data).map(record => {            
+    //         data[record].map(function (item) {
+    //             tempArr.push(item.y)
+    //             return item
+    //         })           
+
+    //         const yValues = [Quartile(tempArr,0),Quartile(tempArr,0.25),Quartile(tempArr,0.5),Quartile(tempArr,0.75),Quartile(tempArr,1)]            
+    //         const labelInfo =  {"label" :  record, "y": yValues}
+    //         chartData.push(labelInfo)
+    //         return data
+    //     })        
+    // }      
+    // else {
+    //     var tempJson = new Object()
+    //     data.map(record => {
+    //         if (tempJson[record.index_date] === undefined) {
+    //             tempJson[record.index_date] = new Array
+    //         }
+    //         tempJson[record.index_date].push(record.y)
+    //         return record
+    //     })
+
+    //     Object.keys(tempJson).map(key => {
+    //         tempJson[key] = [Quartile(tempJson[key],0),Quartile(tempJson[key],0.25),Quartile(tempJson[key],0.5),Quartile(tempJson[key],0.75),Quartile(tempJson[key],1)]
+    //         const labelInfo =  {"label" :  key, "y": tempJson[key]}
+    //         chartData.push(labelInfo)
+    //     })
+
+    // }
+
+    // const options = {
+	// 		theme: "light2",
+	// 		animationEnabled: true,
+
+	// 		title:{
+	// 			text: "Box Plot"
+	// 		},
+
+	// 		axisY: {
+	// 			title: feature,
+	// 			includeZero: false
+	// 		},
+
+	// 		data: [{
+    //             type: "boxAndWhisker",
+    //             color: "black",
+    //             upperBoxColor: "#FFC28D",
+	// 	        lowerBoxColor: "#9ECCB8",
+    //             //yValueFormatString: "#,##0.# \"kcal/100g\"",
+    //             // dataPoints: chartData
+    //             dataPoints: [
+    //                 { x: new Date(2017, 6, 3),  y: [4, 6, 7, 8, 9] },
+    //                 { x: new Date(2017, 6, 4),  y: [4, 6, 8, 9, 7] },
+    //                 { x: new Date(2017, 6, 5),  y: [4, 6, 9, 8, 7] },
+    //                 { x: new Date(2017, 6, 6),  y: [4, 6, 7, 9, 8] },
+    //                 { x: new Date(2017, 6, 7),  y: [6, 4, 7, 8, 9] },
+    //                 { x: new Date(2017, 6, 8),  y: [6, 4, 8, 9, 7] },
+    //                 { x: new Date(2017, 6, 9),  y: [6, 4, 7, 9, 8] }
+    //             ]
+    //         }]
+
+	// 	}
+	// 	return (
+	// 	<div>
+	// 		<CanvasJSChart options = {options}
+	// 			/* onRef={ref => this.chart = ref} */
+	// 		/>
+	// 		{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
+	// 	</div>
+	// 	);
+}
+
 const area = (data,feature) =>{            
     var CanvasJSChart = CanvasJSReact.CanvasJSChart;
     const options = {
@@ -293,4 +478,6 @@ const bubblechart = (data,feature) => {
     );
 }    
 
-export {bubblechart,bar,stackedarea,area,scatter,table};
+
+
+export {bubblechart,bar,stackedarea,area,scatter,table,boxplot};

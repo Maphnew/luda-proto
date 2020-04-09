@@ -126,12 +126,20 @@ class PaletteFeature extends Component {
         if (this.state.sendData.tagName===undefined){
             alert("Please enter data!")
             return
-        }        
+        }
         this.setState({ isLoading: true, show: true });
-        await this.setState({featureReq:{ ...this.state.featureReq, label: event.target.id}} )
-        localStorage.setItem('featureReq', JSON.stringify(this.state.featureReq))
-        const json = await labelPost(this.state.sendData,this.state.featureReq)
-        this.props.onGraphDataSubmit(json)
+        var json = {}
+        if (event.target.id !== this.state.featureReq.label){
+            await this.setState({featureReq:{ ...this.state.featureReq, label: event.target.id}} )
+            json = await labelPost(this.state.sendData,this.state.featureReq)
+
+        }
+        else {
+            await this.setState({featureReq:{ ...this.state.featureReq, label: undefined}} )
+            json = await featurePost(this.state.sendData,this.state.featureReq)
+        }
+        localStorage.setItem('featureReq', JSON.stringify(this.state.featureReq))         
+        this.props.onGraphDataSubmit(json)  
         this.setState({ isLoading: false, show: false });
     }
 
@@ -160,7 +168,7 @@ class PaletteFeature extends Component {
     }
 
     waveformElement=(data, func)=>{
-        if (data.length == undefined ) {
+        if (data.length === undefined ) {
             return
         }
         const waveform = data.filter((id, idx) => this.state.buttonSearch.indexOf(id) !== -1 || this.state.buttonSearch.length === 0).map((id, idx) => {
